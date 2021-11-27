@@ -1,0 +1,51 @@
+name: Release Module
+# This is only an example, please modify
+
+# on:
+#   push:
+#     branches:
+#       - master
+#       - main
+
+jobs:
+  build:
+    name: Build Blackprint Modules
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: ⚙ Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
+          registry-url: https://registry.npmjs.org/
+
+      - name: 🔃 Setup PNPM modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.pnpm-store
+          key: ${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-
+
+      - uses: pnpm/action-setup@v2.0.1
+        with:
+          version: 6.0.2
+          run_install: true
+
+      - run: pnpm i -g @blackprint/cli-tools@0.3
+
+      - name: 🛠 Compiling Blackprint Modules
+        run: blackprint build production
+
+      # ToDo: Add Blackprint node testing (for Browser/Node.js/Deno)
+      # - name: Run Tests
+      #   run: npm test
+
+      # If you want to publish to NPM, make sure to put your NPM token to repository settings
+      - name: 📦 Publish Packages
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

@@ -1,0 +1,21 @@
+{
+  "name": "bp-your-library-name",
+  "description": "Description for your Blackprint nodes",
+  "version": "0.0.1",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your/repository.git"
+  },
+  "module": "dist/change-me.min.mjs",
+  "scripts": {
+    "start": "blackprint serve",
+    "build-prod": "blackprint build production"
+  },
+  "devDependencies": {
+    "@blackprint/cli-tools": "0.3.x"
+  },
+  "keywords": [
+    "blackprint"
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "plugins": [
+    "@babel/plugin-syntax-top-level-await",
+    "@babel/plugin-proposal-class-properties"
+  ],
+  "presets": [
+    [
+      "@babel/preset-env", {
+        "targets": {
+          "chrome": "91",
+          "firefox": "90"
+        },
+        "modules": false,
+        "loose": false,
+        "shippedProposals": true
+      }
+    ]
+  ],
+  "assumptions": {
+    "constantSuper": true,
+    "ignoreFunctionLength": true,
+    "ignoreToPrimitiveHint": true,
+    "privateFieldsAsProperties": true,
+    "pureGetters": true,
+    "setClassMethods": true,
+    "setComputedProperties": true,
+    "setPublicClassFields": true,
+    "setSpreadProperties": true
+  }
+}
