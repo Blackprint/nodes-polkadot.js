@@ -1,13 +1,13 @@
 {
-  "name": "bp-your-library-name",
-  "description": "Description for your Blackprint nodes",
+  "name": "@blackprint/nodes-polkadot.js",
+  "description": "Blackprint nodes Polkadot's RPC client",
   "version": "0.0.1",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/your/repository.git"
+    "url": "https://github.com/Blackprint/nodes-polkadot.js.git"
   },
-  "module": "dist/change-me.min.mjs",
+  "module": "dist/nodes-polkadot.min.mjs",
   "scripts": {
     "start": "blackprint serve",
     "build-prod": "blackprint build production"
