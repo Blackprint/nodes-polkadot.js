@@ -13,16 +13,25 @@
  *
  * Info: imports.task() == sf.loader.task;
  */
-// await imports.task();
+await imports.task();
 
 
 // Because .js and .sf is separated
 // we also need to call LoadScope just like _init.js
-let Blackprint = window.Blackprint.loadScope({
+let Blackprint = await window.Blackprint.loadScope({
 	// You can find the URL on Blackprint menu -> Modules
 	// This will also be exported to JSON if this module's nodes is being used
 	url: import.meta.url,
 });
 
 // Global shared context
-let Context = Blackprint.getContext('Your/Module/Name');
+let Context = Blackprint.getContext('Polkadot.js');
+
+// if _init.js haven't been initialized
+if(Context.EventSlot === void 0){
+	await new Promise(r=> setTimeout(r, 500));
+	await imports.task();
+}
+
+if(!Context.EventSlot)
+	console.log("Race condition");

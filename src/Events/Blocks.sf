@@ -1,0 +1,31 @@
+## html
+<div class="node trigger" style="transform: translate({{ x }}px, {{ y }}px)">
+  <sf-template path="Blackprint/nodes/template/header.sf"></sf-template>
+
+  <div class="content">
+    <div class="block-number">{{ number }}</div>
+
+    <div class="left-port">
+      <sf-template path="Blackprint/nodes/template/input-port.sf"></sf-template>
+    </div>
+    <div class="right-port">
+      <sf-template path="Blackprint/nodes/template/output-port.sf"></sf-template>
+    </div>
+  </div>
+
+  <sf-template path="Blackprint/nodes/template/other.sf"></sf-template>
+</div>
+
+## scss-global
+bpic-polkadot-js-events-blocks {
+  .block-number {
+    margin: 1px 0 5px 5px;
+    display: block;
+    text-align: center;
+    width: calc(100% - 7%);
+  }
+}
+
+## js-global
+Blackprint.Sketch.registerInterface('BPIC/Polkadot.js/Events/Blocks',
+Context.IFace.EventsBlocks);
