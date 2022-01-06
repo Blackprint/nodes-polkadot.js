@@ -24,14 +24,8 @@ let Blackprint = await window.Blackprint.loadScope({
 	url: import.meta.url,
 });
 
-// Global shared context
-let Context = Blackprint.getContext('Polkadot.js');
+// Use sQuery
+let $ = sf.$;
 
-// if _init.js haven't been initialized
-if(Context.EventSlot === void 0){
-	await new Promise(r=> setTimeout(r, 500));
-	await imports.task();
-}
-
-if(!Context.EventSlot)
-	console.log("Race condition");
+// Global shared context (wait it to avoid race condition)
+let Context = await Blackprint.getContext('Polkadot.js');

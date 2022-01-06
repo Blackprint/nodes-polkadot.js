@@ -5,7 +5,7 @@ class EmptyNode extends Blackprint.Node {
 
 		let iface = this.setInterface(); // use empty interface
 		iface.title = "Signer";
-		iface.description = "Sign data with address key";
+		iface.description = "Sign data with browser extension";
 
 		this.output = {
 			Signer: Signer,
