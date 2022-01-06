@@ -31,6 +31,8 @@ class TransferNode extends Blackprint.Node {
 			if(Input.API === null)
 				return toast.warn("API is required");
 
+			toast.clear();
+
 			let txn = Input.API.tx.balances.transfer(Input.Address, +Input.Value);
 			Output.Txn = new Transaction(txn);
 		}
