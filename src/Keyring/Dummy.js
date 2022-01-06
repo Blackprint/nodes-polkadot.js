@@ -23,8 +23,8 @@ class DummyNode extends Blackprint.Node {
 
 		let chainId = 0;
 		let keyring = new polkadotApi.Keyring({
-			type: 'ed25519',
-			// type: 'sr25519',
+			// type: 'ed25519',
+			type: 'sr25519',
 			ss58Format: chainId,
 		});
 

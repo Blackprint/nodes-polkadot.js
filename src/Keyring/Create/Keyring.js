@@ -21,8 +21,8 @@ class KeyringNode extends Blackprint.Node {
 	imported(){
 		let {Input, Output, IInput, IOutput} = this.const; // Shortcut
 		let keyring = this.keyring = this.output.Keyring = new polkadotApi.Keyring({
-			type: 'ed25519',
-			// type: 'sr25519',
+			// type: 'ed25519',
+			type: 'sr25519',
 			ss58Format: 0,
 		});
 
