@@ -10,12 +10,25 @@
   "module": "dist/nodes-polkadot.min.mjs",
   "scripts": {
     "start": "blackprint serve",
+    "test": "jest ./tests/",
     "build-prod": "blackprint build production"
   },
+  "dependencies": {
+    "@polkadot/api": "^7.2.1",
+    "@polkadot/keyring": "^8.2.2",
+    "@polkadot/types": "^7.2.1",
+    "@polkadot/util": "^8.2.2",
+    "@polkadot/util-crypto": "^8.2.2"
+  },
   "devDependencies": {
-    "@blackprint/cli-tools": "0.3.x"
+    "@blackprint/cli-tools": "0.3.x",
+    "@blackprint/engine": "0.4.x",
+    "@blackprint/sketch": "0.4.x",
+    "scarletsframe": "0.35.x",
+    "jest": "^27.4"
   },
   "keywords": [
-    "blackprint"
+    "blackprint",
+    "polkadot.js"
   ]
 }
