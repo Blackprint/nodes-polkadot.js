@@ -6,7 +6,11 @@ class TransferNode extends Blackprint.Node {
 		let iface = this.setInterface(); // use empty interface
 		iface.title = "Send Transaction";
 
+		let node = this;
 		this.input = {
+			Submit: Blackprint.Port.Trigger(function(){
+				node.submit(true);
+			}),
 			Provider: Blackprint.Port.Union([polkadotApi.WsProvider, polkadotApi.HttpProvider]),
 			Signer: Signer,
 			Txn: Transaction,
@@ -25,11 +29,13 @@ class TransferNode extends Blackprint.Node {
 			Output.Status = ev;
 		}
 
-		async function onChanged(){
+		let onChanged = this.submit = async function(isSubmit){
 			if(Input.Provider === null) return toast.warn("Provider is required");
 			if(Input.Signer === null) return toast.warn("Signer is required");
 			if(Input.Txn === null) return toast.warn("Txn is required");
 			toast.clear();
+
+			if(isSubmit !== true) return;
 
 			let ref = Input.Signer;
 			let txn = Input.Txn.txn;
