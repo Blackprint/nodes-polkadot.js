@@ -42,3 +42,11 @@ jobs:
 
       - name: 🔥 Run Tests
         run: npm test
+
+      - name: 🚀 Deploy
+        uses: JamesIves/github-pages-deploy-action@4.2.0
+        if: github.event_name != 'pull_request' # Don't deploy, it will be dangerous if someone submit dangerous pull request
+        with:
+          branch: dist # The branch the action should deploy to.
+          folder: dist # The folder the action should deploy.
+          single-commit: true
