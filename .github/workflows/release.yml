@@ -1,6 +1,12 @@
 name: Release
 
 on:
+  workflow_dispatch:
+    inputs:
+      dryRun:
+        description: 'View list of files that will be published before the real release'
+        required: true
+        default: 'true'
   release:
     # This specifies that the build will be triggered when we publish a release
     types: [published]
@@ -40,13 +46,13 @@ jobs:
       - name: 🔥 Run Tests
         run: npm test
 
+      - name: 📦 Dry Run
+        if: github.event.inputs.dryRun == 'true'
+        run: npm publish --dry-run
+
       # If you want to publish to NPM, make sure to put your NPM token to repository settings
       - name: 📦 Publish Packages
+        if: github.event.inputs.dryRun != 'true'
         run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - run: git push
-        env:
-          # The secret is passed automatically. Nothing to configure.
-          github-token: ${{ secrets.GITHUB_TOKEN }}
