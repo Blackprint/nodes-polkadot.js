@@ -1,5 +1,15 @@
-/* Parallely load dependencies from CDN */
+// Let the Blackprint Editor know the source URL where
+// the registerNode and registerInterface belongs to
+var Blackprint = window.Blackprint.loadScope({
+	// You can find the URL on Blackprint menu -> Modules
+	// This will also be exported to JSON if this module's nodes is being used
+	url: import.meta.url,
 
+	// This will autoload (*.sf.mjs) and (*.sf.css) file for Browser
+	hasInterface: true,
+});
+
+/* Parallely load dependencies from CDN */
 // Use bundled file
 // This will be registered on global (window)
 let _remoteModule = [
@@ -35,18 +45,6 @@ else{
 
 	({ polkadotApi, polkadotKeyring, polkadotTypes, polkadotUtilCrypto, polkadotUtil } = window);
 }
-
-
-// Let the Blackprint Editor know the source URL where
-// the registerNode and registerInterface belongs to
-var Blackprint = window.Blackprint.loadScope({
-	// You can find the URL on Blackprint menu -> Modules
-	// This will also be exported to JSON if this module's nodes is being used
-	url: import.meta.url,
-
-	// This will autoload (*.sf.mjs) and (*.sf.css) file for Browser
-	hasInterface: true,
-});
 
 // Global shared context
 var Context = Blackprint.createContext('Polkadot.js');
