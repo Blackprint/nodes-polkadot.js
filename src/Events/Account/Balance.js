@@ -47,4 +47,8 @@ Context.IFace.EventsAccountBalance = class AccountBalanceIFace extends Blackprin
 			if(iface.unsubscribe) iface.unsubscribe();
 		});
 	}
+
+	destroy(){
+		if(this.unsubscribe) this.unsubscribe();
+	}
 });

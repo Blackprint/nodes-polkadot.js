@@ -48,4 +48,8 @@ Context.IFace.EventsBlocks = class BlocksIFace extends Blackprint.Interface {
 			if(iface.unsubscribe) iface.unsubscribe();
 		});
 	}
+
+	destroy(){
+		if(this.unsubscribe) this.unsubscribe();
+	}
 });
