@@ -21,7 +21,7 @@ let _remoteModule = [
 ];
 
 // Prepare variable
-var polkadotApi, polkadotKeyring, polkadotTypes, polkadotUtilCrypto, polkadotUtil;
+var polkadotApi, polkadotKeyring, polkadotTypes, polkadotUtilCrypto, polkadotUtil, polkadotExtensionDapp;
 
 // Import for different environment
 let crypto = window.crypto;
