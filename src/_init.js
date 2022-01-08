@@ -13,11 +13,11 @@ var Blackprint = window.Blackprint.loadScope({
 // Use bundled file
 // This will be registered on global (window)
 let _remoteModule = [
-	"https://cdn.jsdelivr.net/npm/@polkadot/util@8.2.3-25/bundle-polkadot-util.js",
-	"https://cdn.jsdelivr.net/npm/@polkadot/util-crypto@8.2.3-25/bundle-polkadot-util-crypto.js",
-	"https://cdn.jsdelivr.net/npm/@polkadot/keyring@8.2.3-25/bundle-polkadot-keyring.js",
-	"https://cdn.jsdelivr.net/npm/@polkadot/types@7.2.2-4/bundle-polkadot-types.js",
-	"https://cdn.jsdelivr.net/npm/@polkadot/api@7.2.2-4/bundle-polkadot-api.js",
+	"https://cdn.jsdelivr.net/npm/@polkadot/util@8.2.3-29/bundle-polkadot-util.js",
+	"https://cdn.jsdelivr.net/npm/@polkadot/util-crypto@8.2.3-29/bundle-polkadot-util-crypto.js",
+	"https://cdn.jsdelivr.net/npm/@polkadot/keyring@8.2.3-29/bundle-polkadot-keyring.js",
+	"https://cdn.jsdelivr.net/npm/@polkadot/types@7.2.2-8/bundle-polkadot-types.js",
+	"https://cdn.jsdelivr.net/npm/@polkadot/api@7.2.2-8/bundle-polkadot-api.js",
 ];
 
 // Prepare variable
@@ -39,11 +39,11 @@ else{
 			await import(_remoteModule[i]);
 	}
 	else { // For Browser environment
+		_remoteModule.push("https://cdn.jsdelivr.net/npm/@polkadot/extension-dapp@0.42.4/bundle-polkadot-extension-dapp.js");
 		await sf.loader.js(_remoteModule, {ordered: true});
-		await import("https://cdn.jsdelivr.net/npm/@polkadot/extension-dapp@0.42.4/bundle-polkadot-extension-dapp.js");
 	}
 
-	({ polkadotApi, polkadotKeyring, polkadotTypes, polkadotUtilCrypto, polkadotUtil } = window);
+	({ polkadotApi, polkadotKeyring, polkadotTypes, polkadotUtilCrypto, polkadotUtil, polkadotExtensionDapp } = window);
 }
 
 // Global shared context
@@ -78,37 +78,47 @@ class NodeToast {
 
 	info(text){
 		if(!this.iface.$decoration) return;
+		let temp = text;
 		text = this._reduceText(text);
 
 		if(this.haveInfo)
 			this.haveInfo.text = text;
 		else
 			this.haveInfo = this.iface.$decoration.info(text);
+
+		this.haveInfo._raw = temp;
 	}
 
 	warn(text){
 		if(!this.iface.$decoration) return;
+		let temp = text;
 		text = this._reduceText(text);
 
 		if(this.haveWarn)
 			this.haveWarn.text = text;
 		else
 			this.haveWarn = this.iface.$decoration.warn(text);
+
+		this.haveWarn._raw = temp;
 	}
 
 	error(text){
 		if(!this.iface.$decoration) return;
+		let temp = text;
 		text = this._reduceText(text);
 
 		if(this.haveError)
 			this.haveError.text = text;
 		else
 			this.haveError = this.iface.$decoration.error(text);
+
+		this.haveError._raw = temp;
 	}
 
 	success(text){
 		if(!this.iface.$decoration) return;
-		this.iface.$decoration.success(this._reduceText(text));
+		let ref = this.iface.$decoration.success(this._reduceText(text));
+		ref._raw = text;
 	}
 }
 
