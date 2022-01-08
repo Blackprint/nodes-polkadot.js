@@ -1,3 +1,6 @@
+let _extensionEnabled;
+let extensionEnabled = new Promise(resolve=> _extensionEnabled = resolve);
+
 Blackprint.registerNode("Polkadot.js/Connection/Extension",
 class ExtensionNode extends Blackprint.Node {
 	constructor(instance){
@@ -67,6 +70,9 @@ Context.IFace.ConnectionExtension = class ExtensionIFace extends Blackprint.Inte
 		this._toast.success("Access Granted");
 		Output.IsAllowed = true;
 
+		_extensionEnabled();
+		extensionEnabled = true;
+
 		this.node.output.Accounts = await polkadotExtensionDapp.web3Accounts();
 
 		let node = this;
@@ -76,7 +82,11 @@ Context.IFace.ConnectionExtension = class ExtensionIFace extends Blackprint.Inte
 	}
 
 	destroy(){
-		this._unsubscribe();
+		try{
+			this._unsubscribe();
+		} catch(e) {
+			console.error(e);
+		}
 	}
 
 	// Implement this if in the future the wallet has an RPC

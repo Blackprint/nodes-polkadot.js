@@ -21,7 +21,7 @@ let _remoteModule = [
 ];
 
 // Prepare variable
-var polkadotApi, polkadotKeyring, polkadotTypes, polkadotUtilCrypto, polkadotUtil, polkadotExtensionDapp;
+var polkadotApi, polkadotKeyring, polkadotTypes, polkadotUtilCrypto, polkadotUtil;
 
 // Import for different environment
 let crypto = window.crypto;
@@ -42,8 +42,9 @@ else{
 		_remoteModule.push("https://cdn.jsdelivr.net/npm/@polkadot/extension-dapp@0.42.4/bundle-polkadot-extension-dapp.js");
 		await sf.loader.js(_remoteModule, {ordered: true});
 	}
+	({ polkadotApi, polkadotKeyring, polkadotTypes, polkadotUtilCrypto, polkadotUtil } = window);
 
-	({ polkadotApi, polkadotKeyring, polkadotTypes, polkadotUtilCrypto, polkadotUtil, polkadotExtensionDapp } = window);
+	// polkadotExtensionDapp library is not using UMD
 }
 
 // Global shared context

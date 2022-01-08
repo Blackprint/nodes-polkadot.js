@@ -24,6 +24,12 @@ class EmptyNode extends Blackprint.Node {
 			if(Input.Address === '')
 				return toast.warn("Address is required");
 
+			if(extensionEnabled !== true){
+				toast.warn("No access to browser extension");
+				await extensionEnabled;
+				toast.clear();
+			}
+
 			try{
 				var obj = await polkadotExtensionDapp.web3FromAddress(Input.Address);
 			} catch(e) {
