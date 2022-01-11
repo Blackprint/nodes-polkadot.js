@@ -69,6 +69,13 @@ Context.IFace.ConnectionWebSocket = class WebSocketIFace extends Blackprint.Inte
 
 		Output.API = await polkadotApi.ApiPromise.create({ provider });
 	}
+
+	destroy(){
+		let ws = this.const.Output.Provider;
+		if(ws === void 0) return;
+
+		ws.disconnect();
+	}
 });
 
 class ConnectionWebSocketData {

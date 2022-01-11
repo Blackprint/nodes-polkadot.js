@@ -51,7 +51,7 @@ Context.IFace.ConnectionHTTP = class HTTPIFace extends Blackprint.Interface {
 		Output.Provider?.disconnect(); // wss://rpc.polkadot.io
 
 		let provider = Output.Provider = new polkadotApi.HttpProvider(this.data.rpcURL);
-		that._toast.clear();
+		this._toast.clear();
 		this._toast.warn("Connecting...");
 		Output.API = await polkadotApi.ApiPromise.create({ provider });
 
@@ -59,6 +59,13 @@ Context.IFace.ConnectionHTTP = class HTTPIFace extends Blackprint.Interface {
 			this._toast.clear();
 			this._toast.success("Connected");
 		}
+	}
+
+	destroy(){
+		let ws = this.const.Output.Provider;
+		if(ws === void 0) return;
+
+		ws.disconnect();
 	}
 });
 
