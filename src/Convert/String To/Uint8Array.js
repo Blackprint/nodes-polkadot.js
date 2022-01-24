@@ -11,7 +11,7 @@ class RandomSeedNode extends Blackprint.Node {
 	}
 
 	imported(){
-		let {Input, Output, IInput, IOutput} = this.const; // Shortcut
+		let {Input, Output, IInput, IOutput} = this.ref; // Shortcut
 		IInput.In.on('value', Context.EventSlot, function(){
 			Output.Out = polkadotUtil.stringToU8a(Input.In);
 		});

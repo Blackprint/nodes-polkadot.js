@@ -43,7 +43,7 @@ Context.IFace.ConnectionHTTP = class HTTPIFace extends Blackprint.Interface {
 	}
 
 	async changeRPC(){
-		let {Input, Output, IInput, IOutput} = this.const; // Shortcut
+		let {Input, Output, IInput, IOutput} = this.ref; // Shortcut
 
 		if(!this.data.rpcURL)
 			return this._toast.error("RPC URL was empty");
@@ -62,7 +62,7 @@ Context.IFace.ConnectionHTTP = class HTTPIFace extends Blackprint.Interface {
 	}
 
 	destroy(){
-		let ws = this.const.Output.Provider;
+		let ws = this.ref.Output.Provider;
 		if(ws === void 0) return;
 
 		ws.disconnect();

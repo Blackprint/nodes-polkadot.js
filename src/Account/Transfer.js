@@ -18,7 +18,7 @@ class TransferNode extends Blackprint.Node {
 	}
 
 	imported(){
-		let {Input, Output, IInput, IOutput} = this.const; // Shortcut
+		let {Input, Output, IInput, IOutput} = this.ref; // Shortcut
 		let toast = new NodeToast(this.iface);
 
 		function onChanged(){

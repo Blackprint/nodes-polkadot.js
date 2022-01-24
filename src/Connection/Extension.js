@@ -48,7 +48,7 @@ Context.IFace.ConnectionExtension = class ExtensionIFace extends Blackprint.Inte
 	}
 
 	async init(){
-		let {Input, Output, IInput, IOutput} = this.const; // Shortcut
+		let {Input, Output, IInput, IOutput} = this.ref; // Shortcut
 
 		let polkadot = window.injectedWeb3?.["polkadot-js"];
 		if(polkadot === void 0)
@@ -91,7 +91,7 @@ Context.IFace.ConnectionExtension = class ExtensionIFace extends Blackprint.Inte
 
 	// Implement this if in the future the wallet has an RPC
 	async _connect(){
-		let {Input, Output, IInput, IOutput} = this.const; // Shortcut
+		let {Input, Output, IInput, IOutput} = this.ref; // Shortcut
 		let polkadot = this._polkadot;
 
 		// let provider = Output.Socket = new ExtensionProvider(polkadot.provider);

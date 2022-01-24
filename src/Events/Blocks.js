@@ -29,7 +29,7 @@ Context.IFace.EventsBlocks = class BlocksIFace extends Blackprint.Interface {
 	}
 
 	imported(){
-		let {Input, Output, IInput, IOutput} = this.const; // Shortcut
+		let {Input, Output, IInput, IOutput} = this.ref; // Shortcut
 		let iface = this;
 		let toast = new NodeToast(this);
 
