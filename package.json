@@ -1,16 +1,16 @@
 {
   "name": "@blackprint/nodes-polkadot.js",
   "description": "Blackprint nodes Polkadot's RPC client",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/Blackprint/nodes-polkadot.js.git"
   },
-  "module": "dist/nodes-polkadot.min.mjs",
+  "module": "dist/nodes-polkadot.mjs",
   "scripts": {
     "start": "blackprint serve",
-    "test": "jest ./tests/",
+    "test": "node --experimental-vm-modules --no-warnings node_modules/jest/bin/jest.js ./tests/",
     "build-prod": "blackprint build production"
   },
   "dependencies": {
