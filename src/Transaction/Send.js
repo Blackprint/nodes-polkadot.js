@@ -1,24 +1,23 @@
 Blackprint.registerNode("Polkadot.js/Transaction/Send",
 class TransferNode extends Blackprint.Node {
+	static input = {
+		Submit: Blackprint.Port.Trigger(function(){
+			this.submit(true);
+		}),
+		Provider: Blackprint.Port.Union([polkadotApi.WsProvider, polkadotApi.HttpProvider]),
+		Signer: Signer,
+		Txn: Transaction,
+	};
+
+	static output = {
+		Status: Object
+	};
+
 	constructor(instance){
 		super(instance);
 
 		let iface = this.setInterface(); // use empty interface
 		iface.title = "Send Transaction";
-
-		let node = this;
-		this.input = {
-			Submit: Blackprint.Port.Trigger(function(){
-				node.submit(true);
-			}),
-			Provider: Blackprint.Port.Union([polkadotApi.WsProvider, polkadotApi.HttpProvider]),
-			Signer: Signer,
-			Txn: Transaction,
-		};
-
-		this.output = {
-			Status: Object
-		};
 	}
 
 	imported(){

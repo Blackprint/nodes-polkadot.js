@@ -1,21 +1,21 @@
 Blackprint.registerNode("Polkadot.js/Keyring/Create/Keyring",
 class KeyringNode extends Blackprint.Node {
+	static output = {
+		Keyring: polkadotApi.Keyring
+	};
+
+	static input = {
+		ChainId: Number,
+		Seed: Blackprint.Port.ArrayOf(Uint8Array),
+		Mnemonic: Blackprint.Port.ArrayOf(String),
+	};
+
 	constructor(instance){
 		super(instance);
 
 		let iface = this.setInterface(); // use empty interface
 		iface.title = "Keyring";
 		iface.description = "Collection of keys";
-
-		this.output = {
-			Keyring: polkadotApi.Keyring
-		};
-
-		this.input = {
-			ChainId: Number,
-			Seed: Blackprint.Port.ArrayOf(Uint8Array),
-			Mnemonic: Blackprint.Port.ArrayOf(String),
-		};
 	}
 
 	imported(){

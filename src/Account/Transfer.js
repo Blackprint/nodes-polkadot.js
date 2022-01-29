@@ -1,20 +1,20 @@
 Blackprint.registerNode("Polkadot.js/Account/Transfer",
 class TransferNode extends Blackprint.Node {
+	static input = {
+		API: polkadotApi.ApiPromise,
+		Address: String, // base58
+		Value: String, // in pico unit, 1e12 (pico) = 1 Dot
+	};
+	static output = {
+		Txn: Transaction,
+	};
+
 	constructor(instance){
 		super(instance);
 
 		let iface = this.setInterface(); // use empty interface
 		iface.title = "Transfer";
 		iface.description = "Transfer balance to an address";
-
-		this.input = {
-			API: polkadotApi.ApiPromise,
-			Address: String, // base58
-			Value: String, // in pico unit, 1e12 (pico) = 1 Dot
-		};
-		this.output = {
-			Txn: Transaction,
-		};
 	}
 
 	imported(){

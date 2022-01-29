@@ -1,20 +1,20 @@
 Blackprint.registerNode("Polkadot.js/Keyring/PublicKey",
 class PublicKeyNode extends Blackprint.Node {
+	static output = {
+		Address: String,
+		Bytes: Uint8Array,
+	};
+	static input = {
+		Keyring: polkadotApi.Keyring,
+		ChainId: Number,
+		Source: Blackprint.Port.Union([String, Uint8Array]),
+	};
+
 	constructor(instance){
 		super(instance);
 
 		let iface = this.setInterface(); // use empty interface
 		iface.title = "Public Key";
-
-		this.output = {
-			Address: String,
-			Bytes: Uint8Array,
-		};
-		this.input = {
-			Keyring: polkadotApi.Keyring,
-			ChainId: Number,
-			Source: Blackprint.Port.Union([String, Uint8Array]),
-		};
 	}
 
 	imported(){

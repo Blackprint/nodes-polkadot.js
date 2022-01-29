@@ -1,20 +1,20 @@
 Blackprint.registerNode("Polkadot.js/Transaction/PaymentInfo",
 class PaymentInfoNode extends Blackprint.Node {
+	static input = {
+		Provider: Blackprint.Port.Union([polkadotApi.WsProvider, polkadotApi.HttpProvider]),
+		Signer: Signer,
+		Txn: Transaction,
+	};
+
+	static output = {
+		Info: Object
+	};
+
 	constructor(instance){
 		super(instance);
 
 		let iface = this.setInterface(); // use empty interface
 		iface.title = "Txn Payment Info";
-
-		this.input = {
-			Provider: Blackprint.Port.Union([polkadotApi.WsProvider, polkadotApi.HttpProvider]),
-			Signer: Signer,
-			Txn: Transaction,
-		};
-
-		this.output = {
-			Info: Object
-		};
 	}
 
 	imported(){

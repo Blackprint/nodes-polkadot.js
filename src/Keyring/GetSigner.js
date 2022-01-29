@@ -1,19 +1,19 @@
 Blackprint.registerNode("Polkadot.js/Keyring/GetSigner",
 class SignerNode extends Blackprint.Node {
+	static output = {
+		Signer: Signer,
+	};
+	static input = {
+		Address: String, // base58
+		Keyring: polkadotApi.Keyring,
+	};
+
 	constructor(instance){
 		super(instance);
 
 		let iface = this.setInterface(); // use empty interface
 		iface.title = "Get Signer";
 		iface.description = "Get signer from keyring";
-
-		this.output = {
-			Signer: Signer,
-		};
-		this.input = {
-			Address: String, // base58
-			Keyring: polkadotApi.Keyring,
-		};
 	}
 
 	imported(){

@@ -1,21 +1,21 @@
 // Structure only
 Blackprint.registerNode("Polkadot.js/Keyring/Message/Sign",
 class SignNode extends Blackprint.Node {
+	static input = {
+		Signer: Signer,
+		Data: Blackprint.Port.Union([String, Uint8Array]),
+	};
+
+	static output = {
+		Bytes: Uint8Array
+	};
+
 	constructor(instance){
 		super(instance);
 
 		let iface = this.setInterface(); // use empty interface
 		iface.title = "Sign";
 		iface.description = "Data signer";
-
-		this.input = {
-			Signer: Signer,
-			Data: Blackprint.Port.Union([String, Uint8Array]),
-		};
-
-		this.output = {
-			Bytes: Uint8Array
-		};
 	}
 
 	imported(){

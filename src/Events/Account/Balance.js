@@ -1,21 +1,20 @@
 Blackprint.registerNode("Polkadot.js/Events/Account/Balance",
 class AccountBalanceNode extends Blackprint.Node {
+	static input = {
+		API: polkadotApi.ApiPromise,
+		Address: String,
+	};
+
+	static output = {
+		Value: Number,
+	};
+
 	constructor(instance){
 		super(instance);
 
 		let iface = this.setInterface('BPIC/Polkadot.js/Events/Account/Balance');
 		iface.title = "Account Balance Event";
 		iface.description = "Listen for balance changes";
-
-		let node = this;
-		this.input = {
-			API: polkadotApi.ApiPromise,
-			Address: String,
-		};
-
-		this.output = {
-			Value: Number,
-		};
 	}
 });
 

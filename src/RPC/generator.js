@@ -328,7 +328,6 @@ function functionParser(str){
 				argsObj[name] = args[a];
 			}
 		}
-		else argsObj = void 0;
 
 		list[i] = {
 			name: funcName.slice(0, 1).toUpperCase() + funcName.slice(1),
@@ -398,7 +397,15 @@ function Substrate_BlackprintNodeGenerator(list){
 
 			let apiName = func.name.slice(0, 1).toLowerCase() + func.name.slice(1);
 
+			args.API = polkadotApi.ApiPromise;
+			args.Trigger = Blackprint.Port.Trigger(function(){
+				this.trigger(); // this instanceof Blackprint.Node
+			});
+
 			class GeneratedNode extends Blackprint.Node {
+				static input = args;
+				static output = func.returnType;
+
 				constructor(instance){
 					super(instance);
 
@@ -406,19 +413,6 @@ function Substrate_BlackprintNodeGenerator(list){
 					let iface = this.setInterface();
 					iface.title = temp.name +' '+ func.name;
 					iface.description = "Polkadot JSON-RPC";
-
-					this.input = {
-						API: polkadotApi.ApiPromise,
-						Trigger: Blackprint.Port.Trigger(function(){
-							node.trigger();
-						})
-					};
-
-					if(func.args !== void 0)
-						Object.assign(this.input, func.args);
-
-					if(func.returnType !== void 0)
-						this.output = Object.assign({}, func.returnType);
 
 					this._toast = new NodeToast(iface);
 				}
@@ -445,14 +439,6 @@ function Substrate_BlackprintNodeGenerator(list){
 			}
 
 			Blackprint.registerNode("Polkadot.js/RPC/"+temp.name+'/'+funcName, GeneratedNode);
-
-			// For input port recommendation
-			if(func.args !== void 0)
-				GeneratedNode.$input = func.args;
-
-			// For output port recommendation
-			if(func.returnType !== void 0)
-				GeneratedNode.$output = func.returnType;
 		}
 	}
 }

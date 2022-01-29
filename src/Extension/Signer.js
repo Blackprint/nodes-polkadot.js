@@ -1,18 +1,18 @@
 Blackprint.registerNode("Polkadot.js/Extension/Signer",
 class EmptyNode extends Blackprint.Node {
+	static output = {
+		Signer: Signer,
+	};
+	static input = {
+		Address: String,
+	};
+
 	constructor(instance){
 		super(instance);
 
 		let iface = this.setInterface(); // use empty interface
 		iface.title = "Signer";
 		iface.description = "Sign data with browser extension";
-
-		this.output = {
-			Signer: Signer,
-		};
-		this.input = {
-			Address: String,
-		};
 	}
 
 	imported(){

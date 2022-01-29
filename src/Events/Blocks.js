@@ -1,21 +1,20 @@
 Blackprint.registerNode("Polkadot.js/Events/Blocks",
 class BlocksNode extends Blackprint.Node {
+	static input = {
+		API: polkadotApi.ApiPromise,
+	};
+
+	static output = {
+		New: Function,
+		Number: Number,
+	};
+
 	constructor(instance){
 		super(instance);
 
 		let iface = this.setInterface('BPIC/Polkadot.js/Events/Blocks');
 		iface.title = "Blocks Event";
 		iface.description = "Listen for new blocks";
-
-		let node = this;
-		this.input = {
-			API: polkadotApi.ApiPromise,
-		};
-
-		this.output = {
-			New: Function,
-			Number: Number,
-		};
 	}
 });
 

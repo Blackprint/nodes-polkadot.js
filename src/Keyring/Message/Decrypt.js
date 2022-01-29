@@ -1,21 +1,21 @@
 Blackprint.registerNode("Polkadot.js/Keyring/Message/Decrypt",
 class DecryptNode extends Blackprint.Node {
+	static input = {
+		Keyring: polkadotApi.Keyring,
+		Address: String, // base58
+		// Sender: String, // base58
+		Data: Blackprint.Port.Union([String, Uint8Array]),
+	};
+
+	static output = {
+		Bytes: Uint8Array
+	};
+
 	constructor(instance){
 		super(instance);
 
 		let iface = this.setInterface(); // use empty interface
 		iface.title = "Decrypt Data";
-
-		this.input = {
-			Keyring: polkadotApi.Keyring,
-			Address: String, // base58
-			// Sender: String, // base58
-			Data: Blackprint.Port.Union([String, Uint8Array]),
-		};
-
-		this.output = {
-			Bytes: Uint8Array
-		};
 	}
 
 	imported(){

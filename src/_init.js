@@ -9,17 +9,6 @@ var Blackprint = window.Blackprint.loadScope({
 	hasInterface: true,
 });
 
-/* Parallely load dependencies from CDN */
-// Use bundled file
-// This will be registered on global (window)
-let _remoteModule = [
-	"https://cdn.jsdelivr.net/npm/@polkadot/util@8.2.3-29/bundle-polkadot-util.js",
-	"https://cdn.jsdelivr.net/npm/@polkadot/util-crypto@8.2.3-29/bundle-polkadot-util-crypto.js",
-	"https://cdn.jsdelivr.net/npm/@polkadot/keyring@8.2.3-29/bundle-polkadot-keyring.js",
-	"https://cdn.jsdelivr.net/npm/@polkadot/types@7.2.2-8/bundle-polkadot-types.js",
-	"https://cdn.jsdelivr.net/npm/@polkadot/api@7.2.2-8/bundle-polkadot-api.js",
-];
-
 // Prepare variable
 var polkadotApi, polkadotKeyring, polkadotTypes, polkadotUtilCrypto, polkadotUtil;
 
@@ -34,6 +23,17 @@ if(window.Blackprint.Environment.isNode) { // Untested
 	polkadotUtil = require('@polkadot/util');
 }
 else{
+	/* Parallely load dependencies from CDN */
+	// Use bundled file
+	// This will be registered on global (window)
+	let _remoteModule = [
+		"https://cdn.jsdelivr.net/npm/@polkadot/util@8.2.3-29/bundle-polkadot-util.js",
+		"https://cdn.jsdelivr.net/npm/@polkadot/util-crypto@8.2.3-29/bundle-polkadot-util-crypto.js",
+		"https://cdn.jsdelivr.net/npm/@polkadot/keyring@8.2.3-29/bundle-polkadot-keyring.js",
+		"https://cdn.jsdelivr.net/npm/@polkadot/types@7.2.2-8/bundle-polkadot-types.js",
+		"https://cdn.jsdelivr.net/npm/@polkadot/api@7.2.2-8/bundle-polkadot-api.js",
+	];
+
 	if(window.Blackprint.Environment.isDeno) { // Untested
 		for (var i = 0; i < _remoteModule.length; i++)
 			await import(_remoteModule[i]);
@@ -42,8 +42,8 @@ else{
 		_remoteModule.push("https://cdn.jsdelivr.net/npm/@polkadot/extension-dapp@0.42.4/bundle-polkadot-extension-dapp.js");
 		await sf.loader.js(_remoteModule, {ordered: true});
 	}
-	({ polkadotApi, polkadotKeyring, polkadotTypes, polkadotUtilCrypto, polkadotUtil } = window);
 
+	({ polkadotApi, polkadotKeyring, polkadotTypes, polkadotUtilCrypto, polkadotUtil } = window);
 	// polkadotExtensionDapp library is not using UMD
 }
 
@@ -137,3 +137,14 @@ class Signer {
 		this.signer = signer;
 	}
 }
+
+
+// Fix minified class name
+Blackprint.utils.renameTypeName({
+	'Transaction': Transaction,
+	'Signer': Signer,
+	'ApiPromise': polkadotApi.ApiPromise,
+	'Keyring': polkadotApi.Keyring,
+	'WsProvider': polkadotApi.WsProvider,
+	'HttpProvider': polkadotApi.HttpProvider,
+});

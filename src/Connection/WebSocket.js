@@ -1,28 +1,27 @@
 Blackprint.registerNode("Polkadot.js/Connection/WebSocket",
 class WebSocketNode extends Blackprint.Node {
+	static input = {
+		Connect: Blackprint.Port.Trigger(function(){
+			this.output.Provider.connect();
+		}),
+		Disconnect: Blackprint.Port.Trigger(function(){
+			this.output.Provider.disconnect();
+		}),
+	};
+
+	static output = {
+		Provider: polkadotApi.WsProvider,
+		API: polkadotApi.ApiPromise,
+		Connected: Function,
+		Disconnected: Function,
+	};
+
 	constructor(instance){
 		super(instance);
 
 		let iface = this.setInterface('BPIC/Polkadot.js/Connection/WebSocket');
 		iface.title = "WebSocket";
 		iface.description = "Web3 RPC Connection";
-
-		let node = this;
-		this.input = {
-			Connect: Blackprint.Port.Trigger(function(){
-				node.output.Provider.connect();
-			}),
-			Disconnect: Blackprint.Port.Trigger(function(){
-				node.output.Provider.disconnect();
-			}),
-		};
-
-		this.output = {
-			Provider: polkadotApi.WsProvider,
-			API: polkadotApi.ApiPromise,
-			Connected: Function,
-			Disconnected: Function,
-		};
 	}
 
 	imported(data){

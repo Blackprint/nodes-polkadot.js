@@ -3,31 +3,30 @@ let extensionEnabled = new Promise(resolve=> _extensionEnabled = resolve);
 
 Blackprint.registerNode("Polkadot.js/Connection/Extension",
 class ExtensionNode extends Blackprint.Node {
+	static input = {
+		// Connect: Blackprint.Port.Trigger(function(){
+		// 	this.output.Socket.connect();
+		// }),
+		// Disconnect: Blackprint.Port.Trigger(function(){
+		// 	this.output.Socket.disconnect();
+		// }),
+	};
+
+	static output = {
+		// API: polkadotApi.ApiPromise,
+		// Socket: ExtensionProvider,
+		Accounts: Array,
+		IsAllowed: Boolean,
+		// Connected: Function,
+		// Disconnected: Function,
+	};
+
 	constructor(instance){
 		super(instance);
 
 		let iface = this.setInterface('BPIC/Polkadot.js/Connection/Extension');
 		iface.title = "Browser Wallet";
 		iface.description = "Connect to extension";
-
-		let node = this;
-		this.input = {
-			// Connect: Blackprint.Port.Trigger(function(){
-			// 	node.output.Socket.connect();
-			// }),
-			// Disconnect: Blackprint.Port.Trigger(function(){
-			// 	node.output.Socket.disconnect();
-			// }),
-		};
-
-		this.output = {
-			// API: polkadotApi.ApiPromise,
-			// Socket: ExtensionProvider,
-			Accounts: Array,
-			IsAllowed: Boolean,
-			// Connected: Function,
-			// Disconnected: Function,
-		};
 	}
 
 	imported(data){

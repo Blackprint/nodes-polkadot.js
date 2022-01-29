@@ -1,19 +1,19 @@
 Blackprint.registerNode("Polkadot.js/Keyring/Dummy",
 class DummyNode extends Blackprint.Node {
+	static output = {
+		Address: String, // base58
+		Seed: Uint8Array,
+		Signer: Signer,
+		Pair: Object,
+		// Keyring: polkadotApi.Keyring,
+	};
+
 	constructor(instance){
 		super(instance);
 
 		let iface = this.setInterface(); // use empty interface
 		iface.title = "Dummy Key";
 		iface.description = "Randomly generated wallet";
-
-		this.output = {
-			Address: String, // base58
-			Seed: Uint8Array,
-			Signer: Signer,
-			Pair: Object,
-			// Keyring: polkadotApi.Keyring,
-		};
 	}
 
 	imported(){

@@ -1,21 +1,21 @@
 Blackprint.registerNode("Polkadot.js/Transaction/DryRun",
 class TransferNode extends Blackprint.Node {
+	static input = {
+		Provider: Blackprint.Port.Union([polkadotApi.WsProvider, polkadotApi.HttpProvider]),
+		Signer: Signer,
+		Txn: Transaction,
+	};
+
+	static output = {
+		Status: Object
+	};
+
 	constructor(instance){
 		super(instance);
 
 		let iface = this.setInterface(); // use empty interface
 		iface.title = "Dry Run Transaction";
 		iface.description = "Try a transaction but not actually execute it";
-
-		this.input = {
-			Provider: Blackprint.Port.Union([polkadotApi.WsProvider, polkadotApi.HttpProvider]),
-			Signer: Signer,
-			Txn: Transaction,
-		};
-
-		this.output = {
-			Status: Object
-		};
 	}
 
 	imported(){

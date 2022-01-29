@@ -1,28 +1,27 @@
 Blackprint.registerNode("Polkadot.js/Connection/HTTP",
 class HTTPNode extends Blackprint.Node {
+	static input = {
+		Connect: Blackprint.Port.Trigger(function(){
+			this.output.Provider.connect();
+		}),
+		Disconnect: Blackprint.Port.Trigger(function(){
+			this.output.Provider.disconnect();
+		}),
+	};
+
+	static output = {
+		Provider: polkadotApi.HttpProvider,
+		API: polkadotApi.ApiPromise,
+		Connected: Function,
+		Disconnected: Function,
+	};
+
 	constructor(instance){
 		super(instance);
 
 		let iface = this.setInterface('BPIC/Polkadot.js/Connection/HTTP');
 		iface.title = "HTTP";
 		iface.description = "Web3 RPC Connection";
-
-		let node = this;
-		this.input = {
-			Connect: Blackprint.Port.Trigger(function(){
-				node.output.Provider.connect();
-			}),
-			Disconnect: Blackprint.Port.Trigger(function(){
-				node.output.Provider.disconnect();
-			}),
-		};
-
-		this.output = {
-			Provider: polkadotApi.HttpProvider,
-			API: polkadotApi.ApiPromise,
-			Connected: Function,
-			Disconnected: Function,
-		};
 	}
 
 	imported(data){

@@ -1,13 +1,13 @@
 Blackprint.registerNode("Polkadot.js/Convert/String To/Uint8Array",
 class RandomSeedNode extends Blackprint.Node {
+	static output = {Out: Uint8Array};
+	static input = {In: String};
+
 	constructor(instance){
 		super(instance);
 
 		let iface = this.setInterface();
 		iface.title = "String to Uint8Array";
-
-		this.output = {Out: Uint8Array};
-		this.input = {In: String};
 	}
 
 	imported(){

@@ -1,17 +1,17 @@
 Blackprint.registerNode("Polkadot.js/Convert/Mnemonic",
 class MnemonicNode extends Blackprint.Node {
+	static input = {
+		Text: String,
+	};
+	static output = {
+		Seed: Uint8Array,
+	};
+
 	constructor(instance){
 		super(instance);
 
 		let iface = this.setInterface();
 		iface.title = "Mnemonic";
-
-		this.input = {
-			Text: String,
-		};
-		this.output = {
-			Seed: Uint8Array,
-		};
 	}
 
 	imported(){

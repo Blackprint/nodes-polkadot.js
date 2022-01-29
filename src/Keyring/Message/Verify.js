@@ -1,22 +1,22 @@
 // Structure only
 Blackprint.registerNode("Polkadot.js/Keyring/Message/Verify",
 class VerifyNode extends Blackprint.Node {
+	static input = {
+		Address: String, // base58
+		Signature: Blackprint.Port.Union([String, Uint8Array]),
+		Data: Blackprint.Port.Union([String, Uint8Array]),
+	};
+
+	static output = {
+		IsValid: Boolean
+	};
+
 	constructor(instance){
 		super(instance);
 
 		let iface = this.setInterface(); // use empty interface
 		iface.title = "Verify";
 		iface.description = "Verify signed messxage";
-
-		this.input = {
-			Address: String, // base58
-			Signature: Blackprint.Port.Union([String, Uint8Array]),
-			Data: Blackprint.Port.Union([String, Uint8Array]),
-		};
-
-		this.output = {
-			IsValid: Boolean
-		};
 	}
 
 	imported(){
