@@ -6,3 +6,4 @@ src
 vercel.json
 tests
 jest.config.js
+pnpm-lock.yaml
