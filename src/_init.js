@@ -14,13 +14,17 @@ var polkadotApi, polkadotKeyring, polkadotTypes, polkadotUtilCrypto, polkadotUti
 
 // Import for different environment
 let crypto = window.crypto;
-if(window.Blackprint.Environment.isNode) { // Untested
-	crypto = require('crypto').webcrypto;
-	polkadotApi = require('@polkadot/api');
-	polkadotKeyring = require('@polkadot/keyring');
-	polkadotTypes = require('@polkadot/types');
-	polkadotUtilCrypto = require('@polkadot/util-crypto');
-	polkadotUtil = require('@polkadot/util');
+if(window.Blackprint.Environment.isNode) {
+	crypto = (await import('crypto')).webcrypto;
+
+	// Use the bundled version
+	await import('../node_modules/@polkadot/util/bundle-polkadot-util.js');
+	await import('../node_modules/@polkadot/util-crypto/bundle-polkadot-util-crypto.js');
+	await import('../node_modules/@polkadot/keyring/bundle-polkadot-keyring.js');
+	await import('../node_modules/@polkadot/types/bundle-polkadot-types.js');
+	await import('../node_modules/@polkadot/api/bundle-polkadot-api.js');
+
+	({ polkadotApi, polkadotKeyring, polkadotTypes, polkadotUtilCrypto, polkadotUtil } = window);
 }
 else{
 	/* Parallely load dependencies from CDN */
@@ -39,7 +43,7 @@ else{
 			await import(_remoteModule[i]);
 	}
 	else { // For Browser environment
-		_remoteModule.push("https://cdn.jsdelivr.net/npm/@polkadot/extension-dapp@0.42.4/bundle-polkadot-extension-dapp.js");
+		_remoteModule.push("https://cdn.jsdelivr.net/npm/@polkadot/extension-dapp@0.42.7/bundle-polkadot-extension-dapp.js");
 		await sf.loader.js(_remoteModule, {ordered: true});
 	}
 

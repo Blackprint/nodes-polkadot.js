@@ -2,13 +2,7 @@
  * @jest-environment node
  */
 
-let window = globalThis;
-require("@blackprint/engine");
-
-// Force it as Node.js environment because jest environment seems mixed up
-Blackprint.Environment.isBrowser = false;
-Blackprint.Environment.isNode = true;
-
+require('./prepare-env.js')('node');
 
 let instance = null;
 test('Blackprint does exist on window', async () => {
@@ -18,9 +12,8 @@ test('Blackprint does exist on window', async () => {
 	instance = new Blackprint.Engine();
 });
 
-jest.setTimeout(60e3); // 1 minute
-
 // This may took longer to finish because will also load polkadot.js's module
+// -> Prefer using the bundled version to reduce load time
 test("Load required modules", async () => {
 	// Alternative for Blackprint.loadModuleFromURL(...);
 	await import("../dist/nodes-polkadotjs.mjs"); // For Browser/Node.js
