@@ -2,8 +2,7 @@
  * @jest-environment jsdom
  */
 
-require("../../../engine-js/dist/engine.min.js");
-// require("@blackprint/engine");
+require("@blackprint/engine");
 
 // === For Browser Environment ===
 window.ResizeObserver = class{};
@@ -13,10 +12,8 @@ window.sf = require("scarletsframe/dist/scarletsframe.min.js");
 sf.loader.turnedOff = true;
 sf.loader.task = false;
 
-require("../../../dist/blackprint.min.js");
-require("../../../dist/blackprint.sf.js");
-// require("@blackprint/sketch/dist/blackprint.min.js");
-// require("@blackprint/sketch/dist/blackprint.sf.js");
+require("@blackprint/sketch/dist/blackprint.min.js");
+require("@blackprint/sketch/dist/blackprint.sf.js");
 // === For Browser Environment ===
 
 
