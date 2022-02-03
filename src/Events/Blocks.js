@@ -58,7 +58,7 @@ Context.IFace.EventsBlocks = class BlocksIFace extends Blackprint.Interface {
 	}
 
 	// This will be called by the engine if the input port have a new value
-	update(){
+	async update(){
 		let { Input, Output } = this.ref; // Shortcut
 
 		// If this node is already subscribing to blocks event, let's unsubscribe it

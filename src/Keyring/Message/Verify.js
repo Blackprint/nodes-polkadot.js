@@ -35,7 +35,7 @@ class VerifyNode extends Blackprint.Node {
 	}
 
 	// This will be called by the engine if the input port have a new value
-	update(){
+	async update(){
 		let { Input, Output } = this.ref; // Shortcut
 
 		// Clear the output data if required port was not connected or not having data

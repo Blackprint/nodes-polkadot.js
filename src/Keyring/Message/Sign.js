@@ -39,7 +39,7 @@ class SignNode extends Blackprint.Node {
 	}
 
 	// This will be called by the engine if the input port have a new value
-	update(){
+	async update(){
 		let { Input, Output } = this.ref; // Shortcut
 
 		if(Input.Signer == null)
