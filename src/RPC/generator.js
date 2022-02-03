@@ -1,5 +1,8 @@
-// Work in progress
-let SubstrateMetadata = true; // set this to true to enable this generator
+// Work in progress and untested nodes
+// Please expect changes on the port's name and type data on the future
+
+// Set this to true to enable this generator
+let SubstrateMetadata = true;
 
 // Watch/Subscribe will be an event
 let SubstrateSubscriber = {
@@ -13,6 +16,7 @@ let SubstrateSubscriber = {
 	SubscribeStorage: "state",
 };
 
+// ToDo: Type mapping (Rust Types => JavaScript Types)
 let SubstrateTypeData = {
 	'AccountId': String,
 	'ApplyExtrinsicResult': null,
@@ -45,7 +49,7 @@ let SubstrateTypeData = {
 	'H160': String,
 	'H256': String,
 	'Hash': String,
-	'HashMap<AuthorityId,EpochAuthorship>': null,
+	'HashMap<AuthorityId,EpochAuthorship>': null, // ToDo: HashMap<A, B> => {A, B}
 	'Header': null,
 	'Health': null,
 	'Index': null,
@@ -57,7 +61,7 @@ let SubstrateTypeData = {
 	'MmrLeafProof': null,
 	'NetworkState': null,
 	'Null': null,
-	'Option<BlockNumber>': null,
+	'Option<BlockNumber>': null, // ToDo: Option<A> => A
 	'Option<Bytes>': null,
 	'Option<EncodedFinalityProofs>': null,
 	'Option<EthRichBlock>': null,
@@ -82,7 +86,7 @@ let SubstrateTypeData = {
 	'TraceBlockResponse': null,
 	'U64': Number,
 	'U256': Number,
-	'Vec<EthLog>': null,
+	'Vec<EthLog>': null, // ToDo: Vec<A> => [A]
 	'Vec<Extrinsic>': null,
 	'Vec<ExtrinsicOrHash>': null,
 	'Vec<H160>': null,
@@ -90,7 +94,7 @@ let SubstrateTypeData = {
 	'Vec<Hash>': null,
 	'Vec<KeyValue>': null,
 	'Vec<NodeRole>': null,
-	'Vec<Option<StorageData>>': null,
+	'Vec<Option<StorageData>>': null, // ToDo: ?.. maybe [StorageData]
 	'Vec<PeerInfo>': null,
 	'Vec<StorageChangeSet>': null,
 	'Vec<StorageKey>': null,
@@ -101,6 +105,8 @@ let SubstrateTypeData = {
 };
 
 // https://polkadot.js.org/docs/substrate/rpc
+// The parameters will be input port, and the returned data will be the output port
+// The function name will be the node's name (ex: Author HasKey)
 Substrate_BlackprintNodeGenerator([
 	{
 		name: "Author", rpc_path: "author",
@@ -301,34 +307,52 @@ Substrate_BlackprintNodeGenerator([
 	}
 ]);
 
+/**
+ * For extracting function name, parameter, and return types
+ * @param  String str function list to be extracted
+ * @return Array
+ */
 function functionParser(str){
+	// Clean the spaces and split the new line
 	let list = str.trim().replace(/\t+| /g, '').split('\n');
 
+	// For each lines
 	for (var i = 0; i < list.length; i++) {
 		let temp = list[i];
 		let funcName, args, returnType;
 
-		// hasSessionKeys ( sessionKeys:Bytes ): bool
+		// Implementation below can be replaced with RegExp, but more complicated I think
+
+		// Separate name, parameter, and types
+		// ex: hasSessionKeys(sessionKeys:Bytes):bool
 		;([temp, returnType] = temp.split('):'));
 		;([funcName, args] = temp.split('('));
 
+		// Get the parameters/arguments name
 		let argsName = [];
 		args = args.replace(/,?([a-zA-Z0-9_?]+):/g, function(full, name){
 			argsName.push(name);
-			return ';;';
-		}).replace(/^;;/m, '');
+			return ';;'; // Remove the parameter name from the text
+		})
+		.replace(/^;;/m, ''); // Remove the first ';;'
 
+		// Let's obtain the function parameter's type data
 		let argsObj = {};
 		if(args !== ''){
 			args = args.split(';;');
 
+			// For each type data on the parameters
 			for (var a = 0; a < args.length; a++) {
 				let name = argsName[a];
+
+				// Capitalize first word and assign it to argsObj
+				// SessionKeys => Bytes
 				name = name.slice(0, 1).toUpperCase() + name.slice(1);
 				argsObj[name] = args[a];
 			}
 		}
 
+		// Put the extraction in the 'list'
 		list[i] = {
 			name: funcName.slice(0, 1).toUpperCase() + funcName.slice(1),
 			args: argsObj,
@@ -339,18 +363,24 @@ function functionParser(str){
 	return list;
 }
 
+/**
+ * Generate Blackprint nodes for Substrate RPC
+ * @param Array list [description]
+ */
 function Substrate_BlackprintNodeGenerator(list){
 	if(SubstrateMetadata === false) return;
 
+	// For each array items
 	for (var i = 0; i < list.length; i++) {
 		let temp = list[i];
 		let funcs = functionParser(temp.funcs);
 
-		// For each function
+		// For each extracted function from the string
 		that: for (var a = 0; a < funcs.length; a++) {
 			let func = funcs[a];
 
 			// Skip subscribe or watch because it was an event
+			// We will create separate nodes to handle subscribe/unsubscribe
 			if(/subscribe|watch/i.test(func.name)){
 				if(SubstrateSubscriber[func.name] === void 0)
 					console.error(`Substrate subscriber for "${func.name}" was not found`);
@@ -358,31 +388,51 @@ function Substrate_BlackprintNodeGenerator(list){
 				continue;
 			}
 
+			// If you found error from this line, then the SubstrateTypeData need to be updated
 			if(SubstrateTypeData[func.returnType] === void 0){
 				console.error(`Substrate type data for "${func.returnType}" was not found`);
 				continue;
 			}
 
+
+			// Type mapping (Rust Types => JavaScript Types)
 			let returnToField = func.returnType;
 			if(func.returnType !== 'Null'){
+				// Simplify port name
+				let portName = func.returnType
+					.replace(/(Vec|Option|HashMap)<(.*?)>$/m, function(full, wrapper, type){
+						if(wrapper === 'Option' || wrapper === 'Vec')
+							return type;
+
+						// ToDO: HashMap
+						return type;
+					});
+
+				// This will be used as output port
+				// port name => type
 				func.returnType = {
-					[func.returnType]: SubstrateTypeData[func.returnType]
+					[portName]: SubstrateTypeData[func.returnType]
 				};
 			}
-			else func.returnType = void 0;
+			else func.returnType = void 0; // Didn't return data
 
+			// Type mapping (Rust Types => JavaScript Types)
 			let args = func.args;
-			for(let key in args){
-				let typeData = args[key];
+			for(let portName in args){
+				let typeData = args[portName];
 
+				// If you found error from this line, then the SubstrateTypeData need to be updated
 				if(SubstrateTypeData[typeData] === void 0){
 					console.error(`Substrate type data for "${typeData}" was not found`);
 					continue that;
 				}
 
-				args[key] = SubstrateTypeData[typeData];
+				// This will be used as input port
+				// port name => type
+				args[portName] = SubstrateTypeData[typeData];
 			}
 
+			// Categorizing Blackprint Node's path by function name
 			let funcName = func.name
 			.replace(/By([A-Z].*)/, function(full, name){
 				return ' By/'+name;
@@ -395,28 +445,36 @@ function Substrate_BlackprintNodeGenerator(list){
 				return A + ' ' +B;
 			});
 
+			// Capitalize the first character
 			let apiName = func.name.slice(0, 1).toLowerCase() + func.name.slice(1);
 
-			args.API = polkadotApi.ApiPromise;
-			args.Trigger = Blackprint.Port.Trigger(function(){
-				this.trigger(); // this instanceof Blackprint.Node
-			});
 
+			// Custom Node class
 			class GeneratedNode extends Blackprint.Node {
-				static input = args;
+				// Output port, this can be undefined if return nothing (no output port)
 				static output = func.returnType;
+
+				// Input port for each nodes
+				static input = Object.assign(args, {
+					API: polkadotApi.ApiPromise,
+					Trigger: Blackprint.Port.Trigger(function(){
+						this.trigger(); // this.trigger => async trigger()
+					})
+				});
 
 				constructor(instance){
 					super(instance);
 
-					let node = this;
+					// Use default interface
 					let iface = this.setInterface();
-					iface.title = temp.name +' '+ func.name;
+					iface.title = `${temp.name} ${func.name}`; // ex: Author HasKey
 					iface.description = "Polkadot JSON-RPC";
 
+					// For showing toast above the node
 					this._toast = new NodeToast(iface);
 				}
 
+				// This will be triggered from input port (input.Trigger)
 				async trigger(){
 					let {Input, Output, IInput, IOutput} = this.ref; // Shortcut
 					let toast = this._toast;
@@ -424,9 +482,11 @@ function Substrate_BlackprintNodeGenerator(list){
 					if(Input.API === null)
 						return toast.warn("API is required");
 
+					// Get reference, ex: rpc_path = author
 					let obj = Input.API.rpc[temp.rpc_path];
-					let args = [];
 
+					// Prepare arguments before calling the Polkadot.js's RPC function
+					let args = [];
 					if(func.args !== void 0){
 						let _args = func.args;
 						for(let key in _args){
@@ -434,11 +494,14 @@ function Substrate_BlackprintNodeGenerator(list){
 						}
 					}
 
+					// Call the RPC function and put the result to the output port
+					// ToDo: should we use type data's name as the port name?
 					Output[returnToField] = await obj[apiName].apply(obj, args);
 				}
 			}
 
-			Blackprint.registerNode("Polkadot.js/RPC/"+temp.name+'/'+funcName, GeneratedNode);
+			// Register it as Blackprint Node
+			Blackprint.registerNode(`Polkadot.js/RPC/${temp.name}/${funcName}`, GeneratedNode);
 		}
 	}
 }
