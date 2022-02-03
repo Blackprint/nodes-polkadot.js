@@ -1,53 +1,40 @@
-// Structure only
+/**
+ * import { NodeToast, Context } from "../_init.js";
+ * import { CrypterNode } from "./Decrypt.js";
+ * { polkadotUtil, polkadotApi } = window
+ */
+
+
+// Register Blackprint Node
 Blackprint.registerNode("Polkadot.js/Keyring/Message/Encrypt",
-class EncryptNode extends Blackprint.Node {
+class EncryptNode extends CrypterNode {
+	// Input port
 	static input = {
 		Keyring: polkadotApi.Keyring,
 		Address: String, // base58
 		Data: Blackprint.Port.Union([String, Uint8Array]),
 	};
 
+	// Output port
 	static output = {
 		Bytes: Uint8Array
 	};
 
 	constructor(instance){
 		super(instance);
-
-		let iface = this.setInterface(); // use empty interface
-		iface.title = "Encrypt Data";
+		this.iface.title = "Encrypt Data";
 	}
 
-	imported(){
-		let {Input, Output, IInput, IOutput} = this.ref; // Shortcut
-		let toast = new NodeToast(this.iface);
+	// This will be called by the engine if the input port have a new value
+	update(){
+		let { Input, Output } = this.ref; // Shortcut
+		let data = super.update();
 
-		function onChanged(){
-			if(Input.Keyring == null || Input.Address == '' || Input.Data == null){
-				Output.Bytes = null; // Clear it on error
-				return toast.warn("Waiting required data");
-			}
+		if(!data) return;
+		let { keypair, message } = data;
 
-			try{
-				var key = Input.Keyring.getPair(Input.Address);
-			} catch(e) {
-				Output.Bytes = null; // Clear it on error
-				return toast.warn(e.Data);
-			}
-
-			toast.clear();
-
-			let msg = Input.Data;
-			if(msg.constructor === String)
-				msg = polkadotUtil.stringToU8a(msg);
-
-			let nonce = crypto.getRandomValues(new Uint8Array(24));
-			Output.Bytes = key.encryptMessage(msg, void 0, nonce);
-		}
-
-		this.iface.on('port.value', Context.EventSlot, onChanged);
-		this.iface.on('cable.disconnect', Context.EventSlot, function({ port }){
-			if(port.source === 'input') onChanged();
-		});
+		// Decrypt the message and put it on output port
+		let nonce = window.crypto.getRandomValues(new Uint8Array(24));
+		Output.Bytes = keypair.encryptMessage(message, void 0, nonce); // ToDo: try remove nonce and 'void 0'
 	}
 });

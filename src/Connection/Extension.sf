@@ -16,6 +16,7 @@
   <sf-template path="Blackprint/nodes/template/other.sf"></sf-template>
 </div>
 
+
 ## scss-global
 bpic-polkadot-js-connection-extension {
   input {
@@ -25,6 +26,9 @@ bpic-polkadot-js-connection-extension {
   }
 }
 
+
 ## js-global
+// Context = shared object between ../_init.js and ../_init.sf
+
 Blackprint.Sketch.registerInterface('BPIC/Polkadot.js/Connection/Extension',
 Context.IFace.ConnectionExtension);

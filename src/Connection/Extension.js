@@ -1,40 +1,51 @@
+/**
+ * import { NodeToast, Context } from "../_init.js";
+ * { polkadotExtensionDapp, polkadotApi } = window
+ */
+
 let _extensionEnabled;
 let extensionEnabled = new Promise(resolve=> _extensionEnabled = resolve);
 
+
+// For storing node data
+class ConnectionExtensionData {
+	constructor(iface){this._iface = iface}
+
+	_dAppName = 'BP-Polkadot.js';
+	get dAppName(){return this._dAppName}
+	set dAppName(val){this._dAppName = val}
+}
+
+
+// Register Blackprint Node
 Blackprint.registerNode("Polkadot.js/Connection/Extension",
 class ExtensionNode extends Blackprint.Node {
-	static input = {
-		// Connect: Blackprint.Port.Trigger(function(){
-		// 	this.output.Socket.connect();
-		// }),
-		// Disconnect: Blackprint.Port.Trigger(function(){
-		// 	this.output.Socket.disconnect();
-		// }),
-	};
-
+	static input = undefined; // This node doesn't need any input port
 	static output = {
-		// API: polkadotApi.ApiPromise,
-		// Socket: ExtensionProvider,
 		Accounts: Array,
 		IsAllowed: Boolean,
-		// Connected: Function,
-		// Disconnected: Function,
 	};
 
 	constructor(instance){
 		super(instance);
 
+		// Use custom interface
+		// Engine: scroll down this file to "Blackprint.registerInterface"
+		// Browser: ./Extension.sf
 		let iface = this.setInterface('BPIC/Polkadot.js/Connection/Extension');
 		iface.title = "Browser Wallet";
 		iface.description = "Connect to extension";
 	}
 
+	// This will be called by the engine once the node has been loaded, but no cable connected
 	imported(data){
 		if(!data) return;
 		Object.assign(this.iface.data, data);
 	}
 });
 
+
+// Register Blackprint Interface (like an API for developer, or UI for sketch editor)
 Blackprint.registerInterface('BPIC/Polkadot.js/Connection/Extension',
 Context.IFace.ConnectionExtension = class ExtensionIFace extends Blackprint.Interface {
 	constructor(node){
@@ -46,6 +57,8 @@ Context.IFace.ConnectionExtension = class ExtensionIFace extends Blackprint.Inte
 		this.data = new ConnectionExtensionData(this);
 	}
 
+	// This will be called by the engine after node has been loaded
+	// and other data like cable connection has been connected/added
 	async init(){
 		let {Input, Output, IInput, IOutput} = this.ref; // Shortcut
 
@@ -80,15 +93,17 @@ Context.IFace.ConnectionExtension = class ExtensionIFace extends Blackprint.Inte
 		});
 	}
 
+	// This will be called by the engine when this node is deleted
 	destroy(){
+		// Unsubscribe to event listener if exist
 		try{
-			this._unsubscribe();
+			this._unsubscribe?.();
 		} catch(e) {
 			console.error(e);
 		}
 	}
 
-	// Implement this if in the future the wallet has an RPC
+	// ToDo: Implement this if in the future the wallet has an RPC
 	async _connect(){
 		let {Input, Output, IInput, IOutput} = this.ref; // Shortcut
 		let polkadot = this._polkadot;
@@ -113,11 +128,3 @@ Context.IFace.ConnectionExtension = class ExtensionIFace extends Blackprint.Inte
 		// Output.API = await polkadotApi.ApiPromise.create({ provider });
 	}
 });
-
-class ConnectionExtensionData {
-	constructor(iface){this._iface = iface}
-
-	_dAppName = 'BP-Polkadot.js';
-	get dAppName(){return this._dAppName}
-	set dAppName(val){this._dAppName = val}
-}

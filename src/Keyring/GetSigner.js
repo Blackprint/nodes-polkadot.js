@@ -1,8 +1,14 @@
+/**
+ * import { NodeToast, Context, Signer } from "../_init.js";
+ * { polkadotApi } = window
+ */
+
+
+// Register Blackprint Node
 Blackprint.registerNode("Polkadot.js/Keyring/GetSigner",
 class SignerNode extends Blackprint.Node {
-	static output = {
-		Signer: Signer,
-	};
+	// Node's input/output port
+	static output = { Signer: Signer };
 	static input = {
 		Address: String, // base58
 		Keyring: polkadotApi.Keyring,
@@ -14,21 +20,36 @@ class SignerNode extends Blackprint.Node {
 		let iface = this.setInterface(); // use empty interface
 		iface.title = "Get Signer";
 		iface.description = "Get signer from keyring";
+
+		this._toast = new NodeToast(this.iface);
+
+		// Manually call 'update' when any cable from input port was disconnected
+		this.iface.on('cable.disconnect', Context.EventSlot, ({ port })=> {
+			if(port.source === 'input') this.update();
+		});
 	}
 
-	imported(){
-		let {Input, Output, IInput, IOutput} = this.ref; // Shortcut
-		let toast = new NodeToast(this.iface);
+	update(){
+		let { Input, Output } = this.ref; // Shortcut
+		let { Keyring, Address} = Input.Keyring;
 
-		let node = this;
-		function onChanged(ev){
-			let key = Input.Keyring.getPair(Input.Address);
-			if(key === void 0)
-				return toast.warn("Address was not found on Keyring");
-
-			node.output.Signer = new Signer(true, Input.Address, key);
+		if(Keyring == null){
+			Output.Signer = null;
+			return this._toast.warn("Keyring is required");
 		}
 
-		this.iface.on('port.value', Context.EventSlot, onChanged);
+		if(Address == null){
+			Output.Signer = null;
+			return this._toast.warn("Address is required");
+		}
+
+		let key = Keyring.getPair(Address);
+		if(key === void 0){
+			Output.Signer = null;
+			return this._toast.warn("Address was not found on Keyring");
+		}
+
+		// Wrap the signer and put it to the output port
+		Output.Signer = new Signer(true, Address, key);
 	}
 });

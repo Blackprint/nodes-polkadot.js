@@ -1,37 +1,45 @@
+/**
+ * import { NodeToast, Context } from "../_init.js";
+ * { polkadotUtilCrypto } = window
+ */
+
+
+// Register Blackprint Node
 Blackprint.registerNode("Polkadot.js/Convert/Mnemonic",
 class MnemonicNode extends Blackprint.Node {
-	static input = {
-		Text: String,
-	};
-	static output = {
-		Seed: Uint8Array,
-	};
+	// Node's output/input port
+	static input = { Text: String };
+	static output = { Seed: Uint8Array };
 
 	constructor(instance){
 		super(instance);
 
 		let iface = this.setInterface();
 		iface.title = "Mnemonic";
+
+		this._toast = new NodeToast(iface);
+
+		// Clear the output port when the input cable was disconnected
+		iface.input.Text.on('disconnect', Context.EventSlot, ()=> {
+			this.output.Seed = null;
+		});
 	}
 
-	imported(){
-		let {Input, Output, IInput, IOutput} = this.ref; // Shortcut
-		let toast = new NodeToast(this.iface);
-
+	// This will be called by the engine if the input port have a new value
+	update(){
+		let { Input, Output } = this.ref; // Shortcut
 		let { mnemonicToMiniSecret, mnemonicValidate } = polkadotUtilCrypto;
+		let toast = this._toast;
 
-		function onChanged(){
-			try{
-				if(!mnemonicValidate(Input.Text))
-					return toast.warn("Invalid mnemonic");
+		try{
+			if(!mnemonicValidate(Input.Text))
+				return toast.warn("Invalid mnemonic");
 
-				Output.Seed = mnemonicToMiniSecret(Input.Text);
-				toast.clear();
-			} catch(e) {
-				return toast.warn(e.message);
-			}
+			// Convert to seed that can be imported to Keyring and put it to the output port
+			Output.Seed = mnemonicToMiniSecret(Input.Text);
+			toast.clear();
+		} catch(e) {
+			return toast.warn(e.message);
 		}
-
-		IInput.Text.on('value', Context.EventSlot, onChanged);
 	}
 });

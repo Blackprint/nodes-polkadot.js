@@ -16,6 +16,7 @@
   <sf-template path="Blackprint/nodes/template/other.sf"></sf-template>
 </div>
 
+
 ## scss-global
 bpic-polkadot-js-connection-http {
   input {
@@ -27,5 +28,7 @@ bpic-polkadot-js-connection-http {
 
 
 ## js-global
+// Context = shared object between ../_init.js and ../_init.sf
+
 Blackprint.Sketch.registerInterface('BPIC/Polkadot.js/Connection/HTTP',
 Context.IFace.ConnectionHTTP);

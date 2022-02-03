@@ -1,8 +1,14 @@
+/**
+ * import { NodeToast, Context } from "../_init.js";
+ * { polkadotUtil, polkadotUtilCrypto } = window
+ */
+
+
+// Register Blackprint Node
 Blackprint.registerNode("Polkadot.js/Keyring/Create/RandomSeed",
 class RandomSeedNode extends Blackprint.Node {
-	static output = {
-		Seed: Uint8Array
-	};
+	// Output port
+	static output = { Seed: Uint8Array };
 
 	constructor(instance){
 		super(instance);
@@ -12,6 +18,7 @@ class RandomSeedNode extends Blackprint.Node {
 		iface.description = "Generate random seed";
 	}
 
+	// ToDo: change to internal polkadot seed generator
 	imported(){
 		this.output.Seed = crypto.getRandomValues(new Uint8Array(32));
 	}

@@ -1,11 +1,23 @@
+/**
+ * import { NodeToast, Context, Signer } from "../_init.js";
+ * { polkadotApi } = window
+ */
+
+
+// Register Blackprint Node
 Blackprint.registerNode("Polkadot.js/Keyring/Dummy",
 class DummyNode extends Blackprint.Node {
+	// Input port
+	static input = {
+		KeyType: Blackprint.Port.Default(String, 'sr25519'),
+	};
+
+	// Output port
 	static output = {
 		Address: String, // base58
 		Seed: Uint8Array,
 		Signer: Signer,
 		Pair: Object,
-		// Keyring: polkadotApi.Keyring,
 	};
 
 	constructor(instance){
@@ -16,20 +28,27 @@ class DummyNode extends Blackprint.Node {
 		iface.description = "Randomly generated wallet";
 	}
 
-	imported(){
-		let {Input, Output, IInput, IOutput} = this.ref; // Shortcut
-		let toast = new NodeToast(this.iface);
+	// This will be called by the engine once the node has been loaded
+	imported(){ this.update() }
+
+	// This will be called by the engine if the input port have a new value
+	update(){
+		let { Input, Output } = this.ref; // Shortcut
+
+		// ToDo: change to internal polkadot seed generator
+		// Generate new seed and put it to the output port
 		Output.Seed = crypto.getRandomValues(new Uint8Array(32));
 
-		let chainId = 0;
 		let keyring = new polkadotApi.Keyring({
-			// type: 'ed25519',
-			type: 'sr25519',
-			ss58Format: chainId,
+			type: Input.KeyType, // default to sr25519
+			ss58Format: 0, // To use different format, Polkadot.js/Keyring/PublicKey is recommended
 		});
 
+		// Create keypair from seed and put it to the output port
 		let pair = Output.Pair = keyring.addFromSeed(Output.Seed);
-		Output.Address = pair.address;
+
+		// Wrap the signer and put the public address to the output port
 		Output.Signer = new Signer(true, Output.Address, pair);
+		Output.Address = pair.address;
 	}
 });

@@ -27,5 +27,7 @@ bpic-polkadot-js-events-blocks {
 }
 
 ## js-global
+// Context = shared object between ../_init.js and ../_init.sf
+
 Blackprint.Sketch.registerInterface('BPIC/Polkadot.js/Events/Blocks',
 Context.IFace.EventsBlocks);
