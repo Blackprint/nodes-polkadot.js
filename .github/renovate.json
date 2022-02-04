@@ -1,0 +1,12 @@
+{
+  "extends": [
+    "config:base",
+    "schedule:nonOfficeHours",
+    ":preserveSemverRanges"
+  ],
+  "addLabels": ["dependencies"],
+  "cloneSubmodules": true,
+  "stabilityDays": 7,
+  "dependencyDashboard": false,
+  "rangeStrategy": "bump"
+}
