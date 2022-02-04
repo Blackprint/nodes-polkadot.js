@@ -1,5 +1,6 @@
 /**
- * import { NodeToast, Context } from "../_init.js";
+ * import { Context } from "../_init.js";
+ * import { NodeToast } from "../utils/NodeToast.js";
  * { polkadotApi } = window
  */
 
@@ -17,7 +18,7 @@ class BlocksNode extends Blackprint.Node {
 
 	// Output port
 	static output = {
-		New: Function,
+		Data: Object,
 		Number: Number,
 	};
 
@@ -70,8 +71,8 @@ Context.IFace.EventsBlocks = class BlocksIFace extends Blackprint.Interface {
 		// Subscribe to new heads/blocks and save the 'unsubscribe' function
 		this._toast.warn("Subscribing...");
 		this.unsubscribe = await api.rpc.chain.subscribeNewHeads(header => {
+			Output.Data = header;
 			Output.Number = this.number = header.number.toNumber();
-			Output.New(header);
 		});
 
 		// Clear the toast
