@@ -8,5 +8,6 @@
   "cloneSubmodules": true,
   "stabilityDays": 7,
   "dependencyDashboard": false,
-  "rangeStrategy": "bump"
+  "rangeStrategy": "bump",
+  "timezone": "Asia/Jakarta"
 }
