@@ -1,5 +1,6 @@
 /**
- * import { NodeToast, Context } from "../_init.js";
+ * import { Context } from "../_init.js";
+ * import { NodeToast } from "../utils/NodeToast.js";
  * { polkadotUtil, polkadotUtilCrypto } = window
  */
 
@@ -34,15 +35,23 @@ class VerifyNode extends Blackprint.Node {
 		});
 	}
 
+	_fail(msg){
+		this.output.Bytes = null; // Clear the output data if something was fail/error
+		this._toast.warn(msg);
+	}
+
 	// This will be called by the engine if the input port have a new value
 	async update(){
 		let { Input, Output } = this.ref; // Shortcut
 
-		// Clear the output data if required port was not connected or not having data
-		if(Input.Data == null || Input.Address == null || Input.Signature == null){
-			Output.Bytes = null; // Clear it on error
-			return toast.warn("Waiting required data");
-		}
+		if(!Input.Data)
+			return toast._fail("Data is required");
+
+		if(!Input.Address)
+			return toast._fail("Address is required");
+
+		if(!Input.Signature)
+			return toast._fail("Signature is required");
 
 		// If the Data was string, let's convert it to Uint8Array
 		let msg = Input.Data;

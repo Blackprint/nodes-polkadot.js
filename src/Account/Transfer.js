@@ -22,10 +22,10 @@ class TransferNode extends Blackprint.Node {
 		let toast = new NodeToast(this.iface);
 
 		function onChanged(){
-			if(Input.Address === '')
+			if(!Input.Address)
 				return toast.warn("Address is required");
 
-			if(Input.Value === '')
+			if(!Input.Value)
 				return toast.warn("Value is required");
 
 			if(Input.API === null)

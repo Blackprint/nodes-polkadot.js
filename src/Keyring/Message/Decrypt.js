@@ -1,5 +1,6 @@
 /**
- * import { NodeToast, Context } from "../_init.js";
+ * import { Context } from "../_init.js";
+ * import { NodeToast } from "../utils/NodeToast.js";
  * { polkadotUtil, polkadotApi } = window
  */
 
@@ -18,16 +19,24 @@ class CrypterNode extends Blackprint.Node {
 		});
 	}
 
+	_fail(msg){
+		this.output.Bytes = null; // Clear the output data if something was fail/error
+		this._toast.warn(msg);
+	}
+
 	// This will be called by the engine if the input port have a new value
 	update(){
 		let { Input, Output } = this.ref; // Shortcut
 		let toast = this._toast;
 
-		// Clear the output data if required port was not connected or not having data
-		if(Input.Keyring == null || Input.Address == null || Input.Data == null){
-			Output.Bytes = null;
-			return toast.warn("Waiting required data");
-		}
+		if(!Input.Keyring)
+			return this._fail("Keyring is required");
+
+		if(!Input.Address)
+			return this._fail("Address is required");
+
+		if(!Input.Data)
+			return this._fail("Data is required");
 
 		// Try get the key pair for decrypting from Keyring
 		try{

@@ -1,5 +1,6 @@
 /**
- * import { NodeToast, Context } from "../_init.js";
+ * import { Context } from "../_init.js";
+ * import { NodeToast } from "../utils/NodeToast.js";
  * { polkadotApi } = window
  */
 
@@ -46,10 +47,10 @@ class PublicKeyNode extends Blackprint.Node {
 		let { Input, Output } = this.ref; // Shortcut
 		let toast = this._toast;
 
-		if(Input.Keyring == null)
+		if(!Input.Keyring)
 			return this._fail("Keyring is required");
 
-		if(Input.Source == null)
+		if(!Input.Source)
 			return this._fail("Source is required, this can be seed/mnemonic");
 
 		// Get the keypair from the map

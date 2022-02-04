@@ -1,5 +1,6 @@
 /**
- * import { NodeToast, Context, Signer } from "../_init.js";
+ * import { Context, Signer } from "../_init.js";
+ * import { NodeToast } from "../utils/NodeToast.js";
  * { polkadotApi } = window
  */
 
@@ -31,14 +32,14 @@ class SignerNode extends Blackprint.Node {
 
 	update(){
 		let { Input, Output } = this.ref; // Shortcut
-		let { Keyring, Address} = Input.Keyring;
+		let { Keyring, Address } = Input.Keyring;
 
-		if(Keyring == null){
+		if(!Keyring){
 			Output.Signer = null;
 			return this._toast.warn("Keyring is required");
 		}
 
-		if(Address == null){
+		if(!Address){
 			Output.Signer = null;
 			return this._toast.warn("Address is required");
 		}
