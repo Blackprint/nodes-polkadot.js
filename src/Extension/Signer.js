@@ -1,5 +1,6 @@
 /**
- * import { NodeToast, Context, Signer } from "../_init.js";
+ * import { Context, Signer } from "../_init.js";
+ * import { NodeToast } from "../utils/NodeToast.js";
  * { polkadotExtensionDapp } = window
  */
 

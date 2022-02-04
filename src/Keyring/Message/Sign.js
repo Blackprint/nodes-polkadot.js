@@ -1,5 +1,6 @@
 /**
- * import { NodeToast, Context, Signer } from "../_init.js";
+ * import { Context, Signer } from "../_init.js";
+ * import { NodeToast } from "../utils/NodeToast.js";
  * { polkadotUtil } = window
  */
 
@@ -58,6 +59,7 @@ class SignNode extends Blackprint.Node {
 			if(msg.constructor === String)
 				msg = polkadotUtil.stringToU8a(msg);
 
+			// Sign with the keypair and put the data to the output port
 			Output.Bytes = signer.sign(msg);
 		}
 		else { // Signer from extension (polkadotExtensionDapp)
@@ -66,6 +68,7 @@ class SignNode extends Blackprint.Node {
 			else if(msg.slice(0, 2) !== '0x')
 				msg = polkadotUtil.stringToHex(msg);
 
+			// Sign with the extension and get the Hex
 			try{
 				var data = await signer.signRaw({
 					type: 'bytes',
@@ -76,7 +79,7 @@ class SignNode extends Blackprint.Node {
 				return this._fail(e.message);
 			}
 
-			// Sign the data and convert the returned Hex to Uint8Array
+			// Convert the returned Hex to Uint8Array and put the data to the output port
 			Output.Bytes = polkadotUtil.hexToU8a(data.signature);
 		}
 	}
