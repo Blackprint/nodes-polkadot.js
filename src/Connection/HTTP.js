@@ -1,5 +1,6 @@
 /**
- * import { NodeToast, Context } from "../_init.js";
+ * import { Context } from "../_init.js";
+ * import { NodeToast } from "../utils/NodeToast.js";
  * { polkadotApi } = window;
  */
 
@@ -23,10 +24,10 @@ class HTTPNode extends Blackprint.Node {
 	// Input port
 	static input = {
 		Connect: Blackprint.Port.Trigger(function(){
-			this.output.Provider.connect();
+			this.output.Provider?.connect();
 		}),
 		Disconnect: Blackprint.Port.Trigger(function(){
-			this.output.Provider.disconnect();
+			this.output.Provider?.disconnect();
 		}),
 	};
 
@@ -49,7 +50,7 @@ class HTTPNode extends Blackprint.Node {
 		iface.description = "Web3 RPC Connection";
 
 		// Create new object for storing data
-		iface.data = new ConnectionHTTPData(this);
+		iface.data = new ConnectionHTTPData(iface);
 	}
 
 	// This will be called by the engine once the node has been loaded
@@ -68,6 +69,7 @@ class HTTPNode extends Blackprint.Node {
 
 		// Disconnect from the network
 		ws.disconnect();
+		this.ref.Output.Disconnected();
 	}
 });
 
@@ -90,7 +92,11 @@ Context.IFace.ConnectionHTTP = class HTTPIFace extends Blackprint.Interface {
 			return this._toast.error("RPC URL was empty");
 
 		// If already connected to other network, let's disconnect it first
-		Output.Provider?.disconnect();
+		if(Output.Provider != null){
+			Output.Provider.disconnect();
+			Output.Disconnected();
+		}
+
 		this._toast.clear();
 
 		// Connect to the new RPC URL
@@ -104,7 +110,12 @@ Context.IFace.ConnectionHTTP = class HTTPIFace extends Blackprint.Interface {
 		if(provider.isConnected){
 			this._toast.clear();
 			this._toast.success("Connected");
+
+			Output.Connected();
 		}
-		else this._toast.error("Failed to connect");
+		else{
+			this._toast.error("Failed to connect");
+			Output.Disconnected();
+		}
 	}
 });

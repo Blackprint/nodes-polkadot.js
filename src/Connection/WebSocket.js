@@ -1,5 +1,6 @@
 /**
- * import { NodeToast, Context } from "../_init.js";
+ * import { Context } from "../_init.js";
+ * import { NodeToast } from "../utils/NodeToast.js";
  * { polkadotApi } = window;
  */
 
@@ -23,10 +24,10 @@ class WebSocketNode extends Blackprint.Node {
 	// Input port
 	static input = {
 		Connect: Blackprint.Port.Trigger(function(){
-			this.output.Provider.connect();
+			this.output.Provider?.connect();
 		}),
 		Disconnect: Blackprint.Port.Trigger(function(){
-			this.output.Provider.disconnect();
+			this.output.Provider?.disconnect();
 		}),
 	};
 
@@ -48,7 +49,7 @@ class WebSocketNode extends Blackprint.Node {
 		iface.title = "WebSocket";
 		iface.description = "Web3 RPC Connection";
 
-		iface.data = new ConnectionWebSocketData(this);
+		iface.data = new ConnectionWebSocketData(iface);
 	}
 
 	// This will be called by the engine once the node has been loaded
