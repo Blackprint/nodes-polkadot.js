@@ -30,10 +30,9 @@ class SignerNode extends Blackprint.Node {
 	// This will be called by the engine if the input port have a new value
 	async update(){
 		let { Input, Output } = this.ref; // Shortcut
-		let { Address } = Input;
 		let toast = this._toast;
 
-		if(Address == null)
+		if(!Input.Address)
 			return toast.warn("Address is required");
 
 		// Wait for permission
@@ -47,12 +46,12 @@ class SignerNode extends Blackprint.Node {
 
 		// Get the Web3 signer object
 		try{
-			var obj = await polkadotExtensionDapp.web3FromAddress(Address);
+			var obj = await polkadotExtensionDapp.web3FromAddress(Input.Address);
 		} catch(e) {
 			return toast.warn(e.message);
 		}
 
 		// Wrap it as Signer type and set it as output
-		Output.Signer = new Signer(false, Address, obj.signer);
+		Output.Signer = new Signer(false, Input.Address, obj.signer);
 	}
 });

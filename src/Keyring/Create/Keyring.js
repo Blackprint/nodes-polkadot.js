@@ -31,7 +31,8 @@ class KeyringNode extends Blackprint.Node {
 	// This will be called by the engine if the input port have a new value
 	// We will use event listener instead 'update()'
 	imported(){
-		let { Input, Output } = this.ref; // Shortcut
+		let { Input, Output, IInput } = this.ref; // Shortcut
+		let toast = new NodeToast(this.iface);
 
 		// Create initial Keyring
 		let currentKeyType = Input.KeyType;

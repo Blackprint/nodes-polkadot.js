@@ -32,25 +32,27 @@ class SignerNode extends Blackprint.Node {
 
 	update(){
 		let { Input, Output } = this.ref; // Shortcut
-		let { Keyring, Address } = Input.Keyring;
+		let toast = this._toast;
 
-		if(!Keyring){
+		if(!Input.Keyring){
 			Output.Signer = null;
-			return this._toast.warn("Keyring is required");
+			return toast.warn("Keyring is required");
 		}
 
-		if(!Address){
+		if(!Input.Address){
 			Output.Signer = null;
-			return this._toast.warn("Address is required");
+			return toast.warn("Address is required");
 		}
 
-		let key = Keyring.getPair(Address);
+		let key = Input.Keyring.getPair(Input.Address);
 		if(key === void 0){
 			Output.Signer = null;
-			return this._toast.warn("Address was not found on Keyring");
+			return toast.warn("Address was not found on Keyring");
 		}
 
+		toast.clear();
+
 		// Wrap the signer and put it to the output port
-		Output.Signer = new Signer(true, Address, key);
+		Output.Signer = new Signer(true, Input.Address, key);
 	}
 });

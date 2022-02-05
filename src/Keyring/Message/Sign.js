@@ -43,15 +43,15 @@ class SignNode extends Blackprint.Node {
 	async update(){
 		let { Input, Output } = this.ref; // Shortcut
 
-		if(Input.Signer == null)
+		if(!Input.Signer)
 			return this._fail("Signer is required");
 
 		let msg = Input.Data;
-		if(msg == null)
+		if(!msg)
 			return this._fail("Data is required");
 
 		let { signer, address, isPair } = Input.Signer;
-		toast.clear();
+		this._toast.clear();
 
 		// There's 2 source of signer (from Keypair and Browser Extension)
 
