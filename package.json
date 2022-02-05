@@ -18,14 +18,20 @@
     "@polkadot/keyring": "^8.3.3",
     "@polkadot/types": "^7.6.1",
     "@polkadot/util": "^8.3.3",
-    "@polkadot/util-crypto": "^8.3.3"
+    "@polkadot/util-crypto": "^8.3.3",
+    "dotenv": "^16.0.0"
   },
   "devDependencies": {
-    "@blackprint/cli-tools": "0.3.x",
-    "@blackprint/engine": "0.6.x",
-    "@blackprint/sketch": "0.6.x",
-    "scarletsframe": "0.35.x",
-    "jest": "^27.4"
+    "@blackprint/cli-tools": "0.3.18",
+    "@blackprint/engine": "0.6.1",
+    "@blackprint/sketch": "0.6.1",
+    "jest": "^27.4.7",
+    "scarletsframe": "0.35.8"
+  },
+  "blackprint": {
+    "bundle": [
+      "dist/nodes-polkadot.mjs"
+    ]
   },
   "keywords": [
     "blackprint",
