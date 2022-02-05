@@ -1,4 +1,5 @@
 require("@blackprint/engine");
+require("dotenv");
 
 // Duck tape to fix error when testing with `node --experimental-vm-modules`
 globalThis.window = globalThis;
