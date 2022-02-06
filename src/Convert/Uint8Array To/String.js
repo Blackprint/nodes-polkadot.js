@@ -15,9 +15,12 @@ class RandomSeedNode extends Blackprint.Node {
 
 		let iface = this.setInterface();
 		iface.title = "Uint8Array to String";
+	}
 
+	// Event listener can be registered after init
+	init(){
 		// Clear the output port when the input cable was disconnected
-		iface.input.In.on('disconnect', Context.EventSlot, ()=> {
+		this.iface.input.In.on('disconnect', Context.EventSlot, ()=> {
 			this.output.Out = null;
 		});
 	}
