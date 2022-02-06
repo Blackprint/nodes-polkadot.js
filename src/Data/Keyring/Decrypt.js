@@ -1,7 +1,7 @@
 /**
  * import { Context } from "../_init.js";
  * import { NodeToast } from "../utils/NodeToast.js";
- * { polkadotUtil, polkadotApi } = window
+ * { polkadotUtil, polkadotKeyring } = window
  */
 
 // This will be used for DecryptNode and EncryptNode
@@ -54,8 +54,8 @@ class DecryptNode extends CrypterNode {
 	// Input port
 	static input = {
 		Keypair: Object,
-		Author: String, // base58
-		Data: Blackprint.Port.Union([String, Uint8Array]),
+		Author: Blackprint.Port.Union([String, Uint8Array]), // base58, hex, public key's bytes
+		Data: Blackprint.Port.Union([String, Uint8Array]), // text, bytes
 	};
 
 	// Output port
@@ -76,11 +76,32 @@ class DecryptNode extends CrypterNode {
 			return this._fail("Author address is required");
 
 		let temp = super.update();
-
 		if(!temp) return;
-		let { keypair, data } = temp;
 
-		// Decrypt the data and put it on output port
-		Output.Bytes = keypair.decryptMessage(data, Input.Author);
+		let { keypair, data } = temp;
+		let author = Input.Author;
+
+		try {
+			// Convert address to Uint8Array
+			if(author.constructor === String)
+				author = polkadotKeyring.decodeAddress(author);
+
+			// Decrypt the data
+			var decrypted = keypair.decryptMessage(data, author);
+		} catch(e) {
+			this.output.Bytes = null; // Clear the output data
+			this._toast.error(e.message);
+			console.error(e);
+			return;
+		}
+
+		if(!decrypted){
+			this.output.Bytes = null; // Clear the output data
+			this._toast.error("Unable to decrypt data");
+			return;
+		}
+
+		// Put it on output port
+		Output.Bytes = decrypted;
 	}
 });

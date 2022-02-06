@@ -2,7 +2,7 @@
  * import { Context } from "../_init.js";
  * import { NodeToast } from "../utils/NodeToast.js";
  * import { CrypterNode } from "./Decrypt.js";
- * { polkadotUtil, polkadotApi } = window
+ * { polkadotUtil, polkadotKeyring } = window
  */
 
 
@@ -12,8 +12,8 @@ class EncryptNode extends CrypterNode {
 	// Input port
 	static input = {
 		Keypair: Object,
-		Target: String, // base58
-		Data: Blackprint.Port.Union([String, Uint8Array]),
+		Target: Blackprint.Port.Union([String, Uint8Array]), // base58, hex, public key's bytes
+		Data: Blackprint.Port.Union([String, Uint8Array]), // text, bytes
 	};
 
 	// Output port
@@ -34,11 +34,26 @@ class EncryptNode extends CrypterNode {
 			return this._fail("Target address is required");
 
 		let temp = super.update();
-
 		if(!temp) return;
-		let { keypair, data } = temp;
 
-		// Encrypt the data and put it on output port
-		Output.Bytes = keypair.encryptMessage(data, Input.Target);
+		let { keypair, data } = temp;
+		let target = Input.Target;
+
+		try {
+			// Convert address to Uint8Array
+			if(target.constructor === String)
+				target = polkadotKeyring.decodeAddress(target);
+
+			// Encrypt the data
+			var encrypt = keypair.encryptMessage(data, target);
+		} catch(e) {
+			this.output.Bytes = null; // Clear the output data
+			this._toast.error(e.message);
+			console.error(e);
+			return;
+		}
+
+		// Put it on output port
+		Output.Bytes = encrypt;
 	}
 });
