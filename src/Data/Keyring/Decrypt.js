@@ -29,33 +29,21 @@ class CrypterNode extends Blackprint.Node {
 		let { Input, Output } = this.ref; // Shortcut
 		let toast = this._toast;
 
-		if(!Input.Keyring)
-			return this._fail("Keyring is required");
-
-		if(!Input.Address)
-			return this._fail("Address is required");
+		if(!Input.Keypair)
+			return this._fail("Keypair is required");
 
 		if(!Input.Data)
 			return this._fail("Data is required");
-
-		// Try get the key pair for decrypting from Keyring
-		try{
-			var key = Input.Keyring.getPair(Input.Address);
-		} catch(e) {
-			// Clear any output and display the error message
-			Output.Bytes = null;
-			return toast.warn(e.message);
-		}
 
 		// Remove any node toast
 		toast.clear();
 
 		// If the Data is an string, let's convert it to Uint8Array
-		let msg = Input.Data;
-		if(msg.constructor === String)
-			msg = polkadotUtil.stringToU8a(msg);
+		let data = Input.Data;
+		if(data.constructor === String)
+			data = polkadotUtil.stringToU8a(data);
 
-		return {keypair: key, message: msg};
+		return {keypair: Input.Keypair, data};
 	}
 }
 
@@ -65,8 +53,8 @@ Blackprint.registerNode("Polkadot.js/Data/Keyring/Decrypt",
 class DecryptNode extends CrypterNode {
 	// Input port
 	static input = {
-		Keyring: polkadotApi.Keyring,
-		Address: String, // base58
+		Keypair: Object,
+		Author: String, // base58
 		Data: Blackprint.Port.Union([String, Uint8Array]),
 	};
 
@@ -83,12 +71,16 @@ class DecryptNode extends CrypterNode {
 	// This will be called by the engine if the input port have a new value
 	update(){
 		let { Input, Output } = this.ref; // Shortcut
-		let data = super.update();
 
-		if(!data) return;
-		let { keypair, message } = data;
+		if(!Input.Author)
+			return this._fail("Author address is required");
 
-		// Decrypt the message and put it on output port
-		Output.Bytes = keypair.decryptMessage(message, void 0); // ToDo: try remove 'void 0'
+		let temp = super.update();
+
+		if(!temp) return;
+		let { keypair, data } = temp;
+
+		// Decrypt the data and put it on output port
+		Output.Bytes = keypair.decryptMessage(data, Input.Author);
 	}
 });

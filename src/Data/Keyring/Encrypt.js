@@ -11,8 +11,8 @@ Blackprint.registerNode("Polkadot.js/Data/Keyring/Encrypt",
 class EncryptNode extends CrypterNode {
 	// Input port
 	static input = {
-		Keyring: polkadotApi.Keyring,
-		Address: String, // base58
+		Keypair: Object,
+		Target: String, // base58
 		Data: Blackprint.Port.Union([String, Uint8Array]),
 	};
 
@@ -29,13 +29,16 @@ class EncryptNode extends CrypterNode {
 	// This will be called by the engine if the input port have a new value
 	update(){
 		let { Input, Output } = this.ref; // Shortcut
-		let data = super.update();
 
-		if(!data) return;
-		let { keypair, message } = data;
+		if(!Input.Target)
+			return this._fail("Target address is required");
 
-		// Decrypt the message and put it on output port
-		let nonce = window.crypto.getRandomValues(new Uint8Array(24));
-		Output.Bytes = keypair.encryptMessage(message, void 0, nonce); // ToDo: try remove nonce and 'void 0'
+		let temp = super.update();
+
+		if(!temp) return;
+		let { keypair, data } = temp;
+
+		// Encrypt the data and put it on output port
+		Output.Bytes = keypair.encryptMessage(data, Input.Target);
 	}
 });
