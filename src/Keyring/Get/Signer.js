@@ -6,7 +6,7 @@
 
 
 // Register Blackprint Node
-Blackprint.registerNode("Polkadot.js/Keyring/GetSigner",
+Blackprint.registerNode("Polkadot.js/Keyring/Get/Signer",
 class SignerNode extends Blackprint.Node {
 	// Node's input/output port
 	static output = { Signer: Signer };
@@ -30,6 +30,7 @@ class SignerNode extends Blackprint.Node {
 		});
 	}
 
+	// This will be called by the engine if the input port have a new value
 	update(){
 		let { Input, Output } = this.ref; // Shortcut
 		let toast = this._toast;

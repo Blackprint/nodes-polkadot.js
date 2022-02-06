@@ -6,7 +6,7 @@
 
 
 // Register Blackprint Node
-Blackprint.registerNode("Polkadot.js/Keyring/PublicKey",
+Blackprint.registerNode("Polkadot.js/Keyring/Get/PublicKey",
 class PublicKeyNode extends Blackprint.Node {
 	// Output port
 	static output = {
@@ -25,7 +25,7 @@ class PublicKeyNode extends Blackprint.Node {
 		super(instance);
 
 		let iface = this.setInterface(); // use empty interface
-		iface.title = "Public Key";
+		iface.title = "Get PublicKey";
 
 		this._toast = new NodeToast(this.iface);
 

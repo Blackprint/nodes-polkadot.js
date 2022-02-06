@@ -6,7 +6,7 @@
 
 
 // Register Blackprint Node
-Blackprint.registerNode("Polkadot.js/Extension/Signer",
+Blackprint.registerNode("Polkadot.js/Extension/Get/Signer",
 class SignerNode extends Blackprint.Node {
 	// Node's input/output port
 	static input = { Address: String };

@@ -6,7 +6,7 @@
 
 
 // Register Blackprint Node
-Blackprint.registerNode("Polkadot.js/Keyring/Message/Verify",
+Blackprint.registerNode("Polkadot.js/Data/Verify",
 class VerifyNode extends Blackprint.Node {
 	// Input port
 	static input = {

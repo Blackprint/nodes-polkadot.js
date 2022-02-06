@@ -61,7 +61,7 @@ class CrypterNode extends Blackprint.Node {
 
 
 // Register Blackprint Node
-Blackprint.registerNode("Polkadot.js/Keyring/Message/Decrypt",
+Blackprint.registerNode("Polkadot.js/Data/Keyring/Decrypt",
 class DecryptNode extends CrypterNode {
 	// Input port
 	static input = {
