@@ -73,7 +73,7 @@ class VerifyNode extends Blackprint.Node {
 		this._toast.clear();
 		await polkadotUtilCrypto.cryptoWaitReady();
 
-		// Convert... wait.. whatt!?? (ToDo: recheck)
+		// ToDo: should we convert the address to hex?
 		// let address = polkadotUtilCrypto.decodeAddress(Input.Address);
 		// let hexPublicKey = polkadotUtil.u8aToHex(address);
 

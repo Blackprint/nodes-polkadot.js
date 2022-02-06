@@ -23,10 +23,10 @@ class RandomSeedNode extends Blackprint.Node {
 	}
 
 	// Event listener can be registered after init
-	// init(){
-	// 	// Clear the output port when the input cable was disconnected
-	// 	this.iface.on('cable.disconnect', Context.EventSlot, ()=> this.update());
-	// }
+	init(){
+		// Clear the output port when the input cable was disconnected
+		this.iface.on('cable.disconnect', Context.EventSlot, ()=> this.update());
+	}
 
 	_fail(msg){
 		this.output.Address = null;
@@ -40,7 +40,7 @@ class RandomSeedNode extends Blackprint.Node {
 		if(!Input.Address) return this._fail('Address is required');
 		if(!Input.ChainId) return this._fail('ChainId is required');
 
-		toast.clear();
+		this._toast.clear();
 		Output.Address = polkadotKeyring.encodeAddress(Input.Address, Input.ChainId);
 	}
 });

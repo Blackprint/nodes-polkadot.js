@@ -24,9 +24,4 @@ class RandomSeedNode extends Blackprint.Node {
 		// this.update();
 		this.output.Text = polkadotUtilCrypto.mnemonicGenerate(12);
 	}
-
-	// This will be called by the engine if the input port have a new value
-	// update(){
-	// 	this.output.Text = polkadotUtilCrypto.mnemonicGenerate(this.input.Length);
-	// }
 });
