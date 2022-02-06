@@ -1,7 +1,7 @@
 /**
  * import { Context, Signer, internalKeyring } from "../_init.js";
  * import { NodeToast } from "../utils/NodeToast.js";
- * { polkadotApi } = window
+ * { polkadotApi, polkadotUtilCrypto } = window
  */
 
 
@@ -27,7 +27,7 @@ class KeypairNode extends Blackprint.Node {
 
 		let iface = this.setInterface(); // use empty interface
 		iface.title = "Create Keypair";
-		iface.description = "Using internal keyring: sr25519";
+		iface.description = "Using internal keyring";
 
 		this._toast = new NodeToast(this.iface);
 
@@ -52,7 +52,7 @@ class KeypairNode extends Blackprint.Node {
 
 		// If the input port was changed, remove keypair from the old keyring
 		if(Output.Keypair != null){
-			oldKeyring.removePair(Output.Keypair);
+			oldKeyring.removePair(Output.Keypair.address);
 			Output.Keypair = null;
 		}
 
@@ -66,7 +66,7 @@ class KeypairNode extends Blackprint.Node {
 
 			Output.Keypair = Keyring.addFromMnemonic(Mnemonic);
 		}
-		else if(Seed == null) {
+		else if(Seed != null) {
 			// Disconnect cable from Mnemonic port if exist
 			IInput.Mnemonic.disconnectAll();
 

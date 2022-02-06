@@ -1,7 +1,7 @@
 /**
  * import { Context } from "../_init.js";
  * import { NodeToast } from "../utils/NodeToast.js";
- * { polkadotApi, polkadotUtilCrypto } = window
+ * { polkadotApi } = window
  */
 
 
@@ -15,7 +15,7 @@ class KeyringNode extends Blackprint.Node {
 
 	// Input port
 	static input = {
-		KeyType: Blackprint.Port.Default(String, 'sr25519'),
+		KeyType: Blackprint.Port.Default(String, 'ed25519'),
 	};
 
 	constructor(instance){
@@ -36,7 +36,7 @@ class KeyringNode extends Blackprint.Node {
 		// Create initial Keyring
 		this.currentKeyType = Input.KeyType;
 		Output.Keyring = new polkadotApi.Keyring({
-			type: Input.KeyType, // default to sr25519
+			type: Input.KeyType, // default to ed25519
 			ss58Format: 0, // To use different format, Polkadot.js/Convert/Address To/Address is recommended
 		});
 
@@ -50,7 +50,7 @@ class KeyringNode extends Blackprint.Node {
 		let keyType = Input.KeyType.toLowerCase();
 		let toast = this._toast;
 
-		// Update only if keytype was changed (sr25519 <~> ed25519)
+		// Update only if keytype was changed (ed25519 <~> sr25519)
 		if(this.currentKeyType === keyType)
 			return toast.clear();
 
@@ -63,7 +63,7 @@ class KeyringNode extends Blackprint.Node {
 
 		// Recreate Keyring
 		Output.Keyring = new polkadotApi.Keyring({
-			type: keyType, // default to sr25519
+			type: keyType, // default to ed25519
 			ss58Format: 0, // To use different format, Polkadot.js/Convert/Address To/Address is recommended
 		});
 

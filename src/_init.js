@@ -63,7 +63,7 @@ Context.EventSlot = {slot: 'my-private-event-slot'};
 
 // internal Keyring that will be used by some node if not connected to any keyring
 var internalKeyring = new polkadotApi.Keyring({
-	type: 'sr25519',
+	type: 'ed25519',
 	ss58Format: 0,
 });
 

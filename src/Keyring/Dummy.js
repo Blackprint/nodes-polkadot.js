@@ -10,7 +10,7 @@ Blackprint.registerNode("Polkadot.js/Keyring/Dummy",
 class DummyNode extends Blackprint.Node {
 	// Input port
 	static input = {
-		KeyType: Blackprint.Port.Default(String, 'sr25519'),
+		KeyType: Blackprint.Port.Default(String, 'ed25519'),
 	};
 
 	// Output port
@@ -41,7 +41,7 @@ class DummyNode extends Blackprint.Node {
 		Output.Seed = crypto.getRandomValues(new Uint8Array(32));
 
 		let keyring = new polkadotApi.Keyring({
-			type: Input.KeyType, // default to sr25519
+			type: Input.KeyType, // default to ed25519
 			ss58Format: 0, // To use different format, Polkadot.js/Convert/Address To/Address is recommended
 		});
 
