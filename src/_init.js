@@ -61,6 +61,11 @@ var Context = Blackprint.createContext('Polkadot.js');
 // Event listener that registered with same slot will be replaced
 Context.EventSlot = {slot: 'my-private-event-slot'};
 
+// internal Keyring that will be used by some node if not connected to any keyring
+var internalKeyring = new polkadotApi.Keyring({
+	type: 'sr25519',
+	ss58Format: 0,
+});
 
 // Custom class: for Port's type check
 class Transaction {

@@ -42,7 +42,7 @@ class DummyNode extends Blackprint.Node {
 
 		let keyring = new polkadotApi.Keyring({
 			type: Input.KeyType, // default to sr25519
-			ss58Format: 0, // To use different format, Polkadot.js/Keyring/Get/PublicKey is recommended
+			ss58Format: 0, // To use different format, Polkadot.js/Convert/Address To/Address is recommended
 		});
 
 		// Create keypair from seed and put it to the output port
