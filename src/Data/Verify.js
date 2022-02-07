@@ -54,11 +54,11 @@ class VerifyNode extends Blackprint.Node {
 			return this._fail("Signature is required");
 
 		// If the Data was string, let's convert it to Uint8Array
-		let msg = Input.Data;
-		if(msg.constructor === String){
-			if(msg.slice(0, 2) === '0x')
-				msg = polkadotUtil.hexToU8a(msg);
-			else msg = polkadotUtil.stringToU8a(msg);
+		let data = Input.Data;
+		if(data.constructor === String){
+			if(data.slice(0, 2) === '0x')
+				data = polkadotUtil.hexToU8a(data);
+			else data = polkadotUtil.stringToU8a(data);
 		}
 
 		// If the Signature was string, maybe it was a Hex, let's convert it to Uint8Array
@@ -73,11 +73,14 @@ class VerifyNode extends Blackprint.Node {
 		this._toast.clear();
 		await polkadotUtilCrypto.cryptoWaitReady();
 
-		// ToDo: should we convert the address to hex?
-		// let address = polkadotUtilCrypto.decodeAddress(Input.Address);
-		// let hexPublicKey = polkadotUtil.u8aToHex(address);
+		try{
+			// Verify the message/data and the signature with the public key
+			var temp = polkadotUtilCrypto.signatureVerify(data, sign, Input.Address);
+		} catch(e) {
+			this._fail(e.message);
+			throw e;
+		}
 
-		// Verify the message/data and the signature with the public key
-		Output.IsValid = polkadotUtilCrypto.signatureVerify(msg, sign, Input.Address).isValid;
+		Output.IsValid = temp.isValid;
 	}
 });

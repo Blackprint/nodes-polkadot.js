@@ -46,8 +46,8 @@ class SignNode extends Blackprint.Node {
 		if(!Input.Signer)
 			return this._fail("Signer is required");
 
-		let msg = Input.Data;
-		if(!msg)
+		let data = Input.Data;
+		if(!data)
 			return this._fail("Data is required");
 
 		let { signer, address, isPair } = Input.Signer;
@@ -56,31 +56,32 @@ class SignNode extends Blackprint.Node {
 		// There's 2 source of signer (from Keypair and Browser Extension)
 
 		if(isPair){ // Signer from Keypair (polkadotApi.Keyring)
-			if(msg.constructor === String)
-				msg = polkadotUtil.stringToU8a(msg);
+			if(data.constructor === String)
+				data = polkadotUtil.stringToU8a(data);
 
 			// Sign with the keypair and put the data to the output port
-			Output.Bytes = signer.sign(msg);
+			Output.Bytes = signer.sign(data);
 		}
 		else { // Signer from extension (polkadotExtensionDapp)
-			if(msg.constructor === Uint8Array)
-				msg = polkadotUtil.u8aToHex(msg);
-			else if(msg.slice(0, 2) !== '0x')
-				msg = polkadotUtil.stringToHex(msg);
+			if(data.constructor === Uint8Array)
+				data = polkadotUtil.u8aToHex(data);
+			else if(data.slice(0, 2) !== '0x')
+				data = polkadotUtil.stringToHex(data);
 
 			// Sign with the extension and get the Hex
 			try{
-				var data = await signer.signRaw({
+				var temp = await signer.signRaw({
 					type: 'bytes',
-					data: msg,
+					data,
 					address,
 				});
 			} catch(e) {
-				return this._fail(e.message);
+				this._fail(e.message);
+				throw e;
 			}
 
 			// Convert the returned Hex to Uint8Array and put the data to the output port
-			Output.Bytes = polkadotUtil.hexToU8a(data.signature);
+			Output.Bytes = polkadotUtil.hexToU8a(temp.signature);
 		}
 	}
 });
