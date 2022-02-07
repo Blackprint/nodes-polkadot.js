@@ -91,8 +91,7 @@ class DecryptNode extends CrypterNode {
 		} catch(e) {
 			this.output.Bytes = null; // Clear the output data
 			this._toast.error(e.message);
-			console.error(e);
-			return;
+			throw e;
 		}
 
 		if(!decrypted){

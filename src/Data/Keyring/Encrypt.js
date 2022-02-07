@@ -49,8 +49,7 @@ class EncryptNode extends CrypterNode {
 		} catch(e) {
 			this.output.Bytes = null; // Clear the output data
 			this._toast.error(e.message);
-			console.error(e);
-			return;
+			throw e;
 		}
 
 		// Put it on output port
