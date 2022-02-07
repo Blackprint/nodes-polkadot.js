@@ -418,6 +418,7 @@ function Substrate_BlackprintNodeGenerator(list){
 
 			// Type mapping (Rust Types => JavaScript Types)
 			let args = func.args;
+			let RPCParams = Object.keys(args);
 			for(let portName in args){
 				let typeData = args[portName];
 
@@ -474,9 +475,22 @@ function Substrate_BlackprintNodeGenerator(list){
 					this._toast = new NodeToast(iface);
 				}
 
+				// This will be called by the engine if the input port have a new value
+				update(){
+					let {Input, Output} = this.ref; // Shortcut
+					this._toast.clear();
+
+					if(Input.API != null){
+						if(Input.API.rpc[temp.rpc_path][apiName] == null){
+							this._toast.error("This network doesn't support this feature");
+							return;
+						}
+					}
+				}
+
 				// This will be triggered from input port (input.Trigger)
 				async trigger(){
-					let {Input, Output, IInput, IOutput} = this.ref; // Shortcut
+					let {Input, Output} = this.ref; // Shortcut
 					let toast = this._toast;
 
 					if(Input.API === null)
@@ -487,11 +501,8 @@ function Substrate_BlackprintNodeGenerator(list){
 
 					// Prepare arguments before calling the Polkadot.js's RPC function
 					let args = [];
-					if(func.args !== void 0){
-						let _args = func.args;
-						for(let key in _args){
-							args.push(Input[key]);
-						}
+					for (var i = 0; i < RPCParams.length; i++) {
+						args.push(Input[RPCParams[i]]);
 					}
 
 					// Call the RPC function and put the result to the output port
