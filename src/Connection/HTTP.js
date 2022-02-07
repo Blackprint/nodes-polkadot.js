@@ -105,9 +105,20 @@ Context.IFace.ConnectionHTTP = class HTTPIFace extends Blackprint.Interface {
 		// Connect to the new RPC URL
 		let provider = Output.Provider = new polkadotApi.HttpProvider(rpcURL);
 
-		// Wait until connected and put the API object into the output port
 		this._toast.warn("Connecting...");
-		Output.API = await polkadotApi.ApiPromise.create({ provider });
+
+		// Wait until connected, or show warning when failed
+		try {
+			var api = await polkadotApi.ApiPromise.create({ provider, throwOnConnect: true });
+		} catch(e) {
+			this._toast.warn("Connection failed");
+			Output.API = null;
+			Output.Disconnected();
+			return;
+		}
+
+		// Put the API object into the output port
+		Output.API = api;
 
 		// Check connection status
 		if(provider.isConnected){
