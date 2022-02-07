@@ -83,6 +83,9 @@ Context.IFace.ConnectionWebSocket = class WebSocketIFace extends Blackprint.Inte
 		let { Input, Output } = this.ref; // Shortcut
 		this._toast.clear();
 
+		// If already connected to other network, let's disconnect it first
+		Output.Provider?.disconnect();
+
 		// This can be filled from sketch's UI, or with code by accessing the IFace
 		let rpcURL = this.data.rpcURL;
 		if(!rpcURL)
@@ -90,9 +93,6 @@ Context.IFace.ConnectionWebSocket = class WebSocketIFace extends Blackprint.Inte
 
 		if(!/^(wss|ws):\/\//.test(rpcURL))
 			return this._toast.error("The endpoint should start with ws:// or wss://");
-
-		// If already connected to other network, let's disconnect it first
-		Output.Provider?.disconnect();
 
 		// Connect to the new RPC URL and put the Provider object to the output port
 		let provider = Output.Provider = new polkadotApi.WsProvider(rpcURL);
