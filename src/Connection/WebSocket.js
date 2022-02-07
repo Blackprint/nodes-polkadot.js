@@ -81,17 +81,21 @@ Context.IFace.ConnectionWebSocket = class WebSocketIFace extends Blackprint.Inte
 
 	async changeRPC(){
 		let { Input, Output } = this.ref; // Shortcut
+		this._toast.clear();
 
 		// This can be filled from sketch's UI, or with code by accessing the IFace
-		if(!this.data.rpcURL)
+		let rpcURL = this.data.rpcURL;
+		if(!rpcURL)
 			return this._toast.error("RPC URL was empty");
+
+		if(!/^(wss|ws):\/\//.test(rpcURL))
+			return this._toast.error("The endpoint should start with ws:// or wss://");
 
 		// If already connected to other network, let's disconnect it first
 		Output.Provider?.disconnect();
-		this._toast.clear();
 
 		// Connect to the new RPC URL and put the Provider object to the output port
-		let provider = Output.Provider = new polkadotApi.WsProvider(this.data.rpcURL);
+		let provider = Output.Provider = new polkadotApi.WsProvider(rpcURL);
 
 		// Add event listener before connecting to the network
 		provider.on('connected', ()=> {

@@ -86,10 +86,15 @@ Context.IFace.ConnectionHTTP = class HTTPIFace extends Blackprint.Interface {
 
 	async changeRPC(){
 		let { Input, Output } = this.ref; // Shortcut
+		this._toast.clear();
 
 		// This can be filled from sketch's UI, or with code by accessing the IFace
-		if(!this.data.rpcURL)
+		let rpcURL = this.data.rpcURL;
+		if(!rpcURL)
 			return this._toast.error("RPC URL was empty");
+
+		if(!/^(https|http):\/\//.test(rpcURL))
+			return this._toast.error("The endpoint should start with http:// or https://");
 
 		// If already connected to other network, let's disconnect it first
 		if(Output.Provider != null){
@@ -97,10 +102,8 @@ Context.IFace.ConnectionHTTP = class HTTPIFace extends Blackprint.Interface {
 			Output.Disconnected();
 		}
 
-		this._toast.clear();
-
 		// Connect to the new RPC URL
-		let provider = Output.Provider = new polkadotApi.HttpProvider(this.data.rpcURL);
+		let provider = Output.Provider = new polkadotApi.HttpProvider(rpcURL);
 
 		// Wait until connected and put the API object into the output port
 		this._toast.warn("Connecting...");
