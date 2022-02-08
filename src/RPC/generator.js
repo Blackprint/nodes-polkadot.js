@@ -486,6 +486,7 @@ function Substrate_BlackprintNodeGenerator(list){
 							return;
 						}
 					}
+					else Output[returnToField] = null;
 				}
 
 				// This will be triggered from input port (input.Trigger)
