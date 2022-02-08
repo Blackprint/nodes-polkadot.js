@@ -23,11 +23,8 @@ Blackprint.registerNode("Polkadot.js/Connection/HTTP",
 class HTTPNode extends Blackprint.Node {
 	// Input port
 	static input = {
-		Connect: Blackprint.Port.Trigger(function(){
-			this.output.Provider?.connect();
-		}),
-		Disconnect: Blackprint.Port.Trigger(function(){
-			this.output.Provider?.disconnect();
+		Reconnect: Blackprint.Port.Trigger(function(){
+			this.iface.changeRPC();
 		}),
 	};
 
@@ -64,11 +61,11 @@ class HTTPNode extends Blackprint.Node {
 
 	// This will be called by the engine when this node is deleted
 	destroy(){
-		let ws = this.ref.Output.Provider;
-		if(ws === void 0) return;
+		let http = this.ref.Output.Provider;
+		if(http === void 0) return;
 
 		// Disconnect from the network
-		ws.disconnect();
+		http.disconnect();
 		this.ref.Output.Disconnected();
 	}
 });
