@@ -36,9 +36,8 @@ class DummyNode extends Blackprint.Node {
 	update(){
 		let { Input, Output } = this.ref; // Shortcut
 
-		// ToDo: change to internal polkadot seed generator
 		// Generate new seed and put it to the output port
-		Output.Seed = crypto.getRandomValues(new Uint8Array(32));
+		Output.Seed = polkadotUtilCrypto.randomAsU8a(32);
 
 		let keyring = new polkadotApi.Keyring({
 			type: Input.KeyType, // default to ed25519

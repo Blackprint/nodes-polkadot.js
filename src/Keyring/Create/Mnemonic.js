@@ -20,6 +20,7 @@ class RandomSeedNode extends Blackprint.Node {
 		iface.description = "Generate random mnemonic";
 	}
 
+	// This will be called by the engine once the node has been loaded
 	imported(){
 		// this.update();
 		this.output.Text = polkadotUtilCrypto.mnemonicGenerate(12);

@@ -19,8 +19,8 @@ class RandomSeedNode extends Blackprint.Node {
 		iface.description = "Generate random seed";
 	}
 
-	// ToDo: change to internal polkadot seed generator
+	// This will be called by the engine once the node has been loaded
 	imported(){
-		this.output.Seed = crypto.getRandomValues(new Uint8Array(32));
+		this.output.Seed = polkadotUtilCrypto.randomAsU8a(32);
 	}
 });
