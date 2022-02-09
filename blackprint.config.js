@@ -27,7 +27,8 @@ module.exports = {
 
 		combine:[ // Relative to this config's directory
 			'src/_init.js', // Rule order/index may have different priority
-			'src/internal/**/*.js',
+			'src/utils/**/*.js',
+			'src/RPC/**/*.js',
 			'src/**/*.js',
 		],
 	},
