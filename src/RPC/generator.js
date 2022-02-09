@@ -109,7 +109,7 @@ let SubstrateTypeData = {
 // The function name will be the node's name (ex: Author HasKey)
 Substrate_BlackprintNodeGenerator({
 	namespace: 'RPC',
-	description: 'Substrate JSON-RPC',
+	description: '[Experimental] Substrate JSON-RPC',
 	apiPath: 'rpc'
 }, [
 	{
@@ -327,10 +327,20 @@ function functionParser(str, options){
 
 		// Implementation below can be replaced with RegExp, but more complicated I think
 
+		// For Substrate Extrinsics that doesn't return value
+		if(options.returnType === false)
+			temp += ':Any';
+
+		// For Substrate Constants
+		if(options.isConst)
+			temp = temp.replace(':', '():');
+
 		// Separate name, parameter, and types
 		// ex: hasSessionKeys(sessionKeys:Bytes):bool
 		;([temp, returnType] = temp.split('):'));
 		;([funcName, args] = temp.split('('));
+
+		if(args === void 0) console.error(`Incorrect format "${temp}", `);
 
 		let argsName = [];
 		if(!options.typeAsName){
@@ -384,7 +394,7 @@ function functionParser(str, options){
 function Substrate_BlackprintNodeGenerator(options, list){
 	if(SubstrateMetadata === false) return;
 
-	let { namespace, description, apiPath } = options;
+	let { namespace, description, apiPath, isConst } = options;
 
 	// For each array items
 	for (var i = 0; i < list.length; i++) {
@@ -413,6 +423,7 @@ function Substrate_BlackprintNodeGenerator(options, list){
 
 			// Type mapping (Rust Types => JavaScript Types)
 			let returnToField = func.returnType;
+			let preprocessType = null;
 			if(func.returnType !== 'Null'){
 				// Simplify port name
 				let portName = func.returnType
@@ -426,6 +437,8 @@ function Substrate_BlackprintNodeGenerator(options, list){
 
 				if(options.loose && SubstrateTypeData[func.returnType] === void 0)
 					SubstrateTypeData[func.returnType] = null;
+
+				preprocessType = SubstrateTypeData[func.returnType];
 
 				// This will be used as output port
 				// port name => type
@@ -473,6 +486,15 @@ function Substrate_BlackprintNodeGenerator(options, list){
 			// Capitalize the first character
 			let apiName = func.name.slice(0, 1).toLowerCase() + func.name.slice(1);
 
+			let defaultInput = {
+				API: polkadotApi.ApiPromise,
+				Trigger: Blackprint.Port.Trigger(function(){
+					this.trigger(); // this.trigger => async trigger()
+				})
+			};
+
+			// For Substrate Constants
+			if(isConst) delete defaultInput.Trigger;
 
 			// Custom Node class
 			class GeneratedNode extends Blackprint.Node {
@@ -480,12 +502,7 @@ function Substrate_BlackprintNodeGenerator(options, list){
 				static output = func.returnType;
 
 				// Input port for each nodes
-				static input = Object.assign({
-					API: polkadotApi.ApiPromise,
-					Trigger: Blackprint.Port.Trigger(function(){
-						this.trigger(); // this.trigger => async trigger()
-					})
-				}, args);
+				static input = Object.assign(defaultInput, args);
 
 				constructor(instance){
 					super(instance);
@@ -511,6 +528,9 @@ function Substrate_BlackprintNodeGenerator(options, list){
 						}
 					}
 					else Output[returnToField] = null;
+
+					// For Substrate Constants
+					if(isConst) this.trigger();
 				}
 
 				// This will be triggered from input port (input.Trigger)
@@ -532,12 +552,15 @@ function Substrate_BlackprintNodeGenerator(options, list){
 
 					// Call the RPC function and put the result to the output port
 					try {
-						var response = await obj[apiName].apply(obj, args);
+						var response = isConst ? obj[apiName] : await obj[apiName].apply(obj, args);
 					} catch(e) {
 						Output[returnToField] = null;
 						toast.error(e.message);
 						return;
 					}
+
+					if(preprocessType != null)
+						response = preprocessType(response);
 
 					// ToDo: should we use type data's name as the port name?
 					Output[returnToField] = response;
