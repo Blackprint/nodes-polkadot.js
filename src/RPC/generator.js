@@ -107,7 +107,11 @@ let SubstrateTypeData = {
 // https://polkadot.js.org/docs/substrate/rpc
 // The parameters will be input port, and the returned data will be the output port
 // The function name will be the node's name (ex: Author HasKey)
-Substrate_BlackprintNodeGenerator([
+Substrate_BlackprintNodeGenerator({
+	namespace: 'RPC',
+	description: 'Substrate JSON-RPC',
+	apiPath: 'rpc'
+}, [
 	{
 		name: "Author", rpc_path: "author",
 		funcs: `
@@ -312,7 +316,7 @@ Substrate_BlackprintNodeGenerator([
  * @param  String str function list to be extracted
  * @return Array
  */
-function functionParser(str){
+function functionParser(str, options){
 	// Clean the spaces and split the new line
 	let list = str.trim().replace(/\t+| /g, '').split('\n');
 
@@ -328,13 +332,23 @@ function functionParser(str){
 		;([temp, returnType] = temp.split('):'));
 		;([funcName, args] = temp.split('('));
 
-		// Get the parameters/arguments name
 		let argsName = [];
-		args = args.replace(/,?([a-zA-Z0-9_?]+):/g, function(full, name){
-			argsName.push(name);
-			return ';;'; // Remove the parameter name from the text
-		})
-		.replace(/^;;/m, ''); // Remove the first ';;'
+		if(!options.typeAsName){
+			// Get the parameters/arguments name
+			args = args.replace(/,?([a-zA-Z0-9_?]+):/g, function(full, name){
+				argsName.push(name);
+				return ';;'; // Remove the parameter name from the text
+			})
+			.replace(/^;;/m, ''); // Remove the first ';;'
+		}
+		else{
+			try {
+				argsName = args.split(',');
+				args = argsName.join(';;');
+			} catch(e) {
+				console.error(`Incorrect format "${temp}", `, e);
+			}
+		}
 
 		// Let's obtain the function parameter's type data
 		let argsObj = {};
@@ -367,13 +381,15 @@ function functionParser(str){
  * Generate Blackprint nodes for Substrate RPC
  * @param Array list [description]
  */
-function Substrate_BlackprintNodeGenerator(list){
+function Substrate_BlackprintNodeGenerator(options, list){
 	if(SubstrateMetadata === false) return;
+
+	let { namespace, description, apiPath } = options;
 
 	// For each array items
 	for (var i = 0; i < list.length; i++) {
 		let temp = list[i];
-		let funcs = functionParser(temp.funcs);
+		let funcs = functionParser(temp.funcs, options);
 
 		// For each extracted function from the string
 		that: for (var a = 0; a < funcs.length; a++) {
@@ -381,7 +397,7 @@ function Substrate_BlackprintNodeGenerator(list){
 
 			// Skip subscribe or watch because it was an event
 			// We will create separate nodes to handle subscribe/unsubscribe
-			if(/subscribe|watch/i.test(func.name)){
+			if(/subscribe|watch/i.test(func.name) && !options.loose){
 				if(SubstrateSubscriber[func.name] === void 0)
 					console.error(`Substrate subscriber for "${func.name}" was not found`);
 
@@ -389,7 +405,7 @@ function Substrate_BlackprintNodeGenerator(list){
 			}
 
 			// If you found error from this line, then the SubstrateTypeData need to be updated
-			if(SubstrateTypeData[func.returnType] === void 0){
+			if(SubstrateTypeData[func.returnType] === void 0 && !options.loose){
 				console.error(`Substrate type data for "${func.returnType}" was not found`);
 				continue;
 			}
@@ -408,11 +424,16 @@ function Substrate_BlackprintNodeGenerator(list){
 						return type;
 					});
 
+				if(options.loose && SubstrateTypeData[func.returnType] === void 0)
+					SubstrateTypeData[func.returnType] = null;
+
 				// This will be used as output port
 				// port name => type
 				func.returnType = {
 					[portName]: SubstrateTypeData[func.returnType]
 				};
+
+				returnToField = portName;
 			}
 			else func.returnType = void 0; // Didn't return data
 
@@ -421,6 +442,9 @@ function Substrate_BlackprintNodeGenerator(list){
 			let RPCParams = Object.keys(args);
 			for(let portName in args){
 				let typeData = args[portName];
+
+				if(options.loose && SubstrateTypeData[typeData] === void 0)
+					SubstrateTypeData[typeData] = null;
 
 				// If you found error from this line, then the SubstrateTypeData need to be updated
 				if(SubstrateTypeData[typeData] === void 0){
@@ -456,12 +480,12 @@ function Substrate_BlackprintNodeGenerator(list){
 				static output = func.returnType;
 
 				// Input port for each nodes
-				static input = Object.assign(args, {
+				static input = Object.assign({
 					API: polkadotApi.ApiPromise,
 					Trigger: Blackprint.Port.Trigger(function(){
 						this.trigger(); // this.trigger => async trigger()
 					})
-				});
+				}, args);
 
 				constructor(instance){
 					super(instance);
@@ -469,7 +493,7 @@ function Substrate_BlackprintNodeGenerator(list){
 					// Use default interface
 					let iface = this.setInterface();
 					iface.title = `${temp.name} ${func.name}`; // ex: Author HasKey
-					iface.description = "Polkadot JSON-RPC";
+					iface.description = description;
 
 					// For showing toast above the node
 					this._toast = new NodeToast(iface);
@@ -481,7 +505,7 @@ function Substrate_BlackprintNodeGenerator(list){
 					this._toast.clear();
 
 					if(Input.API != null){
-						if(Input.API.rpc[temp.rpc_path][apiName] == null){
+						if(Input.API[apiPath][temp.rpc_path][apiName] == null){
 							this._toast.error("This network doesn't support this feature");
 							return;
 						}
@@ -498,7 +522,7 @@ function Substrate_BlackprintNodeGenerator(list){
 						return toast.warn("API is required");
 
 					// Get reference, ex: rpc_path = author
-					let obj = Input.API.rpc[temp.rpc_path];
+					let obj = Input.API[apiPath][temp.rpc_path];
 
 					// Prepare arguments before calling the Polkadot.js's RPC function
 					let args = [];
@@ -507,13 +531,21 @@ function Substrate_BlackprintNodeGenerator(list){
 					}
 
 					// Call the RPC function and put the result to the output port
+					try {
+						var response = await obj[apiName].apply(obj, args);
+					} catch(e) {
+						Output[returnToField] = null;
+						toast.error(e.message);
+						return;
+					}
+
 					// ToDo: should we use type data's name as the port name?
-					Output[returnToField] = await obj[apiName].apply(obj, args);
+					Output[returnToField] = response;
 				}
 			}
 
 			// Register it as Blackprint Node
-			Blackprint.registerNode(`Polkadot.js/RPC/${temp.name}/${funcName}`, GeneratedNode);
+			Blackprint.registerNode(`Polkadot.js/${namespace}/${temp.name}/${funcName}`, GeneratedNode);
 		}
 	}
 }
