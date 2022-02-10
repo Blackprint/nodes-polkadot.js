@@ -6,7 +6,7 @@
 
 
 // Register Blackprint Node
-Blackprint.registerNode("Polkadot.js/Keyring/Create/RandomSeed",
+Blackprint.registerNode("Polkadot.js/Keyring/Create/Seed",
 class RandomSeedNode extends Blackprint.Node {
 	// Output port
 	static output = { Seed: Uint8Array };
