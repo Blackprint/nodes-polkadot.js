@@ -57,30 +57,39 @@ class KeypairNode extends Blackprint.Node {
 		}
 
 		let { Keyring, Seed, Mnemonic } = Input;
-		if(!!Mnemonic) {
-			// Disconnect cable from Seed port if exist
-			IInput.Seed.disconnectAll();
 
+		// We only need one seed/mnemonic, let's disconnect the other connection
+		if(!!Mnemonic && !!Seed){
+			// this.update() will be called again after the cable was disconnected
+
+			if(this._mnemonic === false && IInput.Seed.cables.length !== 0)
+				return IInput.Seed.disconnectAll();
+
+			IInput.Mnemonic.disconnectAll();
+			return;
+		}
+
+		if(!!Mnemonic) {
 			if(!polkadotUtilCrypto.mnemonicValidate(Mnemonic))
 				return toast.warn("Invalid mnemonic, it must be 12 or 24 words");
 
 			Output.Keypair = Keyring.addFromMnemonic(Mnemonic);
+			this._mnemonic = true;
 		}
 		else if(Seed != null) {
-			// Disconnect cable from Mnemonic port if exist
-			IInput.Mnemonic.disconnectAll();
-
-			// It must be 32 bytes
+			// The seed must be 32 bytes
 			if(Seed.byteLength !== 32)
 				return toast.warn("Seed must be 32 bytes");
 
-			Output.Keypair = Keyring.addFromSeed(Mnemonic);
+			Output.Keypair = Keyring.addFromSeed(Seed);
+			this._mnemonic = false;
 		}
 		else {
 			Output.Keypair = null;
 			Output.Address = null;
 			Output.Signer = null;
 			// Output.PublicKey = null;
+			this._mnemonic = false;
 			return toast.warn("Seed or Mnemonic is required");
 		}
 
