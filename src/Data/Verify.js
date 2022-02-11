@@ -41,7 +41,7 @@ class VerifyNode extends Blackprint.Node {
 	}
 
 	// This will be called by the engine if the input port have a new value
-	async update(){
+	update(){
 		let { Input, Output } = this.ref; // Shortcut
 
 		if(!Input.Data)
@@ -71,7 +71,6 @@ class VerifyNode extends Blackprint.Node {
 
 		// Remove any node toast
 		this._toast.clear();
-		await polkadotUtilCrypto.cryptoWaitReady();
 
 		try{
 			// Verify the message/data and the signature with the public key
