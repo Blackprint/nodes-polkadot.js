@@ -11,7 +11,7 @@ specifiers:
   '@polkadot/util-crypto': ^8.3.3
   dotenv: ^16.0.0
   jest: ^27.4.7
-  scarletsframe: 0.35.8
+  scarletsframe: 0.35.9
 
 dependencies:
   '@polkadot/api': 7.6.1
@@ -26,7 +26,7 @@ devDependencies:
   '@blackprint/engine': 0.6.1
   '@blackprint/sketch': 0.6.1
   jest: 27.4.7
-  scarletsframe: 0.35.8
+  scarletsframe: 0.35.9
 
 packages:
 
@@ -1223,7 +1223,7 @@ packages:
   /@blackprint/sketch/0.6.1:
     resolution: {integrity: sha512-1ovzmQ6nF1JJt91U/pubSNuJ+tCasz9vXGxuRmN6cbTJzTipGxvryGXbFZHiQxUXhgH2OAycVXYgsyrYdQroXQ==}
     dependencies:
-      scarletsframe: 0.35.8
+      scarletsframe: 0.35.9
     dev: true
 
   /@gulp-sourcemaps/identity-map/2.0.1:
@@ -6862,8 +6862,8 @@ packages:
       - vinyl
     dev: true
 
-  /scarletsframe/0.35.8:
-    resolution: {integrity: sha512-BtSUNiB0kle9iTFjQh1pnjVJ9Mz/WQGZyz2Sf6yeafzkTijeFggnr8UIT88Kc4UdjUAVxahlPnkEpYxJU+FUSw==}
+  /scarletsframe/0.35.9:
+    resolution: {integrity: sha512-dIG58m+maNCcoE9EFp4zGSNSkI0heMg3Bmy1W1Rs/KGtd61C5rnP1nCwnKIkvoZnzSATMeYzAytF3aAzUoXR8g==}
     dev: true
 
   /scss-tokenizer/0.2.3:

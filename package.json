@@ -26,7 +26,7 @@
     "@blackprint/engine": "0.6.1",
     "@blackprint/sketch": "0.6.1",
     "jest": "^27.4.7",
-    "scarletsframe": "0.35.8"
+    "scarletsframe": "0.35.9"
   },
   "blackprint": {
     "bundle": [
