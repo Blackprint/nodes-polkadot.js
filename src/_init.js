@@ -33,11 +33,11 @@ else{
 	// Use bundled file
 	// This will be registered on global (window)
 	let _remoteModule = [
-		"https://cdn.jsdelivr.net/npm/@polkadot/util@8.3.3/bundle-polkadot-util.js",
-		"https://cdn.jsdelivr.net/npm/@polkadot/util-crypto@8.3.3/bundle-polkadot-util-crypto.js",
-		"https://cdn.jsdelivr.net/npm/@polkadot/keyring@8.3.3/bundle-polkadot-keyring.js",
-		"https://cdn.jsdelivr.net/npm/@polkadot/types@7.6.1/bundle-polkadot-types.js",
-		"https://cdn.jsdelivr.net/npm/@polkadot/api@7.6.1/bundle-polkadot-api.js",
+		"https://cdn.jsdelivr.net/npm/@polkadot/util@8.3.3/bundle-polkadot-util.min.js",
+		"https://cdn.jsdelivr.net/npm/@polkadot/util-crypto@8.3.3/bundle-polkadot-util-crypto.min.js",
+		"https://cdn.jsdelivr.net/npm/@polkadot/keyring@8.3.3/bundle-polkadot-keyring.min.js",
+		"https://cdn.jsdelivr.net/npm/@polkadot/types@7.7.1/bundle-polkadot-types.min.js",
+		"https://cdn.jsdelivr.net/npm/@polkadot/api@7.7.1/bundle-polkadot-api.min.js",
 	];
 
 	if(window.Blackprint.Environment.isDeno) { // Untested
