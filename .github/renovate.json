@@ -2,22 +2,20 @@
   "extends": [
     "config:base",
     "schedule:nonOfficeHours",
-    ":preserveSemverRanges",
-    {
-      "groupName": "all dependencies",
-      "separateMajorMinor": false,
-      "groupSlug": "all",
-      "packageRules": [
-        {
-          "matchPackagePatterns": ["*"],
-          "groupName": "all dependencies",
-          "groupSlug": "all"
-        }
-      ],
-      "lockFileMaintenance": {"enabled": true}
-    }
+    ":preserveSemverRanges"
   ],
   "addLabels": ["dependencies"],
+  "groupName": "all dependencies",
+  "separateMajorMinor": false,
+  "groupSlug": "all",
+  "packageRules": [
+    {
+      "matchPackagePatterns": ["*"],
+      "groupName": "all dependencies",
+      "groupSlug": "all"
+    }
+  ],
+  "lockFileMaintenance": {"enabled": true},
   "cloneSubmodules": true,
   "stabilityDays": 3,
   "dependencyDashboard": false,
