@@ -25,7 +25,7 @@
     "@blackprint/engine": "0.6.2",
     "@blackprint/sketch": "0.6.2",
     "jest": "^27.4.7",
-    "node-fetch": "2",
+    "node-fetch": "3",
     "scarletsframe": "0.35.9",
     "dotenv": "^16.0.0"
   },
