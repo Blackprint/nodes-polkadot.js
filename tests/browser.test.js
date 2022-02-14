@@ -3,13 +3,30 @@
  */
 
 require('./prepare-env.js')('browser');
+window.MyInstance = null;
 
-let instance = null;
+// When using Blackprint Editor (https://blackprint.github.io/)
+// you can get the instance object with
+// window.MyInstance = window.SketchList[0];
+
 test('Blackprint.Sketch does exist on window', async () => {
 	expect(window.Blackprint.Sketch).toBeDefined();
 
+	// We want to use Blackprint.Sketch but without any window
+	// let's set windowless to true
+	Blackprint.settings('windowless', true);
+
 	// Create an instance where we can create nodes or import JSON
-	instance = new Blackprint.Sketch();
+	window.MyInstance = new Blackprint.Sketch();
+
+	// Throw when any error happen
+	MyInstance.on('error', ev => {
+		console.error(ev);
+		throw new Error("Something was wrong");
+	});
+
+	// Remove log when the cable was replaced
+	MyInstance.on('cable.replaced', ev => {});
 });
 
 // This may took longer to finish because will also load polkadot.js's module
@@ -31,7 +48,9 @@ test("Load required modules", async () => {
 	expect(Blackprint.nodes['Polkadot.js']).toBeDefined();
 });
 
-test("Create WebSocket node", async () => {
-	instance.createNode('Polkadot.js/Connection/WebSocket', {id: 'WS_RPC'});
-	expect(instance.iface.WS_RPC).toBeDefined();
-});
+// Let's test the nodes
+require('./nodes/http-and-ws-provider.js');
+require('./nodes/event-new-heads.js');
+require('./nodes/import-mnemonic.js');
+require('./nodes/sign-verify.js');
+require('./nodes/encrypt-decrypt.js');
