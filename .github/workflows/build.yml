@@ -12,7 +12,7 @@ on:
 
 jobs:
   build:
-    name: Build Blackprint Modules
+    name: Build module
     runs-on: ubuntu-latest
 
     steps:
@@ -41,6 +41,11 @@ jobs:
         run: npx blackprint build production
 
       - name: 🔥 Run Tests
+        env:
+          MNEMONIC_A: ${{ secrets.MNEMONIC_A }}
+          MNEMONIC_B: ${{ secrets.MNEMONIC_B }}
+          WALLET_ADDRESS_A: ${{ secrets.WALLET_ADDRESS_A }}
+          WALLET_ADDRESS_B: ${{ secrets.WALLET_ADDRESS_B }}
         run: npm test
 
       - name: 🚀 Deploy

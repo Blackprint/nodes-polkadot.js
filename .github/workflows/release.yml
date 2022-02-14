@@ -6,14 +6,14 @@ on:
       dryRun:
         description: 'View list of files that will be published before the real release'
         required: true
-        default: 'true'
+        default: 'true' ## Dry run
   release:
     # This specifies that the build will be triggered when we publish a release
     types: [published]
 
 jobs:
   build:
-    name: Build Blackprint Modules
+    name: Build and release module
     runs-on: ubuntu-latest
 
     steps:
@@ -44,6 +44,11 @@ jobs:
       - run: npm version ${{ github.event.release.tag_name }}
 
       - name: 🔥 Run Tests
+        env:
+          MNEMONIC_A: ${{ secrets.MNEMONIC_A }}
+          MNEMONIC_B: ${{ secrets.MNEMONIC_B }}
+          WALLET_ADDRESS_A: ${{ secrets.WALLET_ADDRESS_A }}
+          WALLET_ADDRESS_B: ${{ secrets.WALLET_ADDRESS_B }}
         run: npm test
 
       - name: 📦 Dry Run
