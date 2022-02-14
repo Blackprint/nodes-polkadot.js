@@ -1,7 +1,7 @@
 /**
  * import { Context } from "../_init.js";
  * import { NodeToast } from "../utils/NodeToast.js";
- * { polkadotUtil, polkadotUtilCrypto } = window
+ * { polkadotUtil } = window
  */
 
 

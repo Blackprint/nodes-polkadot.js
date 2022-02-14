@@ -1,7 +1,7 @@
 /**
  * import { Context, Signer } from "../_init.js";
  * import { NodeToast } from "../utils/NodeToast.js";
- * { polkadotApi } = window
+ * { polkadotApi, polkadotUtilCrypto } = window
  */
 
 

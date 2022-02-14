@@ -23,25 +23,19 @@ describe("WebSocket Provider Node", () => {
 		WS_RPC.data.rpcURL = 'wss://westend-rpc.polkadot.io/';
 	});
 
-	test("Get current block number via RPC", async () => {
+	test("Get current block number via RPC", (done) => {
 		let { Output, IOutput } = WS_RPC.ref;
 
-		// When using WebSocket, the "Connected" port will be called
-		// before the Output.API has new value, so we need to wait until it resolved
-		if(Output.API == null){
-			await new Promise(resolve => {
-				IOutput.API.once('value', resolve);
-			});
-		}
+		// Wait until the API port has new value (polkadotApi.ApiPromise) after connected to the network
+		IOutput.API.once('value', async () => {
+			// Output.API: polkadotApi.ApiPromise
+			let data = await Output.API.rpc.chain.getBlock();
+			let blockNumber = data.block.header.number.toNumber();
 
-		// Output.API: polkadotApi.ApiPromise
-		expect(Output.API).toBeDefined();
-
-		let data = await Output.API.rpc.chain.getBlock();
-		let blockNumber = data.block.header.number.toNumber();
-
-		// At least, not zero or NaN
-		expect(blockNumber).toBeGreaterThanOrEqual(1);
+			// At least, not zero or NaN
+			expect(blockNumber).toBeGreaterThanOrEqual(1);
+			done();
+		});
 	});
 
 	test("Delete nodes", (done) => {
