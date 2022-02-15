@@ -6,8 +6,39 @@
 
 This module gives you an ability to use [Polkadot.js's APIs](https://polkadot.js.org/docs/api) with [Blackprint](https://github.com/Blackprint/Blackprint).
 
+<details>
+	<summary>Quick walkthrough on how to load module and open some example</summary>
+
+> If the video looks blurry, please right click and open it on the new tab
+
+https://user-images.githubusercontent.com/11073373/153986424-9e75c62e-42a8-49eb-b9af-144801067e00.mp4
+
+Below is the summary and some information of the video:
+1. Open Blackprint editor's sketch page
+2. Creating notes node (this module get loaded when you choose the example)
+3. Load `nodes-polkadot.js` module from NPM repository
+    - You may see a loading progress on your first try
+4. Creating new nodes from `nodes-polkadot.js` module
+5. Opening example that get loaded to our editor when we choose the module
+    - The example is loaded from the published release on NPM registry
+    - But you can also manually copy paste the JSON content from the [/example](https://github.com/Blackprint/nodes-polkadot.js/tree/main/example) directory to load it on the editor
+6. Open `encrypt/decrypt` example
+    - If the published example for `encrypt/decrypt` was looks compact and complicated, please import from the updated [/example](https://github.com/Blackprint/nodes-polkadot.js/tree/main/example) instead
+    - On this example there are 2 keypair that is randomly generated, the address may different and causes the `Decrypt Data` node can't decrypted the data from `Encrypt Data` node because the author address was different
+    - You will need to copy Alice's wallet address from `Log` node to `Input` node that connected to `Encrypt Data`, the node then will encrypt the data with Alice's public key/wallet address
+    - The `testing` message will now get encrypted for Alice's wallet from Bob's wallet and can be decrypted by Alice's wallet where the author is Bob's wallet
+7. Open `sign verify: extension` example
+    - On your first try, you may need to allow Blackprint on your Polkadot.js's browser extension
+    - Then, please copy your wallet address for testing into the input box
+    - After you connect the signer, it will ask your extension to sign the message: `testing`
+    - By the way if you see an error message on my DevTools, it's because I canceled the extension to sign the message
+
+</details>
+
+---
+
 ### Examples
-For more updated example, please go to [/example](https://github.com/Blackprint/nodes-polkadot.js/tree/main/example) folder and import it with [Blackprint Editor](https://blackprint.github.io/dev.html).
+For more updated example, please go to [/example](https://github.com/Blackprint/nodes-polkadot.js/tree/main/example) directory and import it with [Blackprint Editor](https://blackprint.github.io/dev.html).
 
 <details>
   <summary>Listening to new block (JSON)</summary>
@@ -85,6 +116,8 @@ $ npm test
 ---
 
 ## Import this nodes from URL
+If you're planning to develop your own sketch/editor for your project, there are some [example](https://github.com/Blackprint/Blackprint#example) on the Blackprint repository to help you get started on how to implement the sketch or use the engine with another framework.
+
 Please specify the version to avoid breaking changes.
 
 ```js
