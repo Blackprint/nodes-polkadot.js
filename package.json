@@ -23,7 +23,7 @@
   "devDependencies": {
     "@blackprint/cli-tools": "0.3.18",
     "@blackprint/engine": "0.6.2",
-    "@blackprint/sketch": "0.6.2",
+    "@blackprint/sketch": "0.6.3",
     "jest": "^27.4.7",
     "node-fetch": "^2.6.7",
     "scarletsframe": "0.35.9",
