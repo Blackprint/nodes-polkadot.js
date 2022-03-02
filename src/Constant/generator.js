@@ -1,5 +1,5 @@
 /**
- * import { Substrate_BlackprintNodeGenerator } from "../RPC/generator.js";
+ * import { Substrate_BlackprintNodeGenerator } from "../utils/SubstrateNodes.js";
  */
 
 // This file may get changed on the future
