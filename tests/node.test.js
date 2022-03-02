@@ -3,13 +3,22 @@
  */
 
 require('./prepare-env.js')('node');
+window.MyInstance = null;
 
-let instance = null;
-test('Blackprint does exist on window', async () => {
-  expect(window.Blackprint).toBeDefined();
+test('Blackprint.Engine does exist on window', async () => {
+	expect(window.Blackprint.Engine).toBeDefined();
 
 	// Create an instance where we can create nodes or import JSON
-	instance = new Blackprint.Engine();
+	window.MyInstance = new Blackprint.Engine();
+
+	// Throw when any error happen
+	MyInstance.on('error', ev => {
+		console.error(ev);
+		throw new Error("Something was wrong");
+	});
+
+	// Remove log when the cable was replaced
+	MyInstance.on('cable.replaced', ev => {});
 });
 
 // This may took longer to finish because will also load polkadot.js's module
@@ -27,6 +36,9 @@ test("Load required modules", async () => {
 });
 
 test("Create WebSocket node", async () => {
-	instance.createNode('Polkadot.js/Connection/WebSocket', {id: 'WS_RPC'});
-	expect(instance.iface.WS_RPC).toBeDefined();
+	MyInstance.createNode('Polkadot.js/Connection/WebSocket', {id: 'WS_RPC'});
+	expect(MyInstance.iface.WS_RPC).toBeDefined();
 });
+
+// ToDo
+// require('./features.js');

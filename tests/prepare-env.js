@@ -1,14 +1,12 @@
 require("@blackprint/engine");
 require("dotenv").config({ path: __dirname+'/../.env' });
 
-// Duck tape to fix error when testing for browser environment
+// Some fix when testing for browser with Jest
 globalThis.window = globalThis;
+globalThis.ResizeObserver = class{};
 globalThis.require = require;
 globalThis.__filename = __filename;
 globalThis.URL = function(){return {href:''}};
-globalThis.ResizeObserver = class{};
-
-// Polyfill when testing for browser with Jest
 globalThis.fetch = require('node-fetch'); // required by @polkadot/util for doing RPC with HTTP
 globalThis.crypto = require('crypto').webcrypto; // required by @polkadot/util-crypto
 

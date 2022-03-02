@@ -498,6 +498,8 @@ function Substrate_BlackprintNodeGenerator(options, list){
 
 			// Custom Node class
 			class GeneratedNode extends Blackprint.Node {
+				static isGenerated = true;
+
 				// Output port, this can be undefined if return nothing (no output port)
 				static output = func.returnType;
 
