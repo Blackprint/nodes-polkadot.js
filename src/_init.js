@@ -17,14 +17,16 @@ var polkadotApi, polkadotKeyring, polkadotTypes, polkadotUtilCrypto, polkadotUti
 // Import for different environment
 let crypto = window.crypto;
 if(window.Blackprint.Environment.isNode) {
-	crypto = (await import('crypto')).webcrypto;
+	crypto = (await import('node:crypto')).webcrypto;
+
+	let path = 'file:///'+process.cwd();
 
 	// Use the bundled version
-	await import('../node_modules/@polkadot/util/bundle-polkadot-util.js');
-	await import('../node_modules/@polkadot/util-crypto/bundle-polkadot-util-crypto.js');
-	await import('../node_modules/@polkadot/keyring/bundle-polkadot-keyring.js');
-	await import('../node_modules/@polkadot/types/bundle-polkadot-types.js');
-	await import('../node_modules/@polkadot/api/bundle-polkadot-api.js');
+	await import(path+'/node_modules/@polkadot/util/bundle-polkadot-util.js');
+	await import(path+'/node_modules/@polkadot/util-crypto/bundle-polkadot-util-crypto.js');
+	await import(path+'/node_modules/@polkadot/keyring/bundle-polkadot-keyring.js');
+	await import(path+'/node_modules/@polkadot/types/bundle-polkadot-types.js');
+	await import(path+'/node_modules/@polkadot/api/bundle-polkadot-api.js');
 
 	({ polkadotApi, polkadotKeyring, polkadotTypes, polkadotUtilCrypto, polkadotUtil } = window);
 }
@@ -33,11 +35,11 @@ else{
 	// Use bundled file
 	// This will be registered on global (window)
 	let _remoteModule = [
-		"https://cdn.jsdelivr.net/npm/@polkadot/util@8.3.3/bundle-polkadot-util.min.js",
-		"https://cdn.jsdelivr.net/npm/@polkadot/util-crypto@8.3.3/bundle-polkadot-util-crypto.min.js",
-		"https://cdn.jsdelivr.net/npm/@polkadot/keyring@8.3.3/bundle-polkadot-keyring.min.js",
-		"https://cdn.jsdelivr.net/npm/@polkadot/types@7.7.1/bundle-polkadot-types.min.js",
-		"https://cdn.jsdelivr.net/npm/@polkadot/api@7.7.1/bundle-polkadot-api.min.js",
+		"https://cdn.jsdelivr.net/npm/@polkadot/util@8.4.1/bundle-polkadot-util.min.js",
+		"https://cdn.jsdelivr.net/npm/@polkadot/util-crypto@8.4.1/bundle-polkadot-util-crypto.min.js",
+		"https://cdn.jsdelivr.net/npm/@polkadot/keyring@8.4.1/bundle-polkadot-keyring.min.js",
+		"https://cdn.jsdelivr.net/npm/@polkadot/types@7.9.1/bundle-polkadot-types.min.js",
+		"https://cdn.jsdelivr.net/npm/@polkadot/api@7.9.1/bundle-polkadot-api.min.js",
 	];
 
 	if(window.Blackprint.Environment.isDeno) { // Untested
