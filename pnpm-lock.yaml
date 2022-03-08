@@ -2,8 +2,8 @@ lockfileVersion: 5.3
 
 specifiers:
   '@blackprint/cli-tools': 0.3.18
-  '@blackprint/engine': 0.6.2
-  '@blackprint/sketch': 0.6.3
+  '@blackprint/engine': 0.6.3
+  '@blackprint/sketch': 0.6.4
   '@polkadot/api': ^7.7.1
   '@polkadot/keyring': ^8.3.3
   '@polkadot/types': ^7.7.1
@@ -23,8 +23,8 @@ dependencies:
 
 devDependencies:
   '@blackprint/cli-tools': 0.3.18
-  '@blackprint/engine': 0.6.2
-  '@blackprint/sketch': 0.6.3
+  '@blackprint/engine': 0.6.3
+  '@blackprint/sketch': 0.6.4
   dotenv: 16.0.0
   jest: 27.5.1
   node-fetch: 2.6.7
@@ -1217,12 +1217,12 @@ packages:
       - vinyl
     dev: true
 
-  /@blackprint/engine/0.6.2:
-    resolution: {integrity: sha512-BsjiWq9RclqZuJcm2izAVqEi57Xg5VlPXb9cNPDA1f+8a6W4Oe5pTX/T+nkf0LHYh/CymsjUi6xMXs4gJB3sYA==}
+  /@blackprint/engine/0.6.3:
+    resolution: {integrity: sha512-gyBqaxMgsOSO1qgrjVWg8ndmMVCVHXHV1W0fE5V3TedmxZ4nSzPqH2Ad1w9I+JaHRFxPWZH6NGDJxsRyvj17eQ==}
     dev: true
 
-  /@blackprint/sketch/0.6.3:
-    resolution: {integrity: sha512-ukYAAMoLkR+LiwI00G96ltRpVimKC8WFupHI47vhYc/tPljy6KrmATZ9Lx45tsBIAd73Wpi8X5qDCD630B65Pw==}
+  /@blackprint/sketch/0.6.4:
+    resolution: {integrity: sha512-68AjoPGq/63f+XuqRKm1n8gXVo156tlgffMD4Oq6mM+7QGuOsmc7VTHCm52n3cceV6OoVePQjm3LC/jwvc3qDQ==}
     dependencies:
       scarletsframe: 0.35.9
     dev: true
