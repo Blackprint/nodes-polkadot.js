@@ -14,7 +14,12 @@ class ConnectionExtensionData {
 
 	_dAppName = 'BP-Polkadot.js';
 	get dAppName(){return this._dAppName}
-	set dAppName(val){this._dAppName = val}
+	set dAppName(val){
+		this._dAppName = val;
+
+		// Already throttled before being synced to remote
+		this._iface.node.syncOut('dAppName', val);
+	}
 }
 
 
@@ -42,6 +47,12 @@ class ExtensionNode extends Blackprint.Node {
 	imported(data){
 		if(!data) return;
 		Object.assign(this.iface.data, data);
+	}
+
+	// Add support for remote control/collaborative editor mode
+	syncIn(type, data){
+		if(type === 'dAppName')
+			this.iface.data.dAppName = data;
 	}
 });
 

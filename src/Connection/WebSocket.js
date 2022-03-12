@@ -14,6 +14,9 @@ class ConnectionWebSocketData {
 	set rpcURL(val){
 		this._rpcURL = val;
 		this._iface.changeRPC();
+
+		// Already throttled before being synced to remote
+		this._iface.node.syncOut('rpcURL', val);
 	}
 }
 
@@ -56,6 +59,12 @@ class WebSocketNode extends Blackprint.Node {
 	imported(data){
 		if(!data) return;
 		Object.assign(this.iface.data, data);
+	}
+
+	// Add support for remote control/collaborative editor mode
+	syncIn(type, data){
+		if(type === 'rpcURL')
+			this.iface.data.rpcURL = data;
 	}
 
 	// This will be called by the engine when this node is deleted

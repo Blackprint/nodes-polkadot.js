@@ -14,6 +14,9 @@ class ConnectionHTTPData {
 	set rpcURL(val){
 		this._rpcURL = val;
 		this._iface.changeRPC();
+
+		// Already throttled before being synced to remote
+		this._iface.node.syncOut('rpcURL', val);
 	}
 }
 
@@ -57,6 +60,12 @@ class HTTPNode extends Blackprint.Node {
 		// This will also trigger "iface.changeRPC"
 		// due to getter/setter on "ConnectionHTTPData"
 		Object.assign(this.iface.data, data);
+	}
+
+	// Add support for remote control/collaborative editor mode
+	syncIn(type, data){
+		if(type === 'rpcURL')
+			this.iface.data.rpcURL = data;
 	}
 
 	// This will be called by the engine when this node is deleted
