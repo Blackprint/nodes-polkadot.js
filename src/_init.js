@@ -71,7 +71,10 @@ var internalKeyring = new polkadotApi.Keyring({
 
 // Custom class: for Port's type check
 class Transaction {
-	constructor(txn){this.txn = txn}
+	constructor(txn, api){
+		this.txn = txn;
+		this.api = api;
+	}
 }
 
 class Signer {
