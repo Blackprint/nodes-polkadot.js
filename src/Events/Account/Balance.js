@@ -1,52 +1,74 @@
+/**
+ * import { Context } from "../_init.js";
+ * import { NodeToast } from "../utils/NodeToast.js";
+ * { polkadotApi } = window
+ */
+
 Blackprint.registerNode("Polkadot.js/Events/Account/Balance",
 class AccountBalanceNode extends Blackprint.Node {
+	// Node type: event listener
+	static type = 'event';
+
+	// Input port
 	static input = {
 		API: polkadotApi.ApiPromise,
 		Address: String,
 	};
 
+	// Output port
 	static output = {
-		Value: Number,
+		Data: Object,
 	};
 
 	constructor(instance){
 		super(instance);
 
-		let iface = this.setInterface('BPIC/Polkadot.js/Events/Account/Balance');
+		let iface = this.setInterface(); // Use default interface
 		iface.title = "Account Balance Event";
 		iface.description = "Listen for balance changes";
-	}
-});
+		iface.type = 'event';
 
-Blackprint.registerInterface('BPIC/Polkadot.js/Events/Account/Balance',
-Context.IFace.EventsAccountBalance = class AccountBalanceIFace extends Blackprint.Interface {
-	constructor(node){
-		super(node);
+		this._toast = new NodeToast(this);
 
-		this.unsubscribe = false;
+		// This will be replaced if subcribing to an event, default: no operation
+		this.unsubscribe = ()=> {};
 	}
 
-	imported(){
-		let {Input, Output, IInput, IOutput} = this.ref; // Shortcut
-		let iface = this;
-		let toast = new NodeToast(this);
+	// This will be called by the engine after the node has been loaded
+	// and other data like cable connection has been connected/added
+	init(){
+		let { IInput } = this.ref; // Shortcut
 
-		IInput.API.on('value', Context.EventSlot, async function(){
-			if(iface.unsubscribe) iface.unsubscribe();
-
-			let api = Input.API;
-			if(!api) return;
-
-			iface.unsubscribe = await api.query.system.account(Input.Address, function(ev){
-				console.log(ev);
-				// Output.Value = ev.number.toNumber();
-			});
-		})
-		.on('disconnect', Context.EventSlot, function(){
-			if(iface.unsubscribe) iface.unsubscribe();
+		// Listen if the cable was disconnected from the input port
+		IInput.API.on('disconnect', Context.EventSlot, ()=> {
+			this.unsubscribe();
 		});
 	}
 
+	// This will be called by the engine if the input port have a new value
+	async update(){
+		let { Input, Output } = this.ref; // Shortcut
+
+		// If this node is already subscribing to blocks event, let's unsubscribe it
+		this.unsubscribe();
+
+		let api = Input.API;
+		if(!api) return;
+
+		if(!api.hasSubscriptions)
+			return this._toast.error("Please use WebSocket for using this feature");
+
+		this._toast.warn("Subscribing...");
+		this.unsubscribe = await api.query.system.account(Input.Address, ev => {
+			Output.Data = ev;
+		});
+
+		// Clear the toast
+		this._toast.clear();
+		this._toast.success("Subscribed!");
+	}
+
+	// This will be called by the engine when this node is deleted
 	destroy(){
 		if(this.unsubscribe) this.unsubscribe();
 	}

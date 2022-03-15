@@ -1,45 +1,58 @@
+/**
+ * import { Context, Transaction } from "../_init.js";
+ * import { NodeToast } from "../utils/NodeToast.js";
+ * { polkadotApi } = window;
+ */
+
 Blackprint.registerNode("Polkadot.js/Account/Transfer",
 class TransferNode extends Blackprint.Node {
+	// Input port
 	static input = {
 		API: polkadotApi.ApiPromise,
 		Address: String, // base58
-		Value: String, // in pico unit, 1e12 (pico) = 1 Dot
+		Value: Number, // must be positive and lower than 2^53 - 1
 	};
-	static output = {
-		Txn: Transaction,
-	};
+	static output = { Txn: Transaction };
 
 	constructor(instance){
 		super(instance);
 
-		let iface = this.setInterface(); // use empty interface
+		let iface = this.setInterface(); // use default interface
 		iface.title = "Transfer";
 		iface.description = "Transfer balance to an address";
+		this._toast = new NodeToast(iface);
+
+		// Manually call 'update' when any cable from input port was disconnected
+		this.iface.on('cable.disconnect', Context.EventSlot, ({ port })=> {
+			if(port.source === 'input') this.update();
+		});
 	}
 
-	imported(){
-		let {Input, Output, IInput, IOutput} = this.ref; // Shortcut
-		let toast = new NodeToast(this.iface);
+	// This will be called by the engine if the input port have a new value
+	update(){
+		let { Input, Output } = this.ref; // Shortcut
+		let toast = this._toast;
 
-		function onChanged(){
-			if(!Input.Address)
-				return toast.warn("Address is required");
+		if(!Input.API) return toast.warn("API is required");
+		if(!Input.Address) return toast.warn("Address is required");
 
-			if(!Input.Value)
-				return toast.warn("Value is required");
+		// Allow transfer for 0 value
+		if(Input.Value == null) return toast.warn("Value is required");
 
-			if(Input.API === null)
-				return toast.warn("API is required");
+		let value = Input.Value;
 
-			toast.clear();
+		if(value < 0)
+			return toast.warn("Value must be positive integer");
 
-			let txn = Input.API.tx.balances.transfer(Input.Address, +Input.Value);
-			Output.Txn = new Transaction(txn);
-		}
+		if(!Number.isInteger(value))
+			return toast.warn("Value must be integer, but found floating number: "+value);
 
-		this.iface.on('port.value', Context.EventSlot, onChanged);
-		this.iface.on('cable.disconnect', Context.EventSlot, function({ port }){
-			if(port.source === 'input') onChanged();
-		});
+		if(value > Number.MAX_SAFE_INTEGER)
+			return toast.warn("Value must be lower than 2^53 - 1");
+
+		toast.clear();
+
+		let txn = Input.API.tx.balances.transfer(Input.Address, value);
+		Output.Txn = new Transaction(txn, Input.API);
 	}
 });
