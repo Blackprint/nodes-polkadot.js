@@ -13,7 +13,7 @@ Substrate_BlackprintNodeGenerator({
 	description: '[Experimental] Substrate Extrinsics',
 	apiPath: 'tx',
 	loose: true,
-	returnType: false,
+	isExtrinsics: true, // All extrinsic doesn't seem return value, we will allow user to call other function instead
 }, [
 	{
 		name: "Assets", rpc_path: "assets",

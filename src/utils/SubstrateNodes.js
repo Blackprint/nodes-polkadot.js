@@ -78,7 +78,7 @@ let SubstrateTypeData = {
 	'StorageData': null,
 	'StorageKey': null,
 	'StorageKind': null,
-	'String': null,
+	'String': String,
 	'SyncState': null,
 	'Text': String,
 	'TraceBlockResponse': null,
@@ -119,8 +119,8 @@ function functionParser(str, options){
 		// Implementation below can be replaced with RegExp, but more complicated I think
 
 		// For Substrate Extrinsics that doesn't return value
-		if(options.returnType === false)
-			temp += ':Any';
+		if(options.isExtrinsics)
+			temp += ':Null';
 
 		// For Substrate Constants
 		if(options.isConst)
@@ -171,7 +171,7 @@ function functionParser(str, options){
 		list[i] = {
 			name: funcName.slice(0, 1).toUpperCase() + funcName.slice(1),
 			args: argsObj,
-			returnType
+			returnType,
 		};
 	}
 
@@ -185,7 +185,7 @@ function functionParser(str, options){
 function Substrate_BlackprintNodeGenerator(options, list){
 	if(SubstrateMetadata === false) return;
 
-	let { namespace, description, apiPath, isConst } = options;
+	let { namespace, description, apiPath, isConst, isExtrinsics } = options;
 
 	// For each array items
 	for (var i = 0; i < list.length; i++) {
@@ -240,6 +240,9 @@ function Substrate_BlackprintNodeGenerator(options, list){
 				returnToField = portName;
 			}
 			else func.returnType = void 0; // Didn't return data
+
+			if(isExtrinsics)
+				func.returnType = {OnFinish: Function};
 
 			// Type mapping (Rust Types => JavaScript Types)
 			let args = func.args;
@@ -320,7 +323,9 @@ function Substrate_BlackprintNodeGenerator(options, list){
 							return;
 						}
 					}
-					else Output[returnToField] = null;
+					else if(!isExtrinsics){
+						Output[returnToField] = null;
+					}
 
 					// For Substrate Constants
 					if(isConst) this.trigger();
@@ -349,6 +354,11 @@ function Substrate_BlackprintNodeGenerator(options, list){
 					} catch(e) {
 						Output[returnToField] = null;
 						toast.error(e.message);
+						return;
+					}
+
+					if(isExtrinsics){
+						Output.OnFinish();
 						return;
 					}
 
