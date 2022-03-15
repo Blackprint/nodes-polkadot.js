@@ -28,7 +28,7 @@ describe("WebSocket Provider Node", () => {
 
 		// Wait until the API port has new value (polkadotApi.ApiPromise) after connected to the network
 		IOutput.API.once('value', async () => {
-			// Output.API: polkadotApi.ApiPromise
+			// `Output.API` is type of `polkadotApi.ApiPromise`
 			let data = await Output.API.rpc.chain.getBlock();
 			let blockNumber = data.block.header.number.toNumber();
 
@@ -69,7 +69,7 @@ describe("HTTP Provider Node", () => {
 	test("Get current block number via RPC", async () => {
 		let Output = HTTP_RPC.ref.Output;
 
-		// Output.API: polkadotApi.ApiPromise
+		// `Output.API` is type of `polkadotApi.ApiPromise`
 		expect(Output.API).toBeDefined();
 
 		let data = await Output.API.rpc.chain.getBlock();

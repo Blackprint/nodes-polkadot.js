@@ -17,12 +17,11 @@ class RandomSeedNode extends Blackprint.Node {
 		iface.title = "Address to Address";
 
 		this._toast = new NodeToast(this.iface);
-	}
 
-	// Event listener can be registered after init
-	init(){
-		// Clear the output port when the input cable was disconnected
-		this.iface.on('cable.disconnect', Context.EventSlot, ()=> this.update());
+		// Manually call 'update' when any cable from input port was disconnected
+		this.iface.on('cable.disconnect', Context.EventSlot, ({ port })=> {
+			if(port.source === 'input') this.update();
+		});
 	}
 
 	_fail(msg){

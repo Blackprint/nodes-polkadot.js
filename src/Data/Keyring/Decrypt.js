@@ -14,7 +14,7 @@ class CrypterNode extends Blackprint.Node {
 		this._toast = new NodeToast(this.iface);
 
 		// Manually call 'update' when any cable from input port was disconnected
-		iface.on('cable.disconnect', Context.EventSlot, ({ port })=> {
+		this.iface.on('cable.disconnect', Context.EventSlot, ({ port })=> {
 			if(port.source === 'input') this.update();
 		});
 	}
