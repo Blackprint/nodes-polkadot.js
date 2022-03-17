@@ -15,6 +15,9 @@ let SubstrateSubscriber = {
 };
 
 // ToDo: Type mapping (Rust Types => JavaScript Types)
+// Vec => Array
+// HashMap => Map
+// Option => can be null or have a value (optional)
 let SubstrateTypeData = {
 	'AccountId': String,
 	'ApplyExtrinsicResult': null,
@@ -47,8 +50,9 @@ let SubstrateTypeData = {
 	'H160': String,
 	'H256': String,
 	'Hash': String,
-	'HashMap<AuthorityId,EpochAuthorship>': null, // ToDo: HashMap<A, B> => {A, B}
+	'HashMap<AuthorityId,EpochAuthorship>': null, // ToDo: HashMap<A, B> => (Map[A] = B)
 	'Header': null,
+	'EncodedFinalityProofs': null,
 	'Health': null,
 	'Index': null,
 	'InstantiateRequest': null,
@@ -59,14 +63,6 @@ let SubstrateTypeData = {
 	'MmrLeafProof': null,
 	'NetworkState': null,
 	'Null': null,
-	'Option<BlockNumber>': null, // ToDo: Option<A> => A
-	'Option<Bytes>': null,
-	'Option<EncodedFinalityProofs>': null,
-	'Option<EthRichBlock>': null,
-	'Option<Hash>': null,
-	'Option<StorageData>': null,
-	'Option<Text>': null,
-	'Option<u64>': null,
 	'PrefixedStorageKey': null,
 	'ReadProof': null,
 	'ReportedRoundStates': null,
@@ -84,19 +80,6 @@ let SubstrateTypeData = {
 	'TraceBlockResponse': null,
 	'U64': Number,
 	'U256': Number,
-	'Vec<EthLog>': null, // ToDo: Vec<A> => [A]
-	'Vec<Extrinsic>': null,
-	'Vec<ExtrinsicOrHash>': null,
-	'Vec<H160>': null,
-	'Vec<H256>': null,
-	'Vec<Hash>': null,
-	'Vec<KeyValue>': null,
-	'Vec<NodeRole>': null,
-	'Vec<Option<StorageData>>': null, // ToDo: ?.. maybe [StorageData]
-	'Vec<PeerInfo>': null,
-	'Vec<StorageChangeSet>': null,
-	'Vec<StorageKey>': null,
-	'Vec<Text>': null,
 	'bool': Boolean,
 	'u32': Number,
 	'u64': Number,
@@ -163,8 +146,35 @@ function functionParser(str, options){
 				// Capitalize first word and assign it to argsObj
 				// SessionKeys => Bytes
 				name = name.slice(0, 1).toUpperCase() + name.slice(1);
+				args[a] = args[a].replace(/^Option<(.*?)>$/m, (full, type) => {
+					name += '?';
+					return type;
+				});
+
 				argsObj[name] = args[a];
 			}
+		}
+
+		let optionalReturn = false;
+		returnType = returnType.replace(/Option<(.*?)>$/m, (full, type) => {
+			optionalReturn = true;
+			return type;
+		});
+
+		// ToDo: reconsider
+		returnType = returnType.replace(/(Vec|HashMap)<(.*?)>$/m, fillLooseType);
+		for(let key in argsObj)
+			argsObj[key] = argsObj[key].replace(/(Vec|HashMap)<(.*?)>$/m, fillLooseType);
+
+		function fillLooseType(full, wrapper, type){
+			if(SubstrateTypeData[type] != null) return type;
+
+			if(wrapper === 'Vec')
+				SubstrateTypeData[type] = Array;
+			else if(wrapper === 'HashMap')
+				SubstrateTypeData[type] = Object;
+
+			return type;
 		}
 
 		// Put the extraction in the 'list'
@@ -172,6 +182,7 @@ function functionParser(str, options){
 			name: funcName.slice(0, 1).toUpperCase() + funcName.slice(1),
 			args: argsObj,
 			returnType,
+			optionalReturn,
 		};
 	}
 
@@ -218,9 +229,8 @@ function Substrate_BlackprintNodeGenerator(options, list){
 			if(func.returnType !== 'Null'){
 				// Simplify port name
 				let portName = func.returnType
-					.replace(/(Vec|Option|HashMap)<(.*?)>$/m, function(full, wrapper, type){
-						if(wrapper === 'Option' || wrapper === 'Vec')
-							return type;
+					.replace(/(Vec|HashMap)<(.*?)>$/m, function(full, wrapper, type){
+						if(wrapper === 'Vec') return type;
 
 						// ToDO: HashMap
 						return type;
@@ -231,6 +241,12 @@ function Substrate_BlackprintNodeGenerator(options, list){
 
 				preprocessType = SubstrateTypeData[func.returnType];
 
+				if(preprocessType !== Number || preprocessType !== String || preprocessType !== Boolean)
+					preprocessType = null;
+
+				if(func.optionalReturn)
+					portName += '?';
+				
 				// This will be used as output port
 				// port name => type
 				func.returnType = {
