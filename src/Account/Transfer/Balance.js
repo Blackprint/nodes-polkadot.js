@@ -4,7 +4,7 @@
  * { polkadotApi } = window;
  */
 
-Blackprint.registerNode("Polkadot.js/Account/Transfer",
+Blackprint.registerNode("Polkadot.js/Account/Transfer/Balance",
 class TransferNode extends Blackprint.Node {
 	// Input port
 	static input = {
@@ -12,13 +12,17 @@ class TransferNode extends Blackprint.Node {
 		Address: String, // base58
 		Value: Number, // must be positive and lower than 2^53 - 1
 	};
-	static output = { Txn: Transaction };
+
+	// Output port
+	static output = {
+		Txn: Transaction, // Unsigned transaction
+	};
 
 	constructor(instance){
 		super(instance);
 
 		let iface = this.setInterface(); // use default interface
-		iface.title = "Transfer";
+		iface.title = "Transfer Balance";
 		iface.description = "Transfer balance to an address";
 		this._toast = new NodeToast(iface);
 
