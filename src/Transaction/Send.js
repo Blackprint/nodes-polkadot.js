@@ -109,7 +109,7 @@ class TransferSendNode extends Blackprint.Node {
 		let toast = this._toast;
 
 		if(Input.Txn.length === 0 || !Input.Signer)
-			return toast.error("Some input port does need to have a value");
+			return toast.error("Some input port need to have a value");
 
 		// Get API reference (polkadotApi)
 		let api = Input.Txn[0].api;
@@ -133,7 +133,7 @@ class TransferSendNode extends Blackprint.Node {
 
 			// Override the nonce if user has inputted a value
 			if(!!Input.Nonce && Input.Nonce !== 0)
-				options.nonce = ref.Nonce;
+				options.nonce = Input.Nonce;
 
 			if(!ref.isPair){  // Using browser's extension
 				options.signer = ref.signer;
