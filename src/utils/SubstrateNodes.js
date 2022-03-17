@@ -242,7 +242,7 @@ function Substrate_BlackprintNodeGenerator(options, list){
 			else func.returnType = void 0; // Didn't return data
 
 			if(isExtrinsics)
-				func.returnType = {OnFinish: Function};
+				func.returnType = {Finished: Function};
 
 			// Type mapping (Rust Types => JavaScript Types)
 			let args = func.args;
