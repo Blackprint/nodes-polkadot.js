@@ -107,9 +107,14 @@ Context.IFace.ConnectionWebSocket = class WebSocketIFace extends Blackprint.Inte
 		let provider = Output.Provider = new polkadotApi.WsProvider(rpcURL);
 
 		// Add event listener before connecting to the network
+		let initialized = false;
 		provider.on('connected', ()=> {
 			this._toast.clear();
 			this._toast.success("Connected");
+
+			if(!initialized)
+				this._toast.warn("Please wait");
+
 			Output.Connected();
 		});
 
@@ -121,5 +126,10 @@ Context.IFace.ConnectionWebSocket = class WebSocketIFace extends Blackprint.Inte
 		// Wait until connected and put the API object into the output port
 		this._toast.warn("Connecting...");
 		Output.API = await polkadotApi.ApiPromise.create({ provider });
+		
+		initialized = true;
+
+		if(this._toast.haveWarn.text === "Please wait")
+			this._toast.clear();
 	}
 });

@@ -28,7 +28,7 @@ class AccountBalanceNode extends Blackprint.Node {
 		iface.description = "Listen for balance changes";
 		iface.type = 'event';
 
-		this._toast = new NodeToast(this);
+		this._toast = new NodeToast(iface);
 
 		// This will be replaced if subcribing to an event, default: no operation
 		this.unsubscribe = ()=> {};
@@ -59,9 +59,15 @@ class AccountBalanceNode extends Blackprint.Node {
 			return this._toast.error("Please use WebSocket for using this feature");
 
 		this._toast.warn("Subscribing...");
-		this.unsubscribe = await api.query.system.account(Input.Address, ev => {
-			Output.Data = ev;
-		});
+
+		try {
+			this.unsubscribe = await api.query.system.account(Input.Address, ev => {
+				Output.Data = ev;
+			});
+		} catch(e) {
+			this._toast.clear();
+			this._toast.error(e.message);
+		}
 
 		// Clear the toast
 		this._toast.clear();
