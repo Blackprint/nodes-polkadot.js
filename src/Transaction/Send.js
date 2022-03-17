@@ -15,7 +15,11 @@ class TransferSendNode extends Blackprint.Node {
 	};
 
 	// Output port
-	static output = { Status: Object };
+	static output = {
+		Status: Object,    // Raw status from Polkadot.js
+		Success: Function, // Callback when the transaction was finalized and success
+		Failed: Function,  // Callback when the transaction was finalized and failed
+	};
 
 	constructor(instance){
 		super(instance);
@@ -23,9 +27,40 @@ class TransferSendNode extends Blackprint.Node {
 		let iface = this.setInterface(); // use default interface
 		iface.title = "Send Transaction";
 		iface.description = "Sign and submit transaction";
-		this._toast = new NodeToast(iface);
+		let toast = this._toast = new NodeToast(iface);
 
+		// After you submit the transaction
+		// This function will be called when this node received response from the network
 		this._onStatus = ev => {
+			if(ev.status.type === "Finalized"){
+				toast.clear();
+				toast.success(ev.status.type);
+
+				// Display error on finalized transaction for browser UI only
+				if(ev.dispatchError != null && Blackprint.Environment.isBrowser){
+					let error = ev.dispatchError;
+
+					if(error.isModule){
+						let api = this.ref.Input.Txn.api;
+
+						let decoded = api.registry.findMetaError(error.asModule);
+						let { docs, method, section } = decoded;
+
+						toast.error(docs.join(' ') || `${section}: ${method}`);
+					}
+					else {
+						console.log("Txn error data:", error.toString());
+						toast.error("Transaction failed");
+					}
+				}
+
+				if(ev.dispatchError != null)
+					this.ref.Output.Failed();
+				else this.ref.Output.Success();
+			}
+			else toast.warn(ev.status.type);
+
+			// Store the raw response to the output port
 			this.ref.Output.Status = ev;
 		}
 
@@ -57,6 +92,8 @@ class TransferSendNode extends Blackprint.Node {
 		let txn = Input.Txn.txn;
 
 		try{
+			toast.warn("Sending request");
+
 			if(ref.isPair)
 				await txn.signAndSend(ref.signer, this._onStatus);
 			else await txn.signAndSend(ref.address, {signer: ref.signer}, this._onStatus);
