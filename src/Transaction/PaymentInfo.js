@@ -7,7 +7,7 @@ Blackprint.registerNode("Polkadot.js/Transaction/PaymentInfo",
 class PaymentInfoNode extends Blackprint.Node {
 	// Input port
 	static input = {
-		Signer: Signer, // Can be from extension or generated keypair (with mnemonic/seed)
+		Sender: String, // Sender's address
 		Txn: Transaction,
 	};
 
@@ -33,21 +33,16 @@ class PaymentInfoNode extends Blackprint.Node {
 		let { Input, Output } = this.ref; // Shortcut
 		let toast = this._toast;
 
-		if(!Input.Signer) return toast.warn("Signer is required");
+		if(!Input.Sender) return toast.warn("Sender address is required");
 		if(!Input.Txn) return toast.warn("Txn is required");
 		toast.clear();
 
 		if(Input.Txn.api.rpc?.payment?.queryInfo == null)
 			return this._toast.error("The network doesn't support this feature");
 
-		let ref = Input.Signer;
-		let txn = Input.Txn.txn;
-
 		let info;
 		try{
-			if(ref.isPair)
-				info = await txn.paymentInfo(ref.signer);
-			else info = await txn.paymentInfo(ref.address, {signer: ref.signer});
+			info = await Input.Txn.txn.paymentInfo(Input.Sender);
 		} catch(e) {
 			if(e.message.includes("32601: Method not found"))
 				toast.error("The network doesn't support this feature");
