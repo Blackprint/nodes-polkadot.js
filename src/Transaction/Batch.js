@@ -18,7 +18,7 @@ class BatchNode extends Blackprint.Node {
 
 		let iface = this.setInterface(); // use default interface
 		iface.title = "Batch Transaction";
-		iface.description = "Combine multiple transaction into a single transaction";
+		iface.description = "Combine multiple transaction";
 		this._toast = new NodeToast(iface);
 
 		// Manually call 'update' when any cable from input port was disconnected
@@ -35,8 +35,8 @@ class BatchNode extends Blackprint.Node {
 		if(Input.Txn.length === 0) return toast.warn("Txn is required");
 		toast.clear();
 
-		let api = Input.Txn.api;
-		if(api.tx.utiliy?.batchAll == null)
+		let api = Input.Txn[0].api;
+		if(api.tx.utility?.batchAll == null)
 			return this._toast.error("The network doesn't support this feature");
 
 		// batchAll: The whole transaction will rollback and fail if any of the calls was failed.
