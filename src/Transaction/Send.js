@@ -11,7 +11,7 @@ class TransferSendNode extends Blackprint.Node {
 			this.submit();
 		}),
 		Signer: Signer, // Can be from extension or generated keypair (with mnemonic/seed)
-		Txn: Blackprint.Port.ArrayOf(Transaction), // Support multi/batch transaction
+		Txn: Transaction,
 		Nonce: Number, // Optional, in case if user want to override the nonce
 	};
 
@@ -46,7 +46,7 @@ class TransferSendNode extends Blackprint.Node {
 
 					// Check error for batch transactions
 					if(error == null && Input.Txn.length === 1) {
-						let api = Input.Txn[0].api;
+						let api = Input.Txn.api;
 
 						// Search for "BatchInterrupted" event
 						for(let i=0, n=ev.events.length; i < n; i++){
@@ -60,7 +60,7 @@ class TransferSendNode extends Blackprint.Node {
 					// Skip if no error
 					if(error != null) {
 						if(error.isModule){
-							let api = Input.Txn[0].api;
+							let api = Input.Txn.api;
 	
 							let decoded = api.registry.findMetaError(error.asModule);
 							let { docs, method, section } = decoded;
@@ -99,7 +99,7 @@ class TransferSendNode extends Blackprint.Node {
 		let toast = this._toast;
 
 		if(!Input.Signer) return toast.warn("Signer is required");
-		if(Input.Txn.length === 0) return toast.warn("Txn is required");
+		if(!Input.Txn) return toast.warn("Txn is required");
 		toast.clear();
 	}
 
@@ -108,39 +108,29 @@ class TransferSendNode extends Blackprint.Node {
 		let { Input, Output } = this.ref; // Shortcut
 		let toast = this._toast;
 
-		if(Input.Txn.length === 0 || !Input.Signer)
+		if(!Input.Txn || !Input.Signer)
 			return toast.error("Some input port need to have a value");
 
-		// Get API reference (polkadotApi)
-		let api = Input.Txn[0].api;
 		let ref = Input.Signer;
 
+		Output.TxHash = null; // Remove old hash value if exist in the port
+		Output.Status = null;
+
+		let txn = Input.Txn.txn; // Obtain transaction reference
+		let options = {};
+
+		// Override the nonce if user has inputted a value
+		if(!!Input.Nonce && Input.Nonce !== 0)
+			options.nonce = Input.Nonce;
+
+		toast.warn("Sending request");
+
 		try{
-			toast.warn("Sending request");
-			Output.TxHash = null; // Remove old hash value if exist in the port
-
-			let txn; // For preparing the query
-
-			// If the transaction is more than 1 then use batch utility
-			if(Input.Txn.length === 1)
-				txn = Input.Txn[0].txn;
-			else {
-				// batchAll: The whole transaction will rollback and fail if any of the calls failed.
-				txn = api.tx.utility.batchAll(Input.Txn.map(val => val.txn));
-			}
-
-			let options = {};
-
-			// Override the nonce if user has inputted a value
-			if(!!Input.Nonce && Input.Nonce !== 0)
-				options.nonce = Input.Nonce;
-
 			if(!ref.isPair){  // Using browser's extension
 				options.signer = ref.signer;
 				await txn.signAndSend(ref.address, options, this._onStatus);
 			}
 			else await txn.signAndSend(ref.signer, options, this._onStatus);
-
 		} catch(e) {
 			toast.clear();
 
