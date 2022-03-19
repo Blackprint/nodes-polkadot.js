@@ -143,11 +143,12 @@ describe("Transfer balance", () => {
 			});
 		}
 
-		// The first event can be used for displaying account's current balance
+		// The second event can be used for displaying account's current balance
+		let skipOnceA;
 		Balance_WalletA.output.Data.on('value', ({ port: { value } }) => {
-			if(Number(value.nonce) === 0) return;
 			let balance = Number(value.data.free);
-			
+			if(Number(value.nonce) === 0 && !skipOnceA) return skipOnceA = true;
+
 			if(BalanceA == null){ // Save account's current balance on the first event
 				BalanceA = balance;
 				afterObtainingFirstBalances();
@@ -156,8 +157,9 @@ describe("Transfer balance", () => {
 			}
 		});
 
+		let skipOnceB;
 		Balance_WalletB.output.Data.on('value', ({ port: { value } }) => {
-			if(Number(value.nonce) === 0) return;
+			if(Number(value.nonce) === 0 && !skipOnceB) return skipOnceB = true;
 			let balance = Number(value.data.free);
 
 			if(BalanceB == null){ // Save account's current balance on the first event
@@ -237,10 +239,11 @@ describe("Transfer balance", () => {
 			});
 		}
 
-		// The first event can be used for displaying account's current balance
+		// The second event can be used for displaying account's current balance
+		let skipOnceA;
 		Balance_WalletA.output.Data.on('value', ({ port: { value } }) => {
-			if(Number(value.nonce) === 0) return;
 			let balance = Number(value.data.free);
+			if(Number(value.nonce) === 0 && !skipOnceA) return skipOnceA = true;
 
 			if(BalanceA == null){ // Save account's current balance on the first event
 				BalanceA = balance;
@@ -250,9 +253,10 @@ describe("Transfer balance", () => {
 			}
 		});
 
+		let skipOnceB;
 		Balance_WalletB.output.Data.on('value', ({ port: { value } }) => {
-			if(Number(value.nonce) === 0) return;
 			let balance = Number(value.data.free);
+			if(Number(value.nonce) === 0 && !skipOnceB) return skipOnceB = true;
 
 			if(BalanceB == null){ // Save account's current balance on the first event
 				BalanceB = balance;

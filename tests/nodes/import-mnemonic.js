@@ -18,7 +18,7 @@ describe("Keyring - Import Mnemonic to a Keypair", () => {
 	let addressA = process.env.WALLET_ADDRESS_A; // 1KczAVb5pokkvsKoX8eEwxVnmwq8wNo9jgYDm4sHR9Z9nNQ
 	let addressB = process.env.WALLET_ADDRESS_B; // 1a1Uk5MqRZnKAgu3E3EZCU33Pg59gFgVC5SavkYKWs3au7k
 
-	// Below is the wallet address for "sending transaction" tests (WIP)
+	// Below is the wallet address for "sending transaction" tests
 	// ChainId: 42 (https://westend.subscan.io/account/ADDRESS_HERE)
 	//
 	// Address A: 5CPKqqEXE3YHKProqt5e6o8Lw9xBSdpf5Ex44U5WjL82yKPj
