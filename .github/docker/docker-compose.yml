@@ -1,0 +1,40 @@
+## Run this command to setup and run the container
+# ./init.sh
+#
+# After you see this line -> "[Browsersync] Access URLs:"
+# You can now access the editor with the links provided below it
+
+version: '3.7'
+
+services:
+  blackprint:
+    build: .
+    container_name: blackprint
+    restart: always
+    environment:
+      - MNEMONIC_A=burden trip pass airport nothing crouch flame blood toilet program pause peace
+      - WALLET_ADDRESS_A=15svm89ghWWiqjYWTKGxJyfkzcAL5Jm4HefZx3KFZaaFADrq
+
+      - MNEMONIC_B=physical west coin next mimic detail trip say slide nature hedgehog lawsuit
+      - WALLET_ADDRESS_B=15mkG9s2UbMikaEgvnd3vgVJKiY2n2DpH5MmrjnCREwsLsnN
+    ports:
+    - "6789:6789"
+
+    # Mount the ./app folder into the container
+    volumes:
+    - ./app:/app
+
+    ## Run the editor's server
+    # command: sh -c "cd /app && node -v && pnpm i && npm start"
+
+    ## Use below instead if you just want to run the tests only
+
+    ## Test: Blackprint sketch + engine
+    # command: sh -c 'cd /app && pnpm i && npm run compile && npm test'
+
+    ## Test: Blackprint module for Polkadot.js
+    command: sh -c 'cd /app/nodes/nodes-polkadot.js && pnpm i && npm run build-prod && npm test'
+
+## Note:
+# If you see "Segmentation fault (core dumped)" when testing with Jest, please re-run the test again
+# https://github.com/facebook/jest/issues/10662
