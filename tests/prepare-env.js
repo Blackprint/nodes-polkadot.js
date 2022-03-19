@@ -1,4 +1,3 @@
-require("@blackprint/engine");
 require("dotenv").config({ path: __dirname+'/../.env' });
 
 // Some fix when testing for browser with Jest
@@ -10,13 +9,9 @@ globalThis.URL = function(){return {href:''}};
 globalThis.fetch = require('node-fetch'); // required by @polkadot/util for doing RPC with HTTP
 globalThis.crypto = require('crypto').webcrypto; // required by @polkadot/util-crypto
 
-// Force as Node.js environment to load from node_modules
-Blackprint.Environment.isBrowser = false;
-Blackprint.Environment.isNode = true;
-
-// Test timeout = 15 sec
-// This usually needed for waiting for new heads/blocks
-jest.setTimeout(15e3);
+// Test timeout = 40 sec
+// This usually needed for waiting for new heads/blocks and waiting transaction to finish
+jest.setTimeout(40e3);
 
 // Surpress some warning from @polkadot/util
 let warn = console.warn;
@@ -30,6 +25,7 @@ console.warn = function(msgA, msgB, msgC){
 }
 
 module.exports = function(env){
+	// Load the frontend framework first if the environment is browser
 	if(env === 'browser'){
 		// For Browser Environment
 		window.sf = require("scarletsframe/dist/scarletsframe.min.js");
@@ -37,8 +33,18 @@ module.exports = function(env){
 		// Disable loader for browser, because we're testing with Node.js
 		sf.loader.turnedOff = true;
 		sf.loader.task = false;
+	}
 
+	// Load Blackprint Engine before the Sketch
+	require("@blackprint/engine");
+
+	// Load Blackprint Sketch
+	if(env === 'browser'){
 		require("@blackprint/sketch/dist/blackprint.min.js");
 		require("@blackprint/sketch/dist/blackprint.sf.js");
 	}
+
+	// Force as Node.js environment to load from node_modules
+	Blackprint.Environment.isBrowser = false;
+	Blackprint.Environment.isNode = true;
 };

@@ -7,7 +7,7 @@
 // After this test, the keyring will be used for another test from another file like
 // - decrypt, encrypt node
 // - sign, verfy node
-// - sending transaction (Work In Progress)
+// - sending transaction
 describe("Keyring - Import Mnemonic to a Keypair", () => {
 	// This is for testing on the testnet
 	// Stored on GitHub Actions's secret and only maintainer/collabolator that can use it

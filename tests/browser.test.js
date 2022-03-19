@@ -22,7 +22,7 @@ test('Blackprint.Sketch does exist on window', async () => {
 	// Throw when any error happen
 	MyInstance.on('error', ev => {
 		console.error(ev);
-		throw new Error("Something was wrong");
+		throw new Error("Something was wrong, please check the console.error");
 	});
 
 	// Remove log when the cable was replaced
@@ -54,3 +54,4 @@ require('./nodes/event-new-heads.js');
 require('./nodes/import-mnemonic.js');
 require('./nodes/sign-verify.js');
 require('./nodes/encrypt-decrypt.js');
+require('./nodes/transfer-balance.js'); // Also include test for listening balance changes
