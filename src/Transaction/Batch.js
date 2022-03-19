@@ -28,7 +28,7 @@ class BatchNode extends Blackprint.Node {
 	}
 
 	// This will be called by the engine if the input port have a new value
-	async update(){
+	update(){
 		let { Input, Output } = this.ref; // Shortcut
 		let toast = this._toast;
 
