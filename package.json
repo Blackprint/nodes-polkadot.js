@@ -24,10 +24,12 @@
     "@blackprint/cli-tools": "0.3.18",
     "@blackprint/engine": "0.6.4",
     "@blackprint/sketch": "0.6.6",
+    "@polkadot/extension-dapp": "^0.42.9",
+    "@polkadot/extension-inject": "^0.42.9",
+    "dotenv": "^16.0.0",
     "jest": "^27.4.7",
     "node-fetch": "^2.6.7",
-    "scarletsframe": "0.35.9",
-    "dotenv": "^16.0.0"
+    "scarletsframe": "0.35.9"
   },
   "keywords": [
     "blackprint",
