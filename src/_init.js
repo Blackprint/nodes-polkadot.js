@@ -11,6 +11,7 @@ var Blackprint = window.Blackprint.loadScope({
 
 // Prepare variable
 var polkadotApi, polkadotKeyring, polkadotTypes, polkadotUtilCrypto, polkadotUtil;
+var polkadotExtensionDapp;
 
 // Import for different environment
 let crypto = window.crypto;
@@ -30,7 +31,7 @@ if(Blackprint.Environment.loadFromURL === false) {
 	if(window.Blackprint.Environment.isBrowser)
 		await import(path+'/node_modules/@polkadot/extension-dapp/bundle-polkadot-extension-dapp.js');
 	
-	({ polkadotApi, polkadotKeyring, polkadotTypes, polkadotUtilCrypto, polkadotUtil, polkadotExtensionDapp } = window);
+	({ polkadotApi, polkadotKeyring, polkadotTypes, polkadotUtilCrypto, polkadotUtil } = window);
 }
 else{
 	/* Parallely load dependencies from CDN */
@@ -53,9 +54,11 @@ else{
 		await sf.loader.js(_remoteModule, {ordered: true});
 	}
 
-	({ polkadotApi, polkadotKeyring, polkadotTypes, polkadotUtilCrypto, polkadotUtil, polkadotExtensionDapp } = window);
+	({ polkadotApi, polkadotKeyring, polkadotTypes, polkadotUtilCrypto, polkadotUtil } = window);
 }
 
+if(window.polkadotExtensionDapp != null)
+	polkadotExtensionDapp = window.polkadotExtensionDapp;
 
 // Global shared context
 var Context = Blackprint.createContext('Polkadot.js');

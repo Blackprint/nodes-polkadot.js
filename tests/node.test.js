@@ -14,7 +14,7 @@ test('Blackprint.Engine does exist on window', async () => {
 	// Throw when any error happen
 	MyInstance.on('error', ev => {
 		console.error(ev);
-		throw new Error("Something was wrong");
+		throw new Error("Something was wrong, please check the console.error");
 	});
 
 	// Remove log when the cable was replaced
@@ -24,6 +24,10 @@ test('Blackprint.Engine does exist on window', async () => {
 // This may took longer to finish because will also load polkadot.js's module
 // -> Prefer using the bundled version to reduce load time
 test("Load required modules", async () => {
+	// Force to Node.js environment
+	Blackprint.Environment.isBrowser = false;
+	Blackprint.Environment.isNode = true;
+
 	// Alternative for Blackprint.loadModuleFromURL(...);
 	await import("../dist/nodes-polkadotjs.mjs"); // For Browser/Node.js
 

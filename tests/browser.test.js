@@ -35,6 +35,10 @@ test('Blackprint.Sketch does exist on window', async () => {
 // This may took longer to finish because will also load polkadot.js's module
 // -> Prefer using the bundled version to reduce load time
 test("Load required modules", async () => {
+	// Force to browser environment
+	Blackprint.Environment.isBrowser = true;
+	Blackprint.Environment.isNode = false;
+
 	// Alternative for Blackprint.loadModuleFromURL(...);
 	await import("../dist/nodes-polkadotjs.mjs"); // For Browser/Node.js
 	await import("../dist/nodes-polkadotjs.sf.mjs"); // For Browser UI
@@ -42,10 +46,6 @@ test("Load required modules", async () => {
 	// Wait and avoid Jest's test environment being torn down
 	await Blackprint.getContext('Polkadot.js');
 	await new Promise(resolve => setTimeout(resolve, 1000));
-
-	// Force to browser environment
-	Blackprint.Environment.isBrowser = true;
-	Blackprint.Environment.isNode = false;
 
 	// Check if the nodes has been registered
 	expect(Blackprint.nodes['Polkadot.js']).toBeDefined();
