@@ -27,6 +27,8 @@ class ConnectionExtensionData {
 Blackprint.registerNode("Polkadot.js/Connection/Extension",
 class ExtensionNode extends Blackprint.Node {
 	static input = undefined; // This node doesn't need any input port
+
+	// Output port
 	static output = {
 		Accounts: Array,
 		IsAllowed: Boolean,
@@ -62,53 +64,55 @@ Blackprint.registerInterface('BPIC/Polkadot.js/Connection/Extension',
 Context.IFace.ConnectionExtension = class ExtensionIFace extends Blackprint.Interface {
 	constructor(node){
 		super(node);
+		this.data = new ConnectionExtensionData(this);
 
 		this._toast = new NodeToast(this);
 		this._toast.warn("Disconnected");
-
-		this.data = new ConnectionExtensionData(this);
 	}
 
 	// This will be called by the engine after node has been loaded
 	// and other data like cable connection has been connected/added
 	async init(){
 		let {Input, Output, IInput, IOutput} = this.ref; // Shortcut
+		let toast = this._toast;
 
 		let polkadot = window.injectedWeb3?.["polkadot-js"];
-		if(polkadot === void 0)
-			return this._toast.error("Extension injection was not found");
+		if(polkadot === void 0){
+			console.error("Extension injection was not found");
+			return toast.error("Extension injection was not found");
+		}
 
-		this._toast.clear();
-		this._toast.warn("Asking for Permission");
+		toast.clear();
+		toast.warn("Asking for Permission");
 
 		try{
 			this._polkadot = await polkadotExtensionDapp.web3Enable(this.data.dAppName);
 		} catch(e) {
-			this._toast.error(e.message);
+			console.error(e.message);
+			toast.error(e.message);
 			Output.IsAllowed = false;
 			return;
 		}
 
 		if(this._polkadot.length === 0){
 			Output.IsAllowed = false;
-			this._toast.clear();
-			this._toast.warn("Access Rejected");
+			toast.clear();
+			toast.warn("Access Rejected");
 			return;
 		}
 
-		this._toast.clear();
-		this._toast.success("Access Granted");
-		Output.IsAllowed = true;
+		toast.clear();
+		toast.success("Access Granted");
 
 		_extensionEnabled();
 		extensionEnabled = true;
 
-		this.node.output.Accounts = await polkadotExtensionDapp.web3Accounts();
-
-		let node = this;
 		this._unsubscribe = await polkadotExtensionDapp.web3AccountsSubscribe(accounts => {
-			this.node.output.Accounts = accounts;
+			Output.Accounts = accounts;
 		});
+
+		Output.Accounts = await polkadotExtensionDapp.web3Accounts();
+		Output.IsAllowed = true;
 	}
 
 	// This will be called by the engine when this node is deleted
@@ -119,30 +123,5 @@ Context.IFace.ConnectionExtension = class ExtensionIFace extends Blackprint.Inte
 		} catch(e) {
 			console.error(e);
 		}
-	}
-
-	// ToDo: Implement this if in the future the wallet has an RPC
-	async _connect(){
-		let {Input, Output, IInput, IOutput} = this.ref; // Shortcut
-		let polkadot = this._polkadot;
-
-		// let provider = Output.Socket = new ExtensionProvider(polkadot.provider);
-
-		let that = this;
-		that._toast.clear();
-		// this._toast.warn("Connecting...");
-
-		// provider.on('connected', function(){
-		// 	that._toast.clear();
-		// 	that._toast.success("Connected");
-		// 	Output.Connected();
-		// });
-
-		// provider.on('disconnected', function(){
-		// 	that._toast.warn("Disconnected");
-		// 	Output.Disconnected();
-		// });
-
-		// Output.API = await polkadotApi.ApiPromise.create({ provider });
 	}
 });

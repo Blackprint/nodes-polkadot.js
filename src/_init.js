@@ -9,15 +9,14 @@ var Blackprint = window.Blackprint.loadScope({
 	hasInterface: true,
 });
 
-
 // Prepare variable
 var polkadotApi, polkadotKeyring, polkadotTypes, polkadotUtilCrypto, polkadotUtil;
 
-
 // Import for different environment
 let crypto = window.crypto;
-if(window.Blackprint.Environment.isNode) {
-	crypto = (await import('node:crypto')).webcrypto;
+if(Blackprint.Environment.loadFromURL === false) {
+	if(window.Blackprint.Environment.isNode)
+		crypto = (await import('node:crypto')).webcrypto;
 
 	let path = 'file:///'+process.cwd();
 
@@ -28,7 +27,10 @@ if(window.Blackprint.Environment.isNode) {
 	await import(path+'/node_modules/@polkadot/types/bundle-polkadot-types.js');
 	await import(path+'/node_modules/@polkadot/api/bundle-polkadot-api.js');
 
-	({ polkadotApi, polkadotKeyring, polkadotTypes, polkadotUtilCrypto, polkadotUtil } = window);
+	if(window.Blackprint.Environment.isBrowser)
+		await import(path+'/node_modules/@polkadot/extension-dapp/bundle-polkadot-extension-dapp.js');
+	
+	({ polkadotApi, polkadotKeyring, polkadotTypes, polkadotUtilCrypto, polkadotUtil, polkadotExtensionDapp } = window);
 }
 else{
 	/* Parallely load dependencies from CDN */
@@ -47,12 +49,11 @@ else{
 			await import(_remoteModule[i]);
 	}
 	else { // For Browser environment
-		_remoteModule.push("https://cdn.jsdelivr.net/npm/@polkadot/extension-dapp@0.42.7/bundle-polkadot-extension-dapp.js");
+		_remoteModule.push("https://cdn.jsdelivr.net/npm/@polkadot/extension-dapp@0.42.9/bundle-polkadot-extension-dapp.js");
 		await sf.loader.js(_remoteModule, {ordered: true});
 	}
 
-	({ polkadotApi, polkadotKeyring, polkadotTypes, polkadotUtilCrypto, polkadotUtil } = window);
-	// polkadotExtensionDapp library is not using UMD
+	({ polkadotApi, polkadotKeyring, polkadotTypes, polkadotUtilCrypto, polkadotUtil, polkadotExtensionDapp } = window);
 }
 
 
