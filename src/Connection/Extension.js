@@ -84,6 +84,12 @@ Context.IFace.ConnectionExtension = class ExtensionIFace extends Blackprint.Inte
 		try{
 			this._polkadot = await polkadotExtensionDapp.web3Enable(this.data.dAppName);
 		} catch(e) {
+			this._toast.error(e.message);
+			Output.IsAllowed = false;
+			return;
+		}
+
+		if(this._polkadot.length === 0){
 			Output.IsAllowed = false;
 			this._toast.clear();
 			this._toast.warn("Access Rejected");
