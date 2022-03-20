@@ -44,7 +44,6 @@ module.exports = function(env){
 		require("@blackprint/sketch/dist/blackprint.sf.js");
 	}
 
-	// Force as Node.js environment to load from node_modules
-	Blackprint.Environment.isBrowser = false;
-	Blackprint.Environment.isNode = true;
+	// Force Blackprint module to load from node_modules
+	Blackprint.Environment.loadFromURL = false;
 };
