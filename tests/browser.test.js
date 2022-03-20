@@ -5,6 +5,9 @@
 require('./prepare-env.js')('browser');
 window.MyInstance = null;
 
+// Inject Polkadot's browser extension for testing with Jest
+require('./utils/inject-browser-extension.js');
+
 // When using Blackprint Editor (https://blackprint.github.io/)
 // you can get the instance object with
 // window.MyInstance = window.SketchList[0];
@@ -54,4 +57,5 @@ require('./nodes/event-new-heads.js');
 require('./nodes/import-mnemonic.js');
 require('./nodes/sign-verify.js');
 require('./nodes/encrypt-decrypt.js');
-require('./nodes/transfer-balance.js'); // Also include test for listening balance changes
+require('./nodes/browser-extension.js');
+require('./nodes/transfer-balance.js'); // This also contain test for listening balance changes
