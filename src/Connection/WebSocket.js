@@ -113,7 +113,7 @@ Context.IFace.ConnectionWebSocket = class WebSocketIFace extends Blackprint.Inte
 			this._toast.success("Connected");
 
 			if(!initialized)
-				this._toast.warn("Please wait");
+				this._toast.warn("Preparing API...");
 
 			Output.Connected();
 		});
@@ -129,7 +129,7 @@ Context.IFace.ConnectionWebSocket = class WebSocketIFace extends Blackprint.Inte
 		
 		initialized = true;
 
-		if(this._toast.haveWarn.text === "Please wait")
+		if(this._toast.haveWarn.text === "Preparing API...")
 			this._toast.clear();
 	}
 });
