@@ -64,8 +64,10 @@ class SignNode extends Blackprint.Node {
 
 		let data = Input.Data;
 		let { signer, address, isPair } = Input.Signer;
-		// There's 2 source of Signer (from Keypair and Browser Extension)
 
+		Output.Bytes = null;
+
+		// There's 2 source of Signer (from Keypair and Browser Extension)
 		if(isPair){ // Signer from Keypair (polkadotApi.Keyring)
 			if(data.constructor === String)
 				data = polkadotUtil.stringToU8a(data);
@@ -81,11 +83,17 @@ class SignNode extends Blackprint.Node {
 
 			// Sign with the extension and get the Hex
 			try{
-				var temp = await signer.signRaw({
+				var temp = signer.signRaw({
 					type: 'bytes',
 					data,
 					address,
 				});
+
+				// Store the promise to iface
+				this.iface.signing = temp;
+				temp = await temp;
+				
+				this.iface.signing = false;
 			} catch(e) {
 				this._fail(e.message);
 				throw e;
