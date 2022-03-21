@@ -10,6 +10,9 @@ Blackprint.registerNode("Polkadot.js/Data/Sign",
 class SignNode extends Blackprint.Node {
 	// Input port
 	static input = {
+		Trigger: Blackprint.Port.Trigger(function(){
+			this.trigger();
+		}),
 		Signer: Signer,
 		Data: Blackprint.Port.Union([String, Uint8Array]),
 	};
@@ -40,7 +43,7 @@ class SignNode extends Blackprint.Node {
 	}
 
 	// This will be called by the engine if the input port have a new value
-	async update(){
+	update(){
 		let { Input, Output } = this.ref; // Shortcut
 
 		if(!Input.Signer)
@@ -50,10 +53,18 @@ class SignNode extends Blackprint.Node {
 		if(!data)
 			return this._fail("Data is required");
 
-		let { signer, address, isPair } = Input.Signer;
 		this._toast.clear();
+	}
 
-		// There's 2 source of signer (from Keypair and Browser Extension)
+	async trigger(){
+		let { Input, Output } = this.ref; // Shortcut
+
+		if(!Input.Signer || !Input.Data)
+			return this._fail("Some input is required");
+
+		let data = Input.Data;
+		let { signer, address, isPair } = Input.Signer;
+		// There's 2 source of Signer (from Keypair and Browser Extension)
 
 		if(isPair){ // Signer from Keypair (polkadotApi.Keyring)
 			if(data.constructor === String)
