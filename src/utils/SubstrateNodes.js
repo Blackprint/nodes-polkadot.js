@@ -35,6 +35,7 @@ let SubstrateTypeData = {
 	'EthCallRequest': null,
 	'EthFilter': null,
 	'EthFilterChanges': null,
+	'EthLog': null,
 	'EthReceipt': null,
 	'EthRichBlock': null,
 	'EthSubKind': null,
@@ -44,6 +45,7 @@ let SubstrateTypeData = {
 	'EthTransactionRequest': null,
 	'EthWork': null,
 	'Extrinsic': null,
+	'ExtrinsicOrHash': null,
 	'ExtrinsicStatus': null,
 	'FeeDetails': null,
 	'H64': String,
@@ -59,10 +61,13 @@ let SubstrateTypeData = {
 	'Json': null,
 	'Justification': null,
 	'JustificationNotification': null,
+	'KeyValue': Object,
 	'Metadata': null,
 	'MmrLeafProof': null,
 	'NetworkState': null,
+	'NodeRole': null,
 	'Null': null,
+	'PeerInfo': null,
 	'PrefixedStorageKey': null,
 	'ReadProof': null,
 	'ReportedRoundStates': null,
@@ -169,10 +174,10 @@ function functionParser(str, options){
 		function fillLooseType(full, wrapper, type){
 			if(SubstrateTypeData[type] != null) return type;
 
-			if(wrapper === 'Vec')
-				SubstrateTypeData[type] = Array;
-			else if(wrapper === 'HashMap')
+			if(wrapper === 'HashMap')
 				SubstrateTypeData[type] = Object;
+			// else if(wrapper === 'Vec')
+			// 	SubstrateTypeData[type] = Array;
 
 			return type;
 		}
@@ -241,12 +246,12 @@ function Substrate_BlackprintNodeGenerator(options, list){
 
 				preprocessType = SubstrateTypeData[func.returnType];
 
-				if(preprocessType !== Number || preprocessType !== String || preprocessType !== Boolean)
+				if(preprocessType !== Number && preprocessType !== String && preprocessType !== Boolean)
 					preprocessType = null;
 
 				if(func.optionalReturn)
 					portName += '?';
-				
+
 				// This will be used as output port
 				// port name => type
 				func.returnType = {
@@ -305,6 +310,14 @@ function Substrate_BlackprintNodeGenerator(options, list){
 
 			// For Substrate Constants
 			if(isConst) delete defaultInput.Trigger;
+
+			if(func.optionalReturn){
+				let temp = {};
+				for (let key in func.returnType)
+					temp[key.replace('?', '')] = func.returnType[key];
+
+				func.returnType = temp;
+			}
 
 			// Custom Node class
 			class GeneratedNode extends Blackprint.Node {
@@ -380,6 +393,9 @@ function Substrate_BlackprintNodeGenerator(options, list){
 
 					if(preprocessType != null)
 						response = preprocessType(response);
+					
+					if(response.value !== undefined)
+						response = response.value;
 
 					// ToDo: should we use type data's name as the port name?
 					Output[returnToField] = response;
