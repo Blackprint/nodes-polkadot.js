@@ -25,33 +25,59 @@ describe("Nodes for Polkadot.js's browser extension", () => {
 		});
 	});
 
-	test("Sign a data with extension and verify it with public key (wallet address)", (done) => {
+	let portAddressB, textData, dataSigner;
+	test("Sign a data with browser extension", (done) => {
 		// Prepare wallet address
-		let portAddressB = new Blackprint.OutputPort(String);
+		portAddressB = new Blackprint.OutputPort(String);
 		portAddressB.value = process.env.WALLET_ADDRESS_B;
 		
 		// Prepare the data to be signed
-		let textData = new Blackprint.OutputPort(String);
+		textData = new Blackprint.OutputPort(String);
 		textData.value = "hello world";
 
 		// Get the signer reference from the extension
 		let signer = MyInstance.createNode('Polkadot.js/Extension/Get/Signer');
 		signer.input.Address.connectPort(portAddressB);
 
-		// Sign the data
-		let dataSigner = MyInstance.createNode("Polkadot.js/Data/Sign");
-		dataSigner.input.Signer.connectPort(signer.output.Signer);
-		dataSigner.input.Data.connectPort(textData);
+		// Wait until the node get Signer input from the extension
+		signer.output.Signer.once('value', async () => {
+			// Sign the data
+			dataSigner = MyInstance.createNode("Polkadot.js/Data/Sign");
+			dataSigner.input.Signer.connectPort(signer.output.Signer);
+			dataSigner.input.Data.connectPort(textData);
 
+			// Trigger the node to sign the data
+			dataSigner.ref.Input.Trigger();
+			await dataSigner.signing;
+
+			// The data signer will now have the signature of the data (stored in 'Bytes' port)
+			// Port 'Output.Bytes' type: Uint8Array
+			expect(dataSigner.ref.Output.Bytes).not.toBe(null);
+			done();
+		});
+	});
+
+	test("Verify the signed data with the wallet address (public key)", () => {
 		// Verify the data signature with the wallet address
 		let dataVerify = MyInstance.createNode("Polkadot.js/Data/Verify");
 		dataVerify.input.Address.connectPort(portAddressB);
 		dataVerify.input.Data.connectPort(textData);
 		dataVerify.input.Signature.connectPort(dataSigner.output.Bytes);
 
-		dataVerify.output.IsValid.on('value', ev => {
-			expect(ev.port.value).toBe(true); // true == signature is valid
-			done();
-		});
+		expect(dataVerify.ref.Output.IsValid).toBe(true); // true == signature is valid
+	});
+
+	test("Signature verification fail if the address was different", () => {
+		// Prepare wallet address
+		let portAddressA = new Blackprint.OutputPort(String);
+		portAddressA.value = process.env.WALLET_ADDRESS_A;
+		
+		// Verify the data signature with the wallet address
+		let dataVerify = MyInstance.createNode("Polkadot.js/Data/Verify");
+		dataVerify.input.Address.connectPort(portAddressA);
+		dataVerify.input.Data.connectPort(textData);
+		dataVerify.input.Signature.connectPort(dataSigner.output.Bytes);
+
+		expect(dataVerify.ref.Output.IsValid).toBe(false); // false == signature is invalid
 	});
 });

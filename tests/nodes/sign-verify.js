@@ -45,6 +45,10 @@ describe("Sign and verify data", () => {
 		Data_Signer_A.input.Data.connectPort(outText);
 		Data_Signer_B.input.Data.connectPort(outBytes);
 
+		// Trigger the node to sign the data
+		Data_Signer_A.ref.Input.Trigger();
+		Data_Signer_B.ref.Input.Trigger();
+
 		// The data signer will now have the signature of the data (stored in 'Bytes' port)
 		// Port 'Output.Bytes' type: Uint8Array
 		//> DataSignerA.bytes !== null
@@ -53,10 +57,11 @@ describe("Sign and verify data", () => {
 		expect(Data_Signer_B.ref.Output.Bytes).not.toBe(null);
 	});
 
+	let portAddressA, portAddressB;
 	test("Verify signed text and bytes with wallet address (public key)", async () => {
 		// Create output port
-		let portAddressA = new Blackprint.OutputPort(String);
-		let portAddressB = new Blackprint.OutputPort(String);
+		portAddressA = new Blackprint.OutputPort(String);
+		portAddressB = new Blackprint.OutputPort(String);
 
 		// Put our wallet address (public key) in the port
 		portAddressA.value = process.env.WALLET_ADDRESS_A;
@@ -98,6 +103,14 @@ describe("Sign and verify data", () => {
 		//> DataVerifyB.isValid === true
 		expect(Data_Verify_A.ref.Output.IsValid).toBe(true);
 		expect(Data_Verify_B.ref.Output.IsValid).toBe(true);
+	});
+
+	test("Signature verification fail if the address was different", async () => {
+		let { Data_Verify_A, Data_Verify_B } = MyInstance.iface;
+
+		// Put our wallet address (public key) in the port
+		portAddressA.value = process.env.WALLET_ADDRESS_A;
+		portAddressB.value = process.env.WALLET_ADDRESS_B;
 
 		// Let's test if we switch the wallet, it must be invalid
 		// - verify data that was signed using Wallet_B with Data_Verify_A

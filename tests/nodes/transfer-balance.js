@@ -37,7 +37,7 @@ describe("Transfer balance", () => {
 	let Port_SendBigValue = new Blackprint.OutputPort(Number);
 	Port_SendBigValue.value = 999e12; // 999 WND
 
-	test("Prepare transaction for sending 0.01 WND", () => {
+	test("Prepare transaction for sending 0.01, 0.015, and 999 WND", () => {
 		// Create transfer balance node
 		let Tx_To_WalletB = MyInstance.createNode('Polkadot.js/Account/Transfer/Balance', {id: 'Tx_To_WalletB'});
 		Tx_To_WalletB.input.API.connectPort(WS_RPC.output.API);
