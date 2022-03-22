@@ -12,7 +12,6 @@ describe("Nodes for Polkadot.js's browser extension", () => {
 		
 		// Create node for accessing the extension
 		let extension = MyInstance.createNode('Polkadot.js/Connection/Extension', {data: {dAppName: 'BP-Polkadot.js'}});
-		extension.init();
 
 		// Check if the access was allowed
 		// Note: This will always be allowed when testing on Node.js
