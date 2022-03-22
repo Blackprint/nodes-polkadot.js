@@ -1,7 +1,7 @@
 {
   "name": "@blackprint/nodes-polkadot.js",
   "description": "Blackprint nodes Polkadot's RPC client",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -23,7 +23,7 @@
   "devDependencies": {
     "@blackprint/cli-tools": "0.3.18",
     "@blackprint/engine": "0.6.4",
-    "@blackprint/sketch": "0.6.6",
+    "@blackprint/sketch": "0.6.7",
     "@polkadot/extension-dapp": "^0.42.9",
     "@polkadot/extension-inject": "^0.42.9",
     "dotenv": "^16.0.0",

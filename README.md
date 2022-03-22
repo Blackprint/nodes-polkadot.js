@@ -38,18 +38,7 @@ Below is the summary and some information of the video:
 ---
 
 ### Examples
-For more updated example, please go to [/example](https://github.com/Blackprint/nodes-polkadot.js/tree/main/example) directory and import it with [Blackprint Editor](https://blackprint.github.io/dev.html).
-
-<details>
-  <summary>Listening to new block (JSON)</summary>
-
-Open [this example](https://blackprint.github.io/dev.html#page/sketch/1#;importSketch:rZJbi9swEIX_itBrXSkX26R-2jbtQ0tYluyWUpawKJJwHMsaY8nJpsH_vWMn7jp7gRb6JKQZnfPNkY70gSZHWoCqjf52S5N7uvG-dAnnUlm2dUqbbFcxqz23ZcGv1kbIvKwyi3tQ2r0vweRCgcfeqxEbc5W556WtY8XW0eAfpVFuOpSTYB0Y_V-0lJZQCZ-BZUVmO8lVE9Cbp2H4HKzVsm3hP_T6FmSuPeZzpBlNRgF9pEk0CegBl3FAJRSFtliniKaEF22qVSm_Lxd4tnctKW6Z22Tr-iCYcF50uHuocorOUPuy9u2tjzdfe5swoFYUGhXaw2bVNEF3Ph7aT8Lw7_z3jnntPBO_dAVM6d2bvtEL31VA56f4-QLSvm_SccRR3IGMo9kFyBl2em4KT7Tx5LJpdZn6lx0WHP9kMG83yAElwtHJJ_7wbN6nGa7rYq2rAV4_hj0M4ovOcrNXid7Wm77QQ_jPf34Sv9OPnl8DhtzfiM-zz14H7x9qJ0zdyv6EmkhhiTAOyPxuuSDvyDJLN55Ik8mcAJZICZUnHkiqPXF1muKTakXab00RqPkN) on Blackprint Editor.
-
-You can also import this JSON into Blackprint Editor.
-```json
-{"_":{"moduleJS":["https://cdn.jsdelivr.net/npm/@blackprint/nodes-polkadot.js@0.2/dist/nodes-polkadotjs.mjs","https://cdn.jsdelivr.net/npm/@blackprint/nodes@0.3.1/dist/nodes-console.mjs","https://cdn.jsdelivr.net/npm/@blackprint/nodes@0.3.1/dist/nodes-decoration.mjs"]},"Polkadot.js/Connection/WebSocket":[{"i":0,"x":52,"y":51,"data":{"rpcURL":"wss://rpc.shibuya.astar.network"},"output":{"API":[{"i":4,"name":"API"}]}},{"i":1,"x":52,"y":244,"data":{"rpcURL":"wss://ws.test.azero.dev"},"output":{"API":[{"i":5,"name":"API"}]}}],"Console/Log":[{"i":2,"x":656,"y":158},{"i":3,"x":654,"y":262}],"Polkadot.js/Events/Blocks":[{"i":4,"x":406,"y":69,"output":{"Number":[{"i":2,"name":"Any"}]}},{"i":5,"x":408,"y":262,"output":{"Number":[{"i":3,"name":"Any"}]}}],"Decoration/Text/Notes":[{"i":6,"x":658,"y":69,"data":{"value":"You can also CTRL + Right click on a port to get suggested node"}}]}
-```
-</details>
+For more updated example, please go to [/example](https://github.com/Blackprint/nodes-polkadot.js/tree/main/example) directory and import it with [Blackprint Editor](https://blackprint.github.io/dev.html). You can also get a list of example on Blackprint Editor if you load the module by using module search feature from the editor.
 
 ---
 
@@ -122,7 +111,7 @@ Please specify the version to avoid breaking changes.
 
 ```js
 Blackprint.loadModuleFromURL([
-  'https://cdn.jsdelivr.net/npm/@blackprint/nodes-polkadot.js@0.2/dist/nodes-polkadotjs.mjs'
+  'https://cdn.jsdelivr.net/npm/@blackprint/nodes-polkadot.js@0.3/dist/nodes-polkadotjs.mjs'
 ], {
   // Turn this on if you want to load ".sf.js" and ".sf.css" for browser
   loadBrowserInterface: true // set to "false" for Node.js/Deno

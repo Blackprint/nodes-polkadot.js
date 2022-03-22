@@ -3,7 +3,7 @@ lockfileVersion: 5.3
 specifiers:
   '@blackprint/cli-tools': 0.3.18
   '@blackprint/engine': 0.6.4
-  '@blackprint/sketch': 0.6.6
+  '@blackprint/sketch': 0.6.7
   '@polkadot/api': ^7.9.1
   '@polkadot/extension-dapp': ^0.42.9
   '@polkadot/extension-inject': ^0.42.9
@@ -26,7 +26,7 @@ dependencies:
 devDependencies:
   '@blackprint/cli-tools': 0.3.18
   '@blackprint/engine': 0.6.4
-  '@blackprint/sketch': 0.6.6
+  '@blackprint/sketch': 0.6.7
   '@polkadot/extension-dapp': 0.42.9_@polkadot+api@7.9.1
   '@polkadot/extension-inject': 0.42.9_@polkadot+api@7.9.1
   dotenv: 16.0.0
@@ -1232,8 +1232,8 @@ packages:
     resolution: {integrity: sha512-tDVHbAV8DVDeDxDygchmHjSu1jGycIfCHfNExvC0bNZ9pJQm/qzbM2iiab5qhB/9H4eq+8e5DWS3i76MuuCPCA==}
     dev: true
 
-  /@blackprint/sketch/0.6.6:
-    resolution: {integrity: sha512-9LJADu5yDyUiOTGqOjg1pyhrnrhUiOf/5a+dGANh0eqpcoyJVGBLCRhRRFRp3fAVTjwyf9uRoH4ars0oY5ycyQ==}
+  /@blackprint/sketch/0.6.7:
+    resolution: {integrity: sha512-wxkDnFqT9JdGR69T15VnJ6OCSLajKwZRNrycRnGnF7aQsc2rAKRrYpxsKpxXhE2+Di178GJOXFcte09Kwgeslg==}
     dependencies:
       scarletsframe: 0.35.9
     dev: true
