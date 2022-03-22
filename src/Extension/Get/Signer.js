@@ -17,7 +17,7 @@ class SignerNode extends Blackprint.Node {
 
 		let iface = this.setInterface(); // use empty interface
 		iface.title = "Signer";
-		iface.description = "Sign data with browser extension";
+		iface.description = "Get browser extension's signer reference";
 
 		this._toast = new NodeToast(this.iface);
 

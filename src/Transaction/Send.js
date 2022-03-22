@@ -111,6 +111,7 @@ class TransferSendNode extends Blackprint.Node {
 		if(!Input.Txn || !Input.Signer)
 			return toast.error("Some input port need to have a value");
 
+		toast.clear();
 		let ref = Input.Signer;
 
 		Output.TxHash = null; // Remove old hash value if exist in the port
