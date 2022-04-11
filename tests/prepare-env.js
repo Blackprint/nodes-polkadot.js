@@ -9,7 +9,7 @@ globalThis.URL = function(){return {href:'', pathname:''}};
 globalThis.crypto = require('crypto').webcrypto; // required by @polkadot/util-crypto
 
 // Required by @polkadot/util for doing RPC with HTTP
-import('node-fetch').then(v => globalThis.fetch = v);
+globalThis.fetch = require("node-fetch");
 
 // Test timeout = 40 sec
 // This usually needed for waiting for new heads/blocks and waiting transaction to finish
