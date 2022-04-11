@@ -14,22 +14,23 @@
     "build-prod": "blackprint build production"
   },
   "dependencies": {
-    "@polkadot/api": "^7.9.1",
-    "@polkadot/keyring": "^8.4.1",
-    "@polkadot/types": "^7.9.1",
-    "@polkadot/util": "^8.4.1",
-    "@polkadot/util-crypto": "^8.4.1"
+    "@polkadot/api": "^8.0.1",
+    "@polkadot/keyring": "^9.0.1",
+    "@polkadot/types": "^8.0.1",
+    "@polkadot/util": "^9.0.1",
+    "@polkadot/util-crypto": "^9.0.1"
   },
   "devDependencies": {
     "@blackprint/cli-tools": "0.3.18",
     "@blackprint/engine": "0.6.4",
-    "@blackprint/sketch": "0.6.7",
-    "@polkadot/extension-dapp": "^0.42.9",
-    "@polkadot/extension-inject": "^0.42.9",
+    "@blackprint/sketch": "0.6.8",
+    "@polkadot/extension-dapp": "^0.43.0",
+    "@polkadot/extension-inject": "^0.43.0",
     "dotenv": "^16.0.0",
-    "jest": "^27.4.7",
-    "node-fetch": "^2.6.7",
-    "scarletsframe": "0.35.9"
+    "jest": "^27.5.1",
+    "node-fetch": "^3.2.3",
+    "vinyl": "^2.2.1",
+    "scarletsframe": "0.35.15"
   },
   "keywords": [
     "blackprint",

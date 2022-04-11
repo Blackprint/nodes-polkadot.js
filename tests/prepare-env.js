@@ -6,8 +6,10 @@ globalThis.ResizeObserver = class{};
 globalThis.require = require;
 globalThis.__filename = __filename;
 globalThis.URL = function(){return {href:''}};
-globalThis.fetch = require('node-fetch'); // required by @polkadot/util for doing RPC with HTTP
 globalThis.crypto = require('crypto').webcrypto; // required by @polkadot/util-crypto
+
+// Required by @polkadot/util for doing RPC with HTTP
+import('node-fetch').then(v => globalThis.fetch = v);
 
 // Test timeout = 40 sec
 // This usually needed for waiting for new heads/blocks and waiting transaction to finish
