@@ -62,12 +62,12 @@ The `src` directory structure is arranged like below:
 
 | File path | Blackprint Node path |
 |---|---|
-| `./src/Account/Transfer.js`| `Polkadot.js/Account/Transfer` |
+| `./src/Account/Transfer/Balance.js`| `Polkadot.js/Account/Transfer/Balance` |
 | `./src/Connection/WebSocket.js`| `Polkadot.js/Connection/WebSocket` |
 
 With the above structure, you can easily find the nodes on Blackprint Editor like below:
 
-![SomYbBNG53](https://user-images.githubusercontent.com/11073373/148333916-e1ed64ef-9a4a-483b-8077-ff9600fd2d03.png)
+![0AGnpEq98x](https://user-images.githubusercontent.com/11073373/162767398-c35de16e-e1a8-4b47-9686-821927b6c3c4.png)
 
 ## Development
 
@@ -76,12 +76,24 @@ You will need to clone this repository and install the required dependencies.
 $ npm install
 ```
 
-### Watch changes and run a local server
+### Watch changes and run a local module server
 By running local server you can ask Blackprint Editor to connect into it to enjoy hot reload.<br>
 If you only want to do a testing, please skip this step.
 ```sh
 $ npm start
+ >> [Browsersync] Access URLs:
+ >> -----------------------------------
+ >> Local: http://localhost:6789
+ >> ---------------
 ```
+
+<details>
+  <summary>Click here to see more detail</summary>
+
+After running the module server, you can go to https://blackprint.github.io/dev.html and open a new sketch. Click the main menu on the top left and click Remote -> Module, then paste your module server's URL the click Connect.
+
+![brave_7NcrWUt66n](https://user-images.githubusercontent.com/11073373/159176092-7271f980-2a70-4e38-8830-e9746170426d.png)
+</details>
 
 ### Build and minify
 Bundle every files and minify it into 3 distributable file.
@@ -118,7 +130,7 @@ Blackprint.loadModuleFromURL([
 });
 ```
 
-## Development URL
+### Load unpublished module from GitHub
 You can use this link to load unpublished nodes that still under development on GitHub.<br>
 https://cdn.jsdelivr.net/gh/Blackprint/nodes-polkadot.js@dist/nodes-polkadotjs.mjs?1
 
@@ -133,3 +145,8 @@ https://cdn.jsdelivr.net/gh/Blackprint/nodes-polkadot.js@dist/nodes-polkadotjs.m
 MIT
 
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FBlackprint%2Fnodes-polkadot.js.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FBlackprint%2Fnodes-polkadot.js?ref=badge_large)
+
+<!--
+https://github.com/polkadot-js/api/pull/4672 (PR merging GPL library)
+https://github.com/polkadot-js/api/issues/2666 (Why Apache 2.0 license)
+-->
