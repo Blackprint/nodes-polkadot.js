@@ -5,7 +5,7 @@ globalThis.window = globalThis;
 globalThis.ResizeObserver = class{};
 globalThis.require = require;
 globalThis.__filename = __filename;
-globalThis.URL = function(){return {href:''}};
+globalThis.URL = function(){return {href:'', pathname:''}};
 globalThis.crypto = require('crypto').webcrypto; // required by @polkadot/util-crypto
 
 // Required by @polkadot/util for doing RPC with HTTP
