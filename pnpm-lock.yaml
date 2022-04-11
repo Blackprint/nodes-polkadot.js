@@ -15,7 +15,7 @@ specifiers:
   jest: ^27.5.1
   node-fetch: ^3.2.3
   scarletsframe: 0.35.15
-  vinyl: '*'
+  vinyl: ^2.2.1
 
 dependencies:
   '@polkadot/api': 8.0.1
