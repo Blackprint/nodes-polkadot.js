@@ -13,6 +13,13 @@ describe("Nodes for Polkadot.js's browser extension", () => {
 		// Create node for accessing the extension
 		let extension = MyInstance.createNode('Polkadot.js/Connection/Extension', {data: {dAppName: 'BP-Polkadot.js'}});
 
+		let extensionId = new Blackprint.OutputPort(String);
+		extensionId.value = 'polkadot-js';
+
+		// Connect to browser wallet with id: polkadot-js
+		extension.input.ExtensionId.connectPort(extensionId);
+		extension.ref.Input.Connect();
+
 		// Check if the access was allowed
 		// Note: This will always be allowed when testing on Node.js
 		extension.output.IsAllowed.on('value', ev => {

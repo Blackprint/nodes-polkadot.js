@@ -26,7 +26,15 @@ class ConnectionExtensionData {
 // Register Blackprint Node
 Blackprint.registerNode("Polkadot.js/Connection/Extension",
 class ExtensionNode extends Blackprint.Node {
-	static input = undefined; // This node doesn't need any input port
+	// Input port
+	static input = {
+		// If you're using Polkadot{.js} browser extension
+		// The id is `polkadot-js`
+		ExtensionId: String,
+		Connect: Blackprint.Port.Trigger(function(){
+			this.iface.connectExtension();
+		}),
+	};
 
 	// Output port
 	static output = {
@@ -70,20 +78,27 @@ Context.IFace.ConnectionExtension = class ExtensionIFace extends Blackprint.Inte
 		this._toast.warn("Disconnected");
 	}
 
-	// This will be called by the engine after node has been loaded
-	// and other data like cable connection has been connected/added
-	async init(){
+	// This will be called if `Connect` port has been triggered
+	async connectExtension(){
 		let {Input, Output, IInput, IOutput} = this.ref; // Shortcut
 		let toast = this._toast;
 
-		let polkadot = window.injectedWeb3?.["polkadot-js"];
+		if(!Input.ExtensionId){
+			console.error("ExtensionId is required");
+			return toast.error("ExtensionId is required");
+		}
+
+		let polkadot = window.injectedWeb3?.[Input.ExtensionId];
 		if(polkadot === void 0){
-			console.error("Extension injection was not found");
-			return toast.error("Extension injection was not found");
+			console.error("Extension (with id: "+ Input.ExtensionId +") was not found");
+			return toast.error("Extension (with id: "+ Input.ExtensionId +") was not found");
 		}
 
 		toast.clear();
 		toast.warn("Asking for Permission");
+
+		// Unsubscribe from the last extension if the connection was exist
+		this._unsubscribe?.();
 
 		try{
 			this._polkadot = await polkadotExtensionDapp.web3Enable(this.data.dAppName);
