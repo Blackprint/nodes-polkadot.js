@@ -62,10 +62,16 @@ class TransferSendNode extends Blackprint.Node {
 						if(error.isModule){
 							let api = Input.Txn.api;
 	
-							let decoded = api.registry.findMetaError(error.asModule);
-							let { docs, method, section } = decoded;
-	
-							toast.error(docs.join(' ') || `${section}: ${method}`);
+							try{
+								let decoded = api.registry.findMetaError(error.asModule);
+								let { docs, method, section } = decoded;
+		
+								toast.error(docs.join(' ') || `${section}: ${method}`);
+							}
+							catch{
+								console.log("Txn error data:", error.toString());
+								toast.error("Transaction failed");
+							}
 						}
 						else {
 							console.log("Txn error data:", error.toString());
