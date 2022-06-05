@@ -32,6 +32,14 @@
     "vinyl": "^2.2.1",
     "scarletsframe": "0.35.16"
   },
+  "overrides": {
+    "@polkadot/rpc-core": {
+      "@polkadot/rpc-provider": "7.13.1"
+    }
+  },
+  "resolutions": {
+    "@polkadot/rpc-provider": "7.13.1"
+  },
   "keywords": [
     "blackprint",
     "polkadot"

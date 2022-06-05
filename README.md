@@ -144,7 +144,7 @@ https://cdn.jsdelivr.net/gh/Blackprint/nodes-polkadot.js@dist/nodes-polkadotjs.m
 ### License
 MIT
 
-<!-- [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FBlackprint%2Fnodes-polkadot.js.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FBlackprint%2Fnodes-polkadot.js?ref=badge_large) -->
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FBlackprint%2Fnodes-polkadot.js.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FBlackprint%2Fnodes-polkadot.js?ref=badge_large)
 
 <!--
 https://github.com/polkadot-js/api/pull/4672 (PR merging GPL library)
