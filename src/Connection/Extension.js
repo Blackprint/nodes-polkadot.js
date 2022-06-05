@@ -22,6 +22,10 @@ class ConnectionExtensionData {
 	}
 }
 
+// Make sure the property that can be exported to JSON is visible/enumerable
+Blackprint.utils.setEnumerablePrototype(ConnectionExtensionData, {
+	dAppName: true,
+});
 
 // Register Blackprint Node
 Blackprint.registerNode("Polkadot.js/Connection/Extension",
@@ -88,8 +92,8 @@ Context.IFace.ConnectionExtension = class ExtensionIFace extends Blackprint.Inte
 			return toast.error("ExtensionId is required");
 		}
 
-		let polkadot = window.injectedWeb3?.[Input.ExtensionId];
-		if(polkadot === void 0){
+		let wallet = window.injectedWeb3?.[Input.ExtensionId];
+		if(wallet === void 0){
 			console.error("Extension (with id: "+ Input.ExtensionId +") was not found");
 			return toast.error("Extension (with id: "+ Input.ExtensionId +") was not found");
 		}

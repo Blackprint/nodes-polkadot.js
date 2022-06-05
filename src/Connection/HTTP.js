@@ -20,6 +20,10 @@ class ConnectionHTTPData {
 	}
 }
 
+// Make sure the property that can be exported to JSON is visible/enumerable
+Blackprint.utils.setEnumerablePrototype(ConnectionHTTPData, {
+	rpcURL: true,
+});
 
 // Register Blackprint Node
 Blackprint.registerNode("Polkadot.js/Connection/HTTP",
