@@ -19,33 +19,50 @@ var polkadotExtensionDapp;
 // Import for different environment
 let crypto = window.crypto;
 if(Blackprint.Environment.loadFromURL === false) {
-	if(window.Blackprint.Environment.isNode)
+	if(window.Blackprint.Environment.isNode){
 		crypto = (await import('node:crypto')).webcrypto;
 
-	let path = 'file:///'+process.cwd();
+		// Bugfix for polkadot.js's dependency library
+		window.addEventListener ??= ()=>{};
 
-	// Use the bundled version
-	await import(path+'/node_modules/@polkadot/util/bundle-polkadot-util.js');
-	await import(path+'/node_modules/@polkadot/util-crypto/bundle-polkadot-util-crypto.js');
-	await import(path+'/node_modules/@polkadot/keyring/bundle-polkadot-keyring.js');
-	await import(path+'/node_modules/@polkadot/types/bundle-polkadot-types.js');
-	await import(path+'/node_modules/@polkadot/api/bundle-polkadot-api.js');
+		// We can't use the bundled version because it's currently not for Node.js
+		try{
+			polkadotUtil = await import('@polkadot/util');
+			polkadotUtilCrypto = await import('@polkadot/util-crypto');
+			polkadotKeyring = await import('@polkadot/keyring');
+			polkadotTypes = await import('@polkadot/types');
+			polkadotApi = await import('@polkadot/api');
+		} catch(e) {
+			console.log(e);
+			setTimeout(() => process.exit(), 500);
+		}
+	}
+	else{
+		// Use the bundled version for Browser and Deno
+		let path = 'file:///'+process.cwd();
 
-	if(window.Blackprint.Environment.isBrowser)
-		await import(path+'/node_modules/@polkadot/extension-dapp/bundle-polkadot-extension-dapp.js');
-	
-	({ polkadotApi, polkadotKeyring, polkadotTypes, polkadotUtilCrypto, polkadotUtil } = window);
+		await import(path+'/node_modules/@polkadot/util/bundle-polkadot-util.js');
+		await import(path+'/node_modules/@polkadot/util-crypto/bundle-polkadot-util-crypto.js');
+		await import(path+'/node_modules/@polkadot/keyring/bundle-polkadot-keyring.js');
+		await import(path+'/node_modules/@polkadot/types/bundle-polkadot-types.js');
+		await import(path+'/node_modules/@polkadot/api/bundle-polkadot-api.js');
+
+		if(window.Blackprint.Environment.isBrowser)
+			await import(path+'/node_modules/@polkadot/extension-dapp/bundle-polkadot-extension-dapp.js');
+
+		({ polkadotApi, polkadotKeyring, polkadotTypes, polkadotUtilCrypto, polkadotUtil } = window);
+	}
 }
 else{
 	/* Parallely load dependencies from CDN */
 	// Use bundled file
 	// This will be registered on global (window)
 	let _remoteModule = [
-		"https://cdn.jsdelivr.net/npm/@polkadot/util@^9.0.1/bundle-polkadot-util.min.js",
-		"https://cdn.jsdelivr.net/npm/@polkadot/util-crypto@^9.0.1/bundle-polkadot-util-crypto.min.js",
-		"https://cdn.jsdelivr.net/npm/@polkadot/keyring@^9.0.1/bundle-polkadot-keyring.min.js",
-		"https://cdn.jsdelivr.net/npm/@polkadot/types@^8.0.1/bundle-polkadot-types.min.js",
-		"https://cdn.jsdelivr.net/npm/@polkadot/api@^8.0.1/bundle-polkadot-api.min.js",
+		"https://cdn.jsdelivr.net/npm/@polkadot/util@10/bundle-polkadot-util.min.js",
+		"https://cdn.jsdelivr.net/npm/@polkadot/util-crypto@10/bundle-polkadot-util-crypto.min.js",
+		"https://cdn.jsdelivr.net/npm/@polkadot/keyring@10/bundle-polkadot-keyring.min.js",
+		"https://cdn.jsdelivr.net/npm/@polkadot/types@8/bundle-polkadot-types.min.js",
+		"https://cdn.jsdelivr.net/npm/@polkadot/api@8/bundle-polkadot-api.min.js",
 	];
 
 	if(window.Blackprint.Environment.isDeno) { // Untested

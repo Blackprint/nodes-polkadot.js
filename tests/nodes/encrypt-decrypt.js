@@ -7,6 +7,8 @@
 // This test will be run after
 // - tests/nodes/import-mnemonic.js
 
+let polkadotUtil = require('@polkadot/util');
+
 describe("Encrypt and decrypt data", () => {
 	let textData = "hello world";
 	let bytesData = "104,101,108,108,111,32,119,111,114,108,100";

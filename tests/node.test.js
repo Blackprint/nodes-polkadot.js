@@ -39,10 +39,11 @@ test("Load required modules", async () => {
 	expect(Blackprint.nodes['Polkadot.js']).toBeDefined();
 });
 
-test("Create WebSocket node", async () => {
-	MyInstance.createNode('Polkadot.js/Connection/WebSocket', {id: 'WS_RPC'});
-	expect(MyInstance.iface.WS_RPC).toBeDefined();
-});
-
-// ToDo
-// require('./features.js');
+// Let's test the nodes
+require('./nodes/http-and-ws-provider.js');
+require('./nodes/event-new-heads.js');
+require('./nodes/import-mnemonic.js');
+require('./nodes/sign-verify.js');
+require('./nodes/encrypt-decrypt.js');
+// require('./nodes/browser-extension.js'); // Only for browser
+require('./nodes/transfer-balance.js'); // This also contain test for listening balance changes
