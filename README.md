@@ -1,6 +1,5 @@
 [![NPM](https://img.shields.io/npm/v/@blackprint/nodes-polkadot.js.svg)](https://www.npmjs.com/package/@blackprint/nodes-polkadot.js)
 [![Build Status](https://github.com/Blackprint/nodes-polkadot.js/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/Blackprint/nodes-polkadot.js/actions/workflows/build.yml)
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FBlackprint%2Fnodes-polkadot.js.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FBlackprint%2Fnodes-polkadot.js?ref=badge_shield)
 
 ## Polkadot.js integration for Blackprint
 
@@ -38,7 +37,9 @@ Below is the summary and some information of the video:
 ---
 
 ### Examples
-For more updated example, please go to [/example](https://github.com/Blackprint/nodes-polkadot.js/tree/main/example) directory and import it with [Blackprint Editor](https://blackprint.github.io/dev.html). You can also get a list of example on Blackprint Editor if you load the module by using module search feature from the editor.
+Click [this link](https://blackprint.github.io/#page/sketch/1#;openExample:github.com/Blackprint/nodes-polkadot.js) to open example list in Blackprint Editor.
+
+You can also manually import a JSON for [Blackprint Editor](https://blackprint.github.io/dev.html) from [/example](https://github.com/Blackprint/nodes-polkadot.js/tree/main/example) directory.
 
 ---
 
@@ -73,7 +74,8 @@ With the above structure, you can easily find the nodes on Blackprint Editor lik
 
 You will need to clone this repository and install the required dependencies.
 ```sh
-$ npm install
+# You can also use npm or yarn instead of pnpm
+$ pnpm install
 ```
 
 ### Watch changes and run a local module server
@@ -139,12 +141,12 @@ https://cdn.jsdelivr.net/gh/Blackprint/nodes-polkadot.js@dist/nodes-polkadotjs.m
 <!--
 > You will need to purge cache from jsdelivr
 > https://purge.jsdelivr.net/gh/Blackprint/nodes-polkadot.js@dist/nodes-polkadotjs.mjs
+
+https://github.com/jsdelivr/jsdelivr#caching
 -->
 
 ### License
-MIT
-
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FBlackprint%2Fnodes-polkadot.js.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FBlackprint%2Fnodes-polkadot.js?ref=badge_large)
+This module is released with MIT license and depends on Polkadot.js library with Apache 2.0 license.
 
 <!--
 https://github.com/polkadot-js/api/pull/4672 (PR merging GPL library)
