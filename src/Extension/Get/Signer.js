@@ -5,19 +5,30 @@
  */
 
 
-// Register Blackprint Node
+/**
+ * Before using this node,
+ * You must request for access into browser extension first with
+ * Polkadot.js/Connection/Extension
+ * @blackprint node
+ * @summary Get wallet signer from browser extension
+ */
 Blackprint.registerNode("Polkadot.js/Extension/Get/Signer",
 class SignerNode extends Blackprint.Node {
 	// Node's input/output port
-	static input = { Address: String };
-	static output = { Signer: Signer };
+	static input = {
+		/** Wallet/account address in base58 format */
+		Address: String,
+	};
+	static output = {
+		/** This can be used for signing transaction */
+		Signer: Signer,
+	};
 
 	constructor(instance){
 		super(instance);
 
 		let iface = this.setInterface(); // use empty interface
 		iface.title = "Signer";
-		iface.description = "Get browser extension's signer reference";
 
 		this._toast = new NodeToast(this.iface);
 

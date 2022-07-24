@@ -27,14 +27,23 @@ Blackprint.utils.setEnumerablePrototype(ConnectionExtensionData, {
 	dAppName: true,
 });
 
-// Register Blackprint Node
+/**
+ * Connect a wallet from browser extension
+ * @blackprint node
+ * @summary Connect wallet from browser
+ */
 Blackprint.registerNode("Polkadot.js/Connection/Extension",
 class ExtensionNode extends Blackprint.Node {
 	// Input port
 	static input = {
-		// If you're using Polkadot{.js} browser extension
-		// The id is `polkadot-js`
+		/**
+		 * Extension's id
+		 * 
+		 * If you're using Polkadot{.js} browser extension
+		 * The id is `polkadot-js`
+		 */
 		ExtensionId: String,
+		/** Request the connection */
 		Connect: Blackprint.Port.Trigger(function(){
 			this.iface.connectExtension();
 		}),
@@ -42,7 +51,9 @@ class ExtensionNode extends Blackprint.Node {
 
 	// Output port
 	static output = {
+		/** Wallet accounts from browser extension */
 		Accounts: Array,
+		/** Return true if user was allowed access to browser extension */
 		IsAllowed: Boolean,
 	};
 
@@ -54,7 +65,6 @@ class ExtensionNode extends Blackprint.Node {
 		// Browser: ./Extension.sf
 		let iface = this.setInterface('BPIC/Polkadot.js/Connection/Extension');
 		iface.title = "Browser Wallet";
-		iface.description = "Connect to extension";
 	}
 
 	// This will be called by the engine once the node has been loaded, but no cable connected

@@ -3,24 +3,38 @@
  * import { NodeToast } from "../utils/NodeToast.js";
  */
 
+/**
+ * Create an unsigned transaction
+ * You may need to sign and send this to the RPC to be executed
+ * @blackprint node
+ * @summary Sign and submit transaction
+ */
 Blackprint.registerNode("Polkadot.js/Transaction/Send",
 class TransferSendNode extends Blackprint.Node {
 	// Input port
 	static input = {
+		/** Submit the transaction request into the parachain */
 		Submit: Blackprint.Port.Trigger(function(){
 			this.submit();
 		}),
-		Signer: Signer, // Can be from extension or generated keypair (with mnemonic/seed)
+		/** Can be from extension or generated keypair (with mnemonic/seed) */
+		Signer: Signer,
+		/** Unsigned transaction that will be submitted */
 		Txn: Transaction,
-		Nonce: Number, // Optional, in case if user want to override the nonce
+		/** Optional, in case if user want to override the nonce */
+		Nonce: Number,
 	};
 
 	// Output port
 	static output = {
-		Success: Function,  // Callback when the transaction was finalized and success
-		Failed: Function,   // Callback when the transaction was finalized and failed
-		Status: Object,     // Raw status from Polkadot.js
-		TxHash: Uint8Array, // This will have value after Ready status (before Broadcast)
+		/** Callback when the transaction was finalized and success */
+		Success: Function,
+		/** Callback when the transaction was finalized and failed */
+		Failed: Function,
+		/** Raw status from Polkadot.js */
+		Status: Object,
+		/** This will have value after Ready status (before Broadcast) */
+		TxHash: Uint8Array
 	};
 
 	constructor(instance){
@@ -28,7 +42,6 @@ class TransferSendNode extends Blackprint.Node {
 
 		let iface = this.setInterface(); // use default interface
 		iface.title = "Send Transaction";
-		iface.description = "Sign and submit transaction";
 		let toast = this._toast = new NodeToast(iface);
 
 		// After you submit the transaction

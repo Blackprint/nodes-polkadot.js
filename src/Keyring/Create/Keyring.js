@@ -5,17 +5,23 @@
  */
 
 
-// Register Blackprint Node
+/**
+ * Create a keyring to store keypairs
+ * @blackprint node
+ * @summary Collection of keys
+ */
 Blackprint.registerNode("Polkadot.js/Keyring/Create/Keyring",
 class KeyringNode extends Blackprint.Node {
-	// Output port
-	static output = {
-		Keyring: polkadotApi.Keyring
-	};
-
 	// Input port
 	static input = {
+		/** This must be one of ed25519, sr25519, ethereum, or ecdsa */
 		KeyType: Blackprint.Port.Default(String, 'ed25519'),
+	};
+
+	// Output port
+	static output = {
+		/** Polkadot.js's Keyring object */
+		Keyring: polkadotApi.Keyring,
 	};
 
 	constructor(instance){
@@ -23,7 +29,6 @@ class KeyringNode extends Blackprint.Node {
 
 		let iface = this.setInterface(); // use empty interface
 		iface.title = "Keyring";
-		iface.description = "Collection of keys";
 
 		this._toast = new NodeToast(this.iface);
 	}

@@ -3,22 +3,30 @@
  * import { NodeToast } from "../utils/NodeToast.js";
  */
 
+/**
+ * Combine transactions into one transaction to be executed in batch
+ * @blackprint node
+ * @summary Combine multiple transaction
+ */
 Blackprint.registerNode("Polkadot.js/Transaction/Batch",
 class BatchNode extends Blackprint.Node {
 	// Input port
 	static input = {
+		/** Multiple unsigned transactions */
 		Txn: Blackprint.Port.ArrayOf(Transaction),
 	};
 
 	// Output port
-	static output = { Txn: Transaction };
+	static output = {
+		/** One unsigned transaction */
+		Txn: Transaction,
+	};
 
 	constructor(instance){
 		super(instance);
 
 		let iface = this.setInterface(); // use default interface
 		iface.title = "Batch Transaction";
-		iface.description = "Combine multiple transaction";
 		this._toast = new NodeToast(iface);
 
 		// Manually call 'update' when any cable from input port was disconnected

@@ -4,13 +4,21 @@
  */
 
 
-// Register Blackprint Node
+/**
+ * Convert the wallet address into chain id's address
+ * @blackprint node
+ */
 Blackprint.registerNode("Polkadot.js/Convert/Address To/Address",
-class RandomSeedNode extends Blackprint.Node {
-	static output = {Address: String};
+class extends Blackprint.Node {
 	static input = {
+		/** Wallet/account address in base58 format */
 		Address: String,
+		/** Chain id */
 		ChainId: Number,
+	};
+	static output = {
+		/** Wallet/account address in base58 format */
+		Address: String,
 	};
 
 	constructor(instance){

@@ -5,21 +5,31 @@
  */
 
 
-// Register Blackprint Node
+/**
+ * Create a keypair and the signer from seed or mnemonic
+ * @blackprint node
+ */
 Blackprint.registerNode("Polkadot.js/Keyring/Create/Keypair",
 class KeypairNode extends Blackprint.Node {
 	// Node's input/output port
-	static output = {
-		Keypair: Object,
-		Address: String,
-		// PublicKey: Uint8Array,
-		Signer: Signer,
-	};
-
 	static input = {
+		/**
+		 * Keypair to store the keyring
+		 * You can leave this unconnected to use internal keyring
+		 */
 		Keyring: Blackprint.Port.Default(polkadotApi.Keyring, internalKeyring),
-		Seed: Blackprint.Port.Union([String, Uint8Array]), // hex, or 32 bytes U8A
-		Mnemonic: String, // 12 or 24 words
+		/** Hex string, or 32 bytes Uint8Array */
+		Seed: Blackprint.Port.Union([String, Uint8Array]), 
+		/** 12 or 24 words */
+		Mnemonic: String, 
+	};
+	static output = {
+		/** Generated key pair */
+		Keypair: Object,
+		/** Wallet/account address in base58 format */
+		Address: String,
+		/** This can be used for signing transaction */
+		Signer: Signer,
 	};
 
 	constructor(instance){

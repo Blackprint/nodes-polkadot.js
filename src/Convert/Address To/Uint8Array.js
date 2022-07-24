@@ -4,11 +4,20 @@
  */
 
 
-// Register Blackprint Node
+/**
+ * Convert the wallet address (in base58 format) into bytes
+ * @blackprint node
+ */
 Blackprint.registerNode("Polkadot.js/Convert/Address To/Uint8Array",
 class RandomSeedNode extends Blackprint.Node {
-	static output = { Bytes: Uint8Array };
-	static input = { Address: String };
+	static output = {
+		/** Address's bytes */
+		Bytes: Uint8Array,
+	};
+	static input = {
+		/** Wallet/account address in base58 format */
+		Address: String,
+	};
 
 	constructor(instance){
 		super(instance);

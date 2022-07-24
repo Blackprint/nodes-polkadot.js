@@ -5,19 +5,29 @@
  */
 
 
-// Register Blackprint Node
+/**
+ * Create a wallet with a random seed
+ * This can be useful for testing something
+ * @blackprint node
+ * @summary Randomly generated wallet
+ */
 Blackprint.registerNode("Polkadot.js/Keyring/Dummy",
 class DummyNode extends Blackprint.Node {
 	// Input port
 	static input = {
+		/** This must be one of ed25519, sr25519, ethereum, or ecdsa */
 		KeyType: Blackprint.Port.Default(String, 'ed25519'),
 	};
 
 	// Output port
 	static output = {
-		Address: String, // base58
+		/** Wallet/account address in base58 format */
+		Address: String,
+		/** Random seed that was being used to generate this dummy wallet */
 		Seed: Uint8Array,
+		/** This wallet's signer */
 		Signer: Signer,
+		/** This wallet's pair key */
 		Pair: Object,
 	};
 
@@ -26,7 +36,6 @@ class DummyNode extends Blackprint.Node {
 
 		let iface = this.setInterface(); // use empty interface
 		iface.title = "Dummy Key";
-		iface.description = "Randomly generated wallet";
 	}
 
 	// This will be called by the engine once the node has been loaded

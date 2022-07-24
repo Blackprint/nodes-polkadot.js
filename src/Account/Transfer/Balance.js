@@ -4,18 +4,32 @@
  * { polkadotApi } = window;
  */
 
+/**
+ * Transfer account's balance to another account (account = wallet)
+ * @blackprint node
+ * @summary Transfer balance to an address
+ */
 Blackprint.registerNode("Polkadot.js/Account/Transfer/Balance",
 class TransferNode extends Blackprint.Node {
 	// Input port
 	static input = {
+		/** Polkadot's API connection */
 		API: polkadotApi.ApiPromise,
-		Address: String, // base58
-		Value: Number, // must be positive and lower than 2^53 - 1
+		/** Wallet/account address in base58 format */
+		Address: String,
+		/** Amount of transfer (must be positive and lower than 2^53 - 1) */
+		Value: Number,
 	};
 
 	// Output port
 	static output = {
-		Txn: Transaction, // Unsigned transaction
+		/**
+		 * Unsigned transaction
+		 * 
+		 * this must be signed by the sender before being
+		 * submitted to blockchain to be executed
+		 */
+		Txn: Transaction,
 	};
 
 	constructor(instance){
@@ -23,7 +37,6 @@ class TransferNode extends Blackprint.Node {
 
 		let iface = this.setInterface(); // use default interface
 		iface.title = "Transfer Balance";
-		iface.description = "Transfer balance to an address";
 		this._toast = new NodeToast(iface);
 
 		// Manually call 'update' when any cable from input port was disconnected

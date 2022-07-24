@@ -5,7 +5,11 @@
  */
 
 
-// Register Blackprint Node
+/**
+ * Listen to new block generated on parachain through WebSocket RPC
+ * @blackprint node
+ * @summary Listen for new blocks
+ */
 Blackprint.registerNode("Polkadot.js/Events/Blocks",
 class BlocksNode extends Blackprint.Node {
 	// Node type: event listener
@@ -13,12 +17,15 @@ class BlocksNode extends Blackprint.Node {
 
 	// Input port
 	static input = {
+		/** Polkadot.js's WebSocket API */
 		API: polkadotApi.ApiPromise,
 	};
 
 	// Output port
 	static output = {
+		/** Raw event data */
 		Data: Object,
+		/** Block number */
 		Number: Number,
 	};
 
@@ -30,7 +37,6 @@ class BlocksNode extends Blackprint.Node {
 		// Browser: ./Blocks.sf
 		let iface = this.setInterface('BPIC/Polkadot.js/Events/Blocks');
 		iface.title = "Blocks Event";
-		iface.description = "Listen for new blocks";
 
 		this._toast = new NodeToast(iface);
 	}

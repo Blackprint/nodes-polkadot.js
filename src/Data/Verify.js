@@ -5,18 +5,26 @@
  */
 
 
-// Register Blackprint Node
+/**
+ * Verify the validation of data with the data's signature
+ * @blackprint node
+ * @summary Verify signed data
+ */
 Blackprint.registerNode("Polkadot.js/Data/Verify",
 class VerifyNode extends Blackprint.Node {
 	// Input port
 	static input = {
-		Address: String, // base58
-		Signature: Blackprint.Port.Union([String, Uint8Array]),
+		/** Wallet/account address in base58 format */
+		Address: String,
+		/** Original data */
 		Data: Blackprint.Port.Union([String, Uint8Array]),
+		/** Data's signature */
+		Signature: Blackprint.Port.Union([String, Uint8Array]),
 	};
 
 	// Output port
 	static output = {
+		/** Return true if the data's signature is valid */
 		IsValid: Boolean
 	};
 
@@ -25,7 +33,6 @@ class VerifyNode extends Blackprint.Node {
 
 		let iface = this.setInterface(); // use empty interface
 		iface.title = "Verify";
-		iface.description = "Verify signed message";
 
 		this._toast = new NodeToast(this.iface);
 

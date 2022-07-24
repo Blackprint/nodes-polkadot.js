@@ -48,18 +48,28 @@ class CrypterNode extends Blackprint.Node {
 }
 
 
-// Register Blackprint Node
+/**
+ * Decrypt a data by using wallet's keypair
+ * @blackprint node
+ */
 Blackprint.registerNode("Polkadot.js/Data/Keyring/Decrypt",
 class DecryptNode extends CrypterNode {
 	// Input port
 	static input = {
+		/** Wallet's keypair for decrypting data */
 		Keypair: Object,
-		Author: Blackprint.Port.Union([String, Uint8Array]), // base58, hex, public key's bytes
-		Data: Blackprint.Port.Union([String, Uint8Array]), // text, bytes
+		/**
+		 * Author's wallet address who was encrypted the data
+		 * can be base58, hex string, public key's bytes
+		 */
+		Author: Blackprint.Port.Union([String, Uint8Array]),
+		/** Encrypted data in text or bytes (Uint8Array) */
+		Data: Blackprint.Port.Union([String, Uint8Array]),
 	};
 
 	// Output port
 	static output = {
+		/** Decrypted data in bytes */
 		Bytes: Uint8Array
 	};
 

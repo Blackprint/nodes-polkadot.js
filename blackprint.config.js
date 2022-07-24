@@ -17,6 +17,9 @@ module.exports = {
 	// Optional: Add header to every combined file
 	header: "/* MIT Licensed */",
 
+	// Optional: Extract registerNode's JSDocs
+	bpDocs: '@cwd/dist/nodes-polkadotjs.docs.json',
+
 	// (Required)
 	// The .js file probably can be imported for non-browser too
 	// Maybe you want to write Node.js compatible node on ".js"

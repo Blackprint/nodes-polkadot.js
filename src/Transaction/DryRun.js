@@ -3,11 +3,19 @@
  * import { NodeToast } from "../utils/NodeToast.js";
  */
 
+/**
+ * Try run a transaction, but this will not actually being executed
+ * Some parachain may not support this feature
+ * @blackprint node
+ * @summary Try a transaction but not actually execute it
+ */
 Blackprint.registerNode("Polkadot.js/Transaction/DryRun",
 class TransferNode extends Blackprint.Node {
 	// Input port
 	static input = {
-		Signer: Signer, // Can be from extension or generated keypair (with mnemonic/seed)
+		/** Can be from extension or generated keypair (with mnemonic/seed) */
+		Signer: Signer,
+		/** Unsigned transaction */
 		Txn: Transaction,
 	};
 
@@ -19,7 +27,6 @@ class TransferNode extends Blackprint.Node {
 
 		let iface = this.setInterface(); // use default interface
 		iface.title = "Dry Run Transaction";
-		iface.description = "Try a transaction but not actually execute it";
 		this._toast = new NodeToast(iface);
 
 		// Manually call 'update' when any cable from input port was disconnected

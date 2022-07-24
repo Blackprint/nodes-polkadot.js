@@ -4,6 +4,11 @@
  * { polkadotApi } = window
  */
 
+/**
+ * Listen to balance changes of an account (wallet) through WebSocket RPC
+ * @blackprint node
+ * @summary Listen for balance changes
+ */
 Blackprint.registerNode("Polkadot.js/Events/Account/Balance",
 class AccountBalanceNode extends Blackprint.Node {
 	// Node type: event listener
@@ -11,13 +16,16 @@ class AccountBalanceNode extends Blackprint.Node {
 
 	// Input port
 	static input = {
+		/** Polkadot.js's WebSocket API */
 		API: polkadotApi.ApiPromise,
+		/** Wallet/account address in base58 format */
 		Address: String,
 	};
 
 	// Output port
 	static output = {
-		Data: Object,
+		/** Raw event data */
+		Data: Object, // ToDo
 	};
 
 	constructor(instance){
@@ -25,7 +33,6 @@ class AccountBalanceNode extends Blackprint.Node {
 
 		let iface = this.setInterface(); // Use default interface
 		iface.title = "Account Balance Event";
-		iface.description = "Listen for balance changes";
 		iface.type = 'event';
 
 		this._toast = new NodeToast(iface);

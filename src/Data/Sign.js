@@ -5,20 +5,29 @@
  */
 
 
-// Register Blackprint Node
+/**
+ * Sign a data with wallet's signer (private key)
+ * The signed data can then be verified with the signer's wallet address (public key)
+ * @blackprint node
+ * @summary Sign a data
+ */
 Blackprint.registerNode("Polkadot.js/Data/Sign",
 class SignNode extends Blackprint.Node {
 	// Input port
 	static input = {
+		/** Start the signing process (trigger is required to ask access to browser wallet) */
 		Trigger: Blackprint.Port.Trigger(function(){
 			this.trigger();
 		}),
+		/** Keypair's signer or browser extension's signer */
 		Signer: Signer,
+		/** Any data to be signed */
 		Data: Blackprint.Port.Union([String, Uint8Array]),
 	};
 
 	// Output port
 	static output = {
+		/** Data's signature */
 		Bytes: Uint8Array
 	};
 

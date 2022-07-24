@@ -3,23 +3,32 @@
  * import { NodeToast } from "../utils/NodeToast.js";
  */
 
+/**
+ * Retrieve a payment info from an signed/unsigned transaction
+ * @blackprint node
+ * @summary Get transaction fee
+ */
 Blackprint.registerNode("Polkadot.js/Transaction/PaymentInfo",
 class PaymentInfoNode extends Blackprint.Node {
 	// Input port
 	static input = {
-		Sender: String, // Sender's address
+		/** Sender's address */
+		Sender: String,
+		/** Signed/unsigned transaction */
 		Txn: Transaction,
 	};
 
 	// Output port
-	static output = { Info: Object };
+	static output = {
+		/** Raw status response */
+		Info: Object // ToDo
+	};
 
 	constructor(instance){
 		super(instance);
 
 		let iface = this.setInterface(); // use default interface
 		iface.title = "Payment Info";
-		iface.description = "Get transaction fee";
 		this._toast = new NodeToast(iface);
 
 		// Manually call 'update' when any cable from input port was disconnected

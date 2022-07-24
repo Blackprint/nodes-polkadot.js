@@ -4,11 +4,14 @@
  */
 
 
-// Register Blackprint Node
+/**
+ * Convert any string into bytes
+ * @blackprint node
+ */
 Blackprint.registerNode("Polkadot.js/Convert/String To/Uint8Array",
 class RandomSeedNode extends Blackprint.Node {
-	static output = {Out: Uint8Array};
 	static input = {In: String};
+	static output = {Out: Uint8Array};
 
 	constructor(instance){
 		super(instance);

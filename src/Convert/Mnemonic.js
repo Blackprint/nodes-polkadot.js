@@ -5,12 +5,21 @@
  */
 
 
-// Register Blackprint Node
+/**
+ * Convert mnemonic into a secret key
+ * @blackprint node
+ */
 Blackprint.registerNode("Polkadot.js/Convert/Mnemonic",
 class MnemonicNode extends Blackprint.Node {
 	// Node's output/input port
-	static input = { Text: String };
-	static output = { Seed: Uint8Array };
+	static input = {
+		/** Mnemonic */
+		Text: String,
+	};
+	static output = {
+		/** Secret key */
+		Seed: Uint8Array,
+	};
 
 	constructor(instance){
 		super(instance);

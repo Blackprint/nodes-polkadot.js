@@ -25,14 +25,20 @@ Blackprint.utils.setEnumerablePrototype(ConnectionWebSocketData, {
 	rpcURL: true,
 });
 
-// Register Blackprint Node
+/**
+ * Connect to parachain's RPC through WebSocket
+ * @blackprint node
+ * @summary Web3 RPC Connection
+ */
 Blackprint.registerNode("Polkadot.js/Connection/WebSocket",
 class WebSocketNode extends Blackprint.Node {
 	// Input port
 	static input = {
+		/** Initiate connection with the RPC */
 		Connect: Blackprint.Port.Trigger(function(){
 			this.output.Provider?.connect();
 		}),
+		/** Disconnect the RPC */
 		Disconnect: Blackprint.Port.Trigger(function(){
 			this.output.Provider?.disconnect();
 		}),
@@ -40,9 +46,13 @@ class WebSocketNode extends Blackprint.Node {
 
 	// Output port
 	static output = {
-		Provider: polkadotApi.WsProvider,
+		/** RPC Provider object from Polkadot.js's */
+		Provider: polkadotApi.HttpProvider,
+		/** API object from Polkadot.js's */
 		API: polkadotApi.ApiPromise,
+		/** This will be called when we successfully connected to the RPC*/
 		Connected: Function,
+		/** This will be called when we disconnected with the RPC*/
 		Disconnected: Function,
 	};
 
@@ -54,7 +64,6 @@ class WebSocketNode extends Blackprint.Node {
 		// Browser: ./WebSocket.sf
 		let iface = this.setInterface('BPIC/Polkadot.js/Connection/WebSocket');
 		iface.title = "WebSocket";
-		iface.description = "Web3 RPC Connection";
 
 		iface.data = new ConnectionWebSocketData(iface);
 	}

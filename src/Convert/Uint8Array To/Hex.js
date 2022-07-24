@@ -4,11 +4,14 @@
  */
 
 
-// Register Blackprint Node
+/**
+ * Convert bytes into hex string
+ * @blackprint node
+ */
 Blackprint.registerNode("Polkadot.js/Convert/Uint8Array To/Hex",
 class RandomSeedNode extends Blackprint.Node {
-	static output = {Out: String};
 	static input = {In: Uint8Array};
+	static output = {Out: String};
 
 	constructor(instance){
 		super(instance);
