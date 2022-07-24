@@ -14,75 +14,77 @@ let SubstrateSubscriber = {
 	SubscribeStorage: "state",
 };
 
+let TypeAny = Blackprint.Types.Any;
+
 // ToDo: Type mapping (Rust Types => JavaScript Types)
 // Vec => Array
 // HashMap => Map
 // Option => can be null or have a value (optional)
 let SubstrateTypeData = {
 	'AccountId': String,
-	'ApplyExtrinsicResult': null,
-	'BeefySignedCommitment': null,
-	'BlockHash': null,
+	'ApplyExtrinsicResult': TypeAny,
+	'BeefySignedCommitment': TypeAny,
+	'BlockHash': TypeAny,
 	'BlockNumber': Number,
 	'Bytes': String,
-	'ChainProperties': null,
-	'ChainType': null,
-	'ContractCallRequest': null,
-	'ContractExecResult': null,
-	'ContractInstantiateResult': null,
-	'CreatedBlock': null,
-	'EthAccount': null,
-	'EthCallRequest': null,
-	'EthFilter': null,
-	'EthFilterChanges': null,
-	'EthLog': null,
-	'EthReceipt': null,
-	'EthRichBlock': null,
-	'EthSubKind': null,
-	'EthSubParams': null,
-	'EthSyncStatus': null,
-	'EthTransaction': null,
-	'EthTransactionRequest': null,
-	'EthWork': null,
-	'Extrinsic': null,
-	'ExtrinsicOrHash': null,
-	'ExtrinsicStatus': null,
-	'FeeDetails': null,
+	'ChainProperties': TypeAny,
+	'ChainType': TypeAny,
+	'ContractCallRequest': TypeAny,
+	'ContractExecResult': TypeAny,
+	'ContractInstantiateResult': TypeAny,
+	'CreatedBlock': TypeAny,
+	'EthAccount': TypeAny,
+	'EthCallRequest': TypeAny,
+	'EthFilter': TypeAny,
+	'EthFilterChanges': TypeAny,
+	'EthLog': TypeAny,
+	'EthReceipt': TypeAny,
+	'EthRichBlock': TypeAny,
+	'EthSubKind': TypeAny,
+	'EthSubParams': TypeAny,
+	'EthSyncStatus': TypeAny,
+	'EthTransaction': TypeAny,
+	'EthTransactionRequest': TypeAny,
+	'EthWork': TypeAny,
+	'Extrinsic': TypeAny,
+	'ExtrinsicOrHash': TypeAny,
+	'ExtrinsicStatus': TypeAny,
+	'FeeDetails': TypeAny,
 	'H64': String,
 	'H160': String,
 	'H256': String,
 	'Hash': String,
-	'HashMap<AuthorityId,EpochAuthorship>': null, // ToDo: HashMap<A, B> => (Map[A] = B)
-	'Header': null,
-	'EncodedFinalityProofs': null,
-	'Health': null,
-	'Index': null,
-	'InstantiateRequest': null,
-	'Json': null,
-	'Justification': null,
-	'JustificationNotification': null,
+	'HashMap<AuthorityId,EpochAuthorship>': TypeAny, // ToDo: HashMap<A, B> => (Map[A] = B)
+	'Header': TypeAny,
+	'EncodedFinalityProofs': TypeAny,
+	'Health': TypeAny,
+	'Index': TypeAny,
+	'InstantiateRequest': TypeAny,
+	'Json': TypeAny,
+	'Justification': TypeAny,
+	'JustificationNotification': TypeAny,
 	'KeyValue': Object,
-	'Metadata': null,
-	'MmrLeafProof': null,
-	'NetworkState': null,
-	'NodeRole': null,
-	'Null': null,
-	'PeerInfo': null,
-	'PrefixedStorageKey': null,
-	'ReadProof': null,
-	'ReportedRoundStates': null,
-	'RpcMethods': null,
-	'RuntimeDispatchInfo': null,
-	'RuntimeVersion': null,
-	'SignedBlock': null,
-	'StorageChangeSet': null,
-	'StorageData': null,
-	'StorageKey': null,
-	'StorageKind': null,
+	'Metadata': TypeAny,
+	'MmrLeafProof': TypeAny,
+	'NetworkState': TypeAny,
+	'NodeRole': TypeAny,
+	'Null': TypeAny,
+	'PeerInfo': TypeAny,
+	'PrefixedStorageKey': TypeAny,
+	'ReadProof': TypeAny,
+	'ReportedRoundStates': TypeAny,
+	'RpcMethods': TypeAny,
+	'RuntimeDispatchInfo': TypeAny,
+	'RuntimeVersion': TypeAny,
+	'SignedBlock': TypeAny,
+	'StorageChangeSet': TypeAny,
+	'StorageData': TypeAny,
+	'StorageKey': TypeAny,
+	'StorageKind': TypeAny,
 	'String': String,
-	'SyncState': null,
+	'SyncState': TypeAny,
 	'Text': String,
-	'TraceBlockResponse': null,
+	'TraceBlockResponse': TypeAny,
 	'U64': Number,
 	'U256': Number,
 	'bool': Boolean,
@@ -230,7 +232,7 @@ function Substrate_BlackprintNodeGenerator(options, list){
 
 			// Type mapping (Rust Types => JavaScript Types)
 			let returnToField = func.returnType;
-			let preprocessType = null;
+			let preprocessType = TypeAny;
 			if(func.returnType !== 'Null'){
 				// Simplify port name
 				let portName = func.returnType
@@ -242,12 +244,15 @@ function Substrate_BlackprintNodeGenerator(options, list){
 					});
 
 				if(options.loose && SubstrateTypeData[func.returnType] === void 0)
-					SubstrateTypeData[func.returnType] = null;
+					SubstrateTypeData[func.returnType] = TypeAny;
 
 				preprocessType = SubstrateTypeData[func.returnType];
 
 				if(preprocessType !== Number && preprocessType !== String && preprocessType !== Boolean)
-					preprocessType = null;
+					preprocessType = TypeAny;
+
+				if(preprocessType == null)
+					preprocessType = TypeAny;
 
 				if(func.optionalReturn)
 					portName += '?';
@@ -272,7 +277,7 @@ function Substrate_BlackprintNodeGenerator(options, list){
 				let typeData = args[portName];
 
 				if(options.loose && SubstrateTypeData[typeData] === void 0)
-					SubstrateTypeData[typeData] = null;
+					SubstrateTypeData[typeData] = TypeAny;
 
 				// If you found error from this line, then the SubstrateTypeData need to be updated
 				if(SubstrateTypeData[typeData] === void 0){
@@ -321,6 +326,7 @@ function Substrate_BlackprintNodeGenerator(options, list){
 
 			// Custom Node class
 			class GeneratedNode extends Blackprint.Node {
+				static skipSuggestTypeAny = true; // Because some of type still using many Type.Any, let's skip the suggestion
 				static isGenerated = true;
 
 				// Output port, this can be undefined if return nothing (no output port)
@@ -391,7 +397,7 @@ function Substrate_BlackprintNodeGenerator(options, list){
 						return;
 					}
 
-					if(preprocessType != null)
+					if(preprocessType !== TypeAny)
 						response = preprocessType(response);
 					
 					if(response.value !== undefined)
