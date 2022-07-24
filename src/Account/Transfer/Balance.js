@@ -6,6 +6,8 @@
 
 /**
  * Transfer account's balance to another account (account = wallet)
+ * The unsigned transaction need to be signed by the sender wallet
+ * Value must be integer, different parachain may have different decimals
  * @blackprint node
  * @summary Transfer balance to an address
  */
@@ -15,7 +17,7 @@ class TransferNode extends Blackprint.Node {
 	static input = {
 		/** Polkadot's API connection */
 		API: polkadotApi.ApiPromise,
-		/** Wallet/account address in base58 format */
+		/** Target wallet/account address in base58 format */
 		Address: String,
 		/** Amount of transfer (must be positive and lower than 2^53 - 1) */
 		Value: Number,
