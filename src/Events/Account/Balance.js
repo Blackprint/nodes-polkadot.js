@@ -24,8 +24,17 @@ class AccountBalanceNode extends Blackprint.Node {
 
 	// Output port
 	static output = {
-		/** Raw event data */
-		Data: Object, // ToDo
+		/** Raw event data, right click to split the data */
+		Data: Blackprint.Port.StructOf(Object, {
+			/** Amount of account balance that transferrable */
+			Free: {type: Number, handle: v => +v.data.free},
+			/** Reserved balance */
+			Reserved: {type: Number, handle: v => +v.data.reserved},
+			/** Frozen balances */
+			MiscFrozen: {type: Number, handle: v => +v.data.miscFrozen},
+			/** Frozen fee */
+			FeeFrozen: {type: Number, handle: v => +v.data.feeFrozen},
+		}),
 	};
 
 	constructor(instance){

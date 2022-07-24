@@ -20,8 +20,13 @@ class PaymentInfoNode extends Blackprint.Node {
 
 	// Output port
 	static output = {
-		/** Raw status response */
-		Info: Object // ToDo
+		/** Raw status response, right click to split the data */
+		Info: Blackprint.Port.StructOf(Object, {
+			/** Fee that need to be paid for executing the transaction */
+			Fee: {type: Number, handle: v => +v.partialFee},
+			/** Transaction weight */
+			Weight: {type: Number, handle: v => +v.weight},
+		}),
 	};
 
 	constructor(instance){
@@ -51,8 +56,11 @@ class PaymentInfoNode extends Blackprint.Node {
 
 		let info;
 		try{
+			toast.warn("Waiting responses");
 			info = await Input.Txn.txn.paymentInfo(Input.Sender);
 		} catch(e) {
+			toast.clear();
+
 			if(e.message.includes("32601: Method not found"))
 				toast.error("The network doesn't support this feature");
 			else toast.error(e.message);
@@ -60,6 +68,7 @@ class PaymentInfoNode extends Blackprint.Node {
 			throw e;
 		}
 
+		toast.clear();
 		Output.Info = info;
 	}
 });
