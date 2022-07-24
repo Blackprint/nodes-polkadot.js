@@ -47,7 +47,7 @@ class WebSocketNode extends Blackprint.Node {
 	// Output port
 	static output = {
 		/** RPC Provider object from Polkadot.js's */
-		Provider: polkadotApi.HttpProvider,
+		Provider: polkadotApi.WsProvider,
 		/** API object from Polkadot.js's */
 		API: polkadotApi.ApiPromise,
 		/** This will be called when we successfully connected to the RPC*/
@@ -139,7 +139,7 @@ Context.IFace.ConnectionWebSocket = class WebSocketIFace extends Blackprint.Inte
 		// Wait until connected and put the API object into the output port
 		this._toast.warn("Connecting...");
 		Output.API = await polkadotApi.ApiPromise.create({ provider });
-		
+
 		initialized = true;
 
 		if(this._toast.haveWarn.text === "Preparing API...")
