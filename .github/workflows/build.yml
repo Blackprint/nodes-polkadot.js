@@ -14,7 +14,7 @@ jobs:
   build:
     name: Build module
     runs-on: ubuntu-latest
-    timeout-minutes: 5 # Usually this will be finish under 5 minutes
+    timeout-minutes: 6 # Usually this will be finish under 6 minutes
 
     steps:
       - uses: actions/checkout@v3
