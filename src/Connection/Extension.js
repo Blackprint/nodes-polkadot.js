@@ -42,7 +42,7 @@ class ExtensionNode extends Blackprint.Node {
 		 * If you're using Polkadot{.js} browser extension
 		 * The id is `polkadot-js`
 		 */
-		ExtensionId: String,
+		ExtensionId: Blackprint.Port.Default(String, 'polkadot-js'),
 		/** Request the connection */
 		Connect: Blackprint.Port.Trigger(function(){
 			this.iface.connectExtension();
