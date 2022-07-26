@@ -10,7 +10,7 @@
   "module": "dist/nodes-polkadot.mjs",
   "scripts": {
     "start": "blackprint serve",
-    "test": "node --experimental-vm-modules --no-warnings node_modules/jest/bin/jest.js --verbose ./tests/",
+    "test": "node --experimental-vm-modules --no-warnings node_modules/jest/bin/jest.js --forceExit --verbose ./tests/",
     "build-prod": "blackprint build production"
   },
   "dependencies": {

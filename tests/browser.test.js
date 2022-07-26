@@ -3,7 +3,7 @@
  */
 
 require('./prepare-env.js')('browser');
-window.MyInstance = null;
+window.MyInstance = null; // Required for this sequential tests
 
 // Inject Polkadot's browser extension for testing with Jest
 require('./utils/inject-browser-extension.js');

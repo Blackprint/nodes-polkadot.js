@@ -3,7 +3,7 @@
  */
 
 require('./prepare-env.js')('node');
-window.MyInstance = null;
+window.MyInstance = null; // Required for this sequential tests
 
 test('Blackprint.Engine does exist on window', async () => {
 	expect(window.Blackprint.Engine).toBeDefined();
