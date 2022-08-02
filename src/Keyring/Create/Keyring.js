@@ -8,7 +8,7 @@
 /**
  * Create a keyring to store keypairs
  * @blackprint node
- * @summary Collection of keys
+ * @summary Collection of keypairs
  */
 Blackprint.registerNode("Polkadot.js/Keyring/Create/Keyring",
 class KeyringNode extends Blackprint.Node {
