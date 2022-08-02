@@ -1,3 +1,24 @@
+# 0.4.0
+
+## Feature
+- Add data structure for some port
+- Add nodes documentation for Blackprint Editor
+- Add route port element
+- Add support for using different extension id
+- Nodes now can be used on Node.js environment
+
+## Bug Fix
+- Fix module to be used for Node.js and update dependency versions
+- Fix incorrect provider type
+- Fix dependency
+- Fix for unit test when the node failed to find meta error
+- Fix polyfill and update version for browser
+- Set `rpcURL` data property enumerable
+- Hide node suggestion for some experimental nodes
+
+## Breaking Changes
+- Blackprint Engine v0.7 is required
+
 # 0.3.0
 
 ## Breaking Changes

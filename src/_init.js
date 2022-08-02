@@ -58,11 +58,11 @@ else{
 	// Use bundled file
 	// This will be registered on global (window)
 	let _remoteModule = [
-		"https://cdn.jsdelivr.net/npm/@polkadot/util@10/bundle-polkadot-util.min.js",
-		"https://cdn.jsdelivr.net/npm/@polkadot/util-crypto@10/bundle-polkadot-util-crypto.min.js",
-		"https://cdn.jsdelivr.net/npm/@polkadot/keyring@10/bundle-polkadot-keyring.min.js",
-		"https://cdn.jsdelivr.net/npm/@polkadot/types@8/bundle-polkadot-types.min.js",
-		"https://cdn.jsdelivr.net/npm/@polkadot/api@8/bundle-polkadot-api.min.js",
+		"https://cdn.jsdelivr.net/npm/@polkadot/util@^10/bundle-polkadot-util.min.js",
+		"https://cdn.jsdelivr.net/npm/@polkadot/util-crypto@^10/bundle-polkadot-util-crypto.min.js",
+		"https://cdn.jsdelivr.net/npm/@polkadot/keyring@^10/bundle-polkadot-keyring.min.js",
+		"https://cdn.jsdelivr.net/npm/@polkadot/types@^9/bundle-polkadot-types.min.js",
+		"https://cdn.jsdelivr.net/npm/@polkadot/api@^9/bundle-polkadot-api.min.js",
 	];
 
 	if(window.Blackprint.Environment.isDeno) { // Untested
@@ -70,7 +70,7 @@ else{
 			await import(_remoteModule[i]);
 	}
 	else { // For Browser environment
-		_remoteModule.push("https://cdn.jsdelivr.net/npm/@polkadot/extension-dapp@0.42.9/bundle-polkadot-extension-dapp.js");
+		_remoteModule.push("https://cdn.jsdelivr.net/npm/@polkadot/extension-dapp@^0.44.3/bundle-polkadot-extension-dapp.js");
 		await sf.loader.js(_remoteModule, {ordered: true});
 	}
 
