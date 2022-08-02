@@ -20,7 +20,7 @@
 
 ## scss-global
 bpic-polkadot-js-connection-http {
-  input {
+  .content > input {
     margin: 1px 0 5px 5px;
     display: block;
     width: calc(100% - 7%);
