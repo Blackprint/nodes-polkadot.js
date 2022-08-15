@@ -116,14 +116,14 @@ Substrate_BlackprintNodeGenerator({
 			uninstallFilter(index: U256): bool
 		`
 	}, {
-		name: "Eth/Net", rpc_path: "net",
+		name: "Net", rpc_path: "net",
 		funcs: `
 			listening(): bool
 			peerCount(): String
 			version(): String
 		`
 	}, {
-		name: "Eth/Web3", rpc_path: "web3",
+		name: "Web3", rpc_path: "web3",
 		funcs: `
 			clientVersion(): String
 			sha3(data: Bytes): H256
