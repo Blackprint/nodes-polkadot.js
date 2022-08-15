@@ -44,8 +44,8 @@ class ExtensionNode extends Blackprint.Node {
 		 */
 		ExtensionId: Blackprint.Port.Default(String, 'polkadot-js'),
 		/** Request the connection */
-		Connect: Blackprint.Port.Trigger(function(){
-			this.iface.connectExtension();
+		Connect: Blackprint.Port.Trigger(function({ iface }){
+			iface.connectExtension();
 		}),
 	};
 

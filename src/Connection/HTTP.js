@@ -35,8 +35,8 @@ class HTTPNode extends Blackprint.Node {
 	// Input port
 	static input = {
 		/** Initiate reconnection with the RPC */
-		Reconnect: Blackprint.Port.Trigger(function(){
-			this.iface.changeRPC();
+		Reconnect: Blackprint.Port.Trigger(function({ iface }){
+			iface.changeRPC();
 		}),
 	};
 

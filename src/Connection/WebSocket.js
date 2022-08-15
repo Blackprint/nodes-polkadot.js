@@ -35,12 +35,12 @@ class WebSocketNode extends Blackprint.Node {
 	// Input port
 	static input = {
 		/** Initiate connection with the RPC */
-		Connect: Blackprint.Port.Trigger(function(){
-			this.output.Provider?.connect();
+		Connect: Blackprint.Port.Trigger(function({ iface }){
+			iface.node.output.Provider?.connect();
 		}),
 		/** Disconnect the RPC */
-		Disconnect: Blackprint.Port.Trigger(function(){
-			this.output.Provider?.disconnect();
+		Disconnect: Blackprint.Port.Trigger(function({ iface }){
+			iface.node.output.Provider?.disconnect();
 		}),
 	};
 

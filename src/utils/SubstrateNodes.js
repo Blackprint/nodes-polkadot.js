@@ -293,14 +293,10 @@ function Substrate_BlackprintNodeGenerator(options, list){
 			// Categorizing Blackprint Node's path by function name
 			let funcName = func.name
 			.replace(/By([A-Z].*)/, function(full, name){
-				return ' By/'+name;
+				return 'By/'+name;
 			})
 			.replace(/^(Get|Set|Has|New)([A-Z].*)/, function(full, category, name){
 				return category + '/' +name;
-			})
-			// Add space between words
-			.replace(/([a-z])([A-Z])/g, function(full, A, B){
-				return A + ' ' +B;
 			});
 
 			// Capitalize the first character
@@ -308,8 +304,8 @@ function Substrate_BlackprintNodeGenerator(options, list){
 
 			let defaultInput = {
 				API: polkadotApi.ApiPromise,
-				Trigger: Blackprint.Port.Trigger(function(){
-					this.trigger(); // this.trigger => async trigger()
+				Trigger: Blackprint.Port.Trigger(function({ iface }){
+					iface.node.trigger(); // => async trigger()
 				})
 			};
 

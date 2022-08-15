@@ -14,8 +14,8 @@ class TransferSendNode extends Blackprint.Node {
 	// Input port
 	static input = {
 		/** Submit the transaction request into the parachain */
-		Submit: Blackprint.Port.Trigger(function(){
-			this.submit();
+		Submit: Blackprint.Port.Trigger(function({ iface }){
+			iface.node.submit();
 		}),
 		/** Can be from extension or generated keypair (with mnemonic/seed) */
 		Signer: Signer,

@@ -16,8 +16,8 @@ class SignNode extends Blackprint.Node {
 	// Input port
 	static input = {
 		/** Start the signing process (trigger is required to ask access to browser wallet) */
-		Trigger: Blackprint.Port.Trigger(function(){
-			this.trigger();
+		Trigger: Blackprint.Port.Trigger(function({ iface }){
+			iface.node.trigger();
 		}),
 		/** Keypair's signer or browser extension's signer */
 		Signer: Signer,
