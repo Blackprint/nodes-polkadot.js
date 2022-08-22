@@ -90,11 +90,11 @@ describe("Keyring - Import Mnemonic to a Keypair", () => {
 	// Because the above nodes will being kept for another test
 	// let's create separated nodes just for testing if there are
 	// some error when destroying the nodes
-	test("Create and destroy dummy nodes", async () => {
-		// The ID for dummy nodes must be different
-		let Keyring = MyInstance.createNode("Polkadot.js/Keyring/Create/Keyring", {id: 'DummyRing'});
-		let KeypairA = MyInstance.createNode("Polkadot.js/Keyring/Create/Keypair", {id: 'DummyPairA'});
-		let KeypairB = MyInstance.createNode("Polkadot.js/Keyring/Create/Keypair", {id: 'DummyPairB'});
+	test("Create and destroy RandomSeed nodes", async () => {
+		// The ID for RandomSeed nodes must be different
+		let Keyring = MyInstance.createNode("Polkadot.js/Keyring/Create/Keyring", {id: 'RandomSeedRing'});
+		let KeypairA = MyInstance.createNode("Polkadot.js/Keyring/Create/Keypair", {id: 'RandomSeedPairA'});
+		let KeypairB = MyInstance.createNode("Polkadot.js/Keyring/Create/Keypair", {id: 'RandomSeedPairB'});
 		let Mnemonic = MyInstance.createNode("Polkadot.js/Keyring/Create/Mnemonic", {id: 'Mnemonic'});
 		let Seed = MyInstance.createNode("Polkadot.js/Keyring/Create/Seed", {id: 'Seed'});
 
@@ -119,7 +119,7 @@ describe("Keyring - Import Mnemonic to a Keypair", () => {
 		expect(ring.getPair(KeypairB.ref.Output.Address)).toBeDefined();
 
 		// And the data shoudn't be stored on another Keyring
-		// that aren't connected to our dummy Keypair nodes
+		// that aren't connected to our RandomSeed Keypair nodes
 		let otherRing = MyInstance.iface.Keyring_Node;
 
 		//> otherRing.getPair(KeypairA.address)
@@ -135,9 +135,9 @@ describe("Keyring - Import Mnemonic to a Keypair", () => {
 		MyInstance.deleteNode(Seed);
 
 		// They mustn't remains on the instance
-		expect(MyInstance.iface.DummyRing).not.toBeDefined();
-		expect(MyInstance.iface.DummyPairA).not.toBeDefined();
-		expect(MyInstance.iface.DummyPairB).not.toBeDefined();
+		expect(MyInstance.iface.RandomSeedRing).not.toBeDefined();
+		expect(MyInstance.iface.RandomSeedPairA).not.toBeDefined();
+		expect(MyInstance.iface.RandomSeedPairB).not.toBeDefined();
 		expect(MyInstance.iface.Mnemonic).not.toBeDefined();
 		expect(MyInstance.iface.Seed).not.toBeDefined();
 	});
