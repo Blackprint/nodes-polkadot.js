@@ -1,0 +1,21 @@
+## Run this command to setup and run the container (force recreate to clear old logs)
+#> docker-compose up --force-recreate
+version: '3.7'
+
+services:
+  blackprint-app:
+    build: .
+    restart: always
+    environment:
+      - MNEMONIC_A=burden trip pass airport nothing crouch flame blood toilet program pause peace
+      - WALLET_ADDRESS_A=15svm89ghWWiqjYWTKGxJyfkzcAL5Jm4HefZx3KFZaaFADrq
+
+      - MNEMONIC_B=physical west coin next mimic detail trip say slide nature hedgehog lawsuit
+      - WALLET_ADDRESS_B=15mkG9s2UbMikaEgvnd3vgVJKiY2n2DpH5MmrjnCREwsLsnN
+
+    # Mount our file into the container
+    volumes:
+    - ./app/listen-new-blocks.mjs:/app/listen-new-blocks.mjs
+
+    ## Run with Node.js
+    command: sh -c 'cd /app && node ./listen-new-blocks.mjs'

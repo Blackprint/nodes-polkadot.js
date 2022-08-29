@@ -59,6 +59,6 @@ jobs:
       # If you want to publish to NPM, make sure to put your NPM token to repository settings
       - name: 📦 Publish Packages
         if: github.event.inputs.dryRun != 'true'
-        run: npm publish
+        run: npm publish --access=public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

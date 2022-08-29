@@ -8,6 +8,7 @@
   "groupName": "all dependencies",
   "separateMajorMinor": false,
   "groupSlug": "all",
+  "ignoreDeps": ["node-fetch"],
   "packageRules": [
     {
       "matchPackagePatterns": ["*"],
