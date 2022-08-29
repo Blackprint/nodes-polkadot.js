@@ -1,3 +1,16 @@
+# 0.5.0
+
+## Feature
+- Add in-editor documentation for some generated and experimental nodes
+
+## Bug Fix
+- Avoid using `this` on `Port.Trigger` and modify experimental nodes
+- Show message if failed to preparing WebSocket API
+
+## Breaking Changes
+- Node `Polkadot.js/Keyring/Dummy` changed into `Polkadot.js/Keyring/RandomSeed`
+- Change some namespace for experimental nodes
+
 # 0.4.0
 
 ## Feature

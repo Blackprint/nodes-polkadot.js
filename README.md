@@ -41,36 +41,10 @@ Click [this link](https://blackprint.github.io/#page/sketch/1#;openExample:githu
 
 You can also manually import a JSON for [Blackprint Editor](https://blackprint.github.io/dev.html) from [/example](https://github.com/Blackprint/nodes-polkadot.js/tree/main/example) directory.
 
----
-
-### Distributable files
-
-All files inside `src` folder will be bundled into 3 distributable file. Some file is optional to be loaded on the target environment.
-
-```js
-// all .js files
-- dist/nodes-polkadotjs.mjs    // For browser, Node.js, and Deno (required)
-
-// all .sf files
-- dist/nodes-polkadotjs.sf.mjs // For browser only (required)
-- dist/nodes-polkadotjs.sf.css // For browser only (optional)
-```
-
-## Directory structure
-
-Configuration file can be changed from `./blackprint.config.js`.<br>
-The `src` directory structure is arranged like below:
-
-| File path | Blackprint Node path |
-|---|---|
-| `./src/Account/Transfer/Balance.js`| `Polkadot.js/Account/Transfer/Balance` |
-| `./src/Connection/WebSocket.js`| `Polkadot.js/Connection/WebSocket` |
-
-With the above structure, you can easily find the nodes on Blackprint Editor like below:
-
-![0AGnpEq98x](https://user-images.githubusercontent.com/11073373/162767398-c35de16e-e1a8-4b47-9686-821927b6c3c4.png)
+This repository also have [example Dockerfiles](https://github.com/Blackprint/nodes-polkadot.js/tree/main/.github/docker) in case if you want to run the unit test, and run example project for Node.js or Deno in isolated environment.
 
 ## Development
+> If you want to help contributing with this Blackprint module, you can follow instruction below. But if you just want to use this module for your project, you can open [this example list](https://blackprint.github.io/#page/sketch/1#;openExample:github.com/Blackprint/nodes-polkadot.js) on Blackprint Editor or just import the module for your app with Node.js or Deno project.
 
 You will need to clone this repository and install the required dependencies.
 ```sh
@@ -116,8 +90,6 @@ $ npm run build-prod
 $ npm test
 ```
 
----
-
 ## Import this nodes from URL
 If you're planning to develop your own sketch/editor for your project, there are some [example](https://github.com/Blackprint/Blackprint#example) on the Blackprint repository to help you get started on how to implement the sketch or use the engine with another framework.
 
@@ -125,7 +97,7 @@ Please specify the version to avoid breaking changes.
 
 ```js
 Blackprint.loadModuleFromURL([
-  'https://cdn.jsdelivr.net/npm/@blackprint/nodes-polkadot.js@0.3/dist/nodes-polkadotjs.mjs'
+  'https://cdn.jsdelivr.net/npm/@blackprint/nodes-polkadot.js@0.5.x/dist/nodes-polkadotjs.mjs'
 ], {
   // Turn this on if you want to load ".sf.js" and ".sf.css" for browser
   loadBrowserInterface: true // set to "false" for Node.js/Deno
@@ -144,6 +116,34 @@ https://cdn.jsdelivr.net/gh/Blackprint/nodes-polkadot.js@dist/nodes-polkadotjs.m
 
 https://github.com/jsdelivr/jsdelivr#caching
 -->
+
+### Distributable files
+
+All files inside `src` folder will be bundled into 3 distributable file. Some file is optional to be loaded on the target environment.
+
+```js
+// all .js files
+- dist/nodes-polkadotjs.mjs    // For browser, Node.js, and Deno (required)
+
+// all .sf files
+- dist/nodes-polkadotjs.sf.mjs // For browser only (required)
+- dist/nodes-polkadotjs.sf.css // For browser only (optional)
+```
+
+## Directory structure
+
+Configuration file can be changed from `./blackprint.config.js`.<br>
+The `src` directory structure is arranged like below:
+
+| File path | Blackprint Node path |
+|---|---|
+| `./src/Account/Transfer/Balance.js`| `Polkadot.js/Account/Transfer/Balance` |
+| `./src/Connection/WebSocket.js`| `Polkadot.js/Connection/WebSocket` |
+
+With the above structure, you can easily find the nodes on Blackprint Editor like below:
+
+![0AGnpEq98x](https://user-images.githubusercontent.com/11073373/162767398-c35de16e-e1a8-4b47-9686-821927b6c3c4.png)
+
 
 ### License
 This module is released with MIT license and depends on Polkadot.js library with Apache 2.0 license.
