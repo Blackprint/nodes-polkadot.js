@@ -119,14 +119,25 @@ Context.IFace.ConnectionWebSocket = class WebSocketIFace extends Blackprint.Inte
 		// Connect to the new RPC URL and put the Provider object to the output port
 		let provider = Output.Provider = new polkadotApi.WsProvider(rpcURL);
 
+		clearTimeout(this._prepareAPIWait);
+
 		// Add event listener before connecting to the network
 		let initialized = false;
 		provider.on('connected', ()=> {
 			this._toast.clear();
 			this._toast.success("Connected");
 
-			if(!initialized)
+			if(!initialized){
 				this._toast.warn("Preparing API...");
+
+				// Show error if no response from RPC
+				this._prepareAPIWait = setTimeout(() => {
+					if(initialized) return;
+
+					this._toast.clear();
+					this._toast.error("No response from RPC");
+				}, 60e3);
+			}
 
 			Output.Connected();
 		});
@@ -141,6 +152,7 @@ Context.IFace.ConnectionWebSocket = class WebSocketIFace extends Blackprint.Inte
 		Output.API = await polkadotApi.ApiPromise.create({ provider });
 
 		initialized = true;
+		clearTimeout(this._prepareAPIWait);
 
 		if(this._toast.haveWarn.text === "Preparing API...")
 			this._toast.clear();
