@@ -5,7 +5,6 @@ version: '3.7'
 services:
   blackprint-app:
     build: .
-    restart: always
     environment:
       - MNEMONIC_A=burden trip pass airport nothing crouch flame blood toilet program pause peace
       - WALLET_ADDRESS_A=15svm89ghWWiqjYWTKGxJyfkzcAL5Jm4HefZx3KFZaaFADrq
@@ -18,4 +17,4 @@ services:
     - ./app/listen-new-blocks.mjs:/app/listen-new-blocks.mjs
 
     ## Run with Node.js
-    command: sh -c 'cd /app && node ./listen-new-blocks.mjs'
+    command: node /app/listen-new-blocks.mjs

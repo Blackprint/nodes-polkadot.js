@@ -2,7 +2,7 @@
 // node listen-new-blocks.mjs
 
 import Blackprint from "@blackprint/engine";
-import "@blackprint/nodes-polkadot.js";
+import "@blackprint/nodes-polkadot.js/dist/nodes-polkadotjs.mjs";
 
 // Surpress some warning from @polkadot/util
 let warn = console.warn;
@@ -23,10 +23,16 @@ let { websocketNode, blocksNode } = MyInstance.iface;
 
 // Change RPC URL
 console.log("Connecting...");
-websocketNode.data.rpcURL = "wss://ws.test.azero.dev";
+websocketNode.data.rpcURL = "wss://westend-rpc.polkadot.io";
 
 // Listen for RPC connection status change
-websocketNode.ref.IOutput.Connected.on('call', () => console.log(`RPC Connected!`));
+websocketNode.ref.IOutput.Connected.on('call', () => {
+	console.log(`RPC Connected!`);
+
+	if(websocketNode.ref.Output.API == null){
+		console.log("Waiting RPC response...");
+	}
+});
 websocketNode.ref.IOutput.Disconnected.on('call', () => console.log(`RPC Disconnected!`));
 
 // Note: usually Polkadot.js will take some time to initialize the API

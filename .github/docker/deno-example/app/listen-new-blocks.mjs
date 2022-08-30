@@ -1,8 +1,8 @@
 // Run this from your terminal:
 // deno run --allow-net listen-new-blocks.mjs
 
-import Blackprint from 'https://cdn.skypack.dev/@blackprint/engine@0.7';
-import "https://cdn.jsdelivr.net/npm/@blackprint/nodes-polkadot.js@0.5/dist/nodes-polkadotjs.mjs";
+import Blackprint from 'https://cdn.skypack.dev/@blackprint/engine@0.7.x';
+import "https://cdn.jsdelivr.net/npm/@blackprint/nodes-polkadot.js@0.5.x/dist/nodes-polkadotjs.mjs";
 
 // Fix bundled version of Polkadot.js's library
 globalThis.__filename = '';
@@ -25,10 +25,16 @@ let { websocketNode, blocksNode } = MyInstance.iface;
 
 // Change RPC URL
 console.log("Connecting...");
-websocketNode.data.rpcURL = "wss://ws.test.azero.dev";
+websocketNode.data.rpcURL = "wss://westend-rpc.polkadot.io";
 
 // Listen for RPC connection status change
-websocketNode.ref.IOutput.Connected.on('call', () => console.log(`RPC Connected!`));
+websocketNode.ref.IOutput.Connected.on('call', () => {
+	console.log(`RPC Connected!`);
+
+	if(websocketNode.ref.Output.API == null){
+		console.log("Waiting RPC response...");
+	}
+});
 websocketNode.ref.IOutput.Disconnected.on('call', () => console.log(`RPC Disconnected!`));
 
 // Note: usually Polkadot.js will take some time to initialize the API

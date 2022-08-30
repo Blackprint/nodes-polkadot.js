@@ -5,7 +5,6 @@ version: '3.7'
 services:
   blackprint-app:
     image: denoland/deno:alpine
-    restart: always
     environment:
       - MNEMONIC_A=burden trip pass airport nothing crouch flame blood toilet program pause peace
       - WALLET_ADDRESS_A=15svm89ghWWiqjYWTKGxJyfkzcAL5Jm4HefZx3KFZaaFADrq
@@ -18,4 +17,4 @@ services:
     - ./app/listen-new-blocks.mjs:/app/listen-new-blocks.mjs
 
     ## Run with Deno
-    command: sh -c 'deno run ./app/nodes-polkadot.mjs'
+    command: deno run --allow-net ./app/listen-new-blocks.mjs
