@@ -47,7 +47,7 @@ require('./nodes/sign-verify.js');
 require('./nodes/encrypt-decrypt.js');
 // require('./nodes/browser-extension.js'); // Only for browser
 
-// Skip this unit test on pull request
+// Skip this unit test on pull request because usually Renovate bot will trigger the test on dependency updates
 if(process.env.IS_PR !== 'true'){
 	require('./nodes/transfer-balance.js'); // This also contain test for listening balance changes
 }
