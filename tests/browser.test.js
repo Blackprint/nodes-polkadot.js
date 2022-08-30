@@ -58,4 +58,8 @@ require('./nodes/import-mnemonic.js');
 require('./nodes/sign-verify.js');
 require('./nodes/encrypt-decrypt.js');
 require('./nodes/browser-extension.js');
-require('./nodes/transfer-balance.js'); // This also contain test for listening balance changes
+
+// Skip this unit test on pull request
+if(process.env.IS_PR !== 'true'){
+	require('./nodes/transfer-balance.js'); // This also contain test for listening balance changes
+}

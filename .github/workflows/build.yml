@@ -50,6 +50,7 @@ jobs:
           MNEMONIC_B: ${{ secrets.MNEMONIC_B }}
           WALLET_ADDRESS_A: ${{ secrets.WALLET_ADDRESS_A }}
           WALLET_ADDRESS_B: ${{ secrets.WALLET_ADDRESS_B }}
+          IS_PR: ${{ github.event_name == 'pull_request' }}
         run: npm test
 
       - name: 🚀 Deploy

@@ -35,9 +35,9 @@ describe("Transfer balance", () => {
 	Port_SendValue2.value = 0.015e12; // 0.015 WND
 
 	let Port_SendBigValue = new Blackprint.OutputPort(Number);
-	Port_SendBigValue.value = 999e12; // 999 WND
+	Port_SendBigValue.value = 10e12; // 10 WND
 
-	test("Prepare transaction for sending 0.01, 0.015, and 999 WND", () => {
+	test("Prepare transaction for sending 0.01, 0.015, and 10 WND", () => {
 		// Create transfer balance node
 		let Tx_To_WalletB = MyInstance.createNode('Polkadot.js/Account/Transfer/Balance', {id: 'Tx_To_WalletB'});
 		Tx_To_WalletB.input.API.connectPort(WS_RPC.output.API);
@@ -56,7 +56,7 @@ describe("Transfer balance", () => {
 		let BigTx_To_WalletB = MyInstance.createNode('Polkadot.js/Account/Transfer/Balance', {id: 'BigTx_To_WalletB'});
 		BigTx_To_WalletB.input.API.connectPort(WS_RPC.output.API);
 		BigTx_To_WalletB.input.Address.connectPort(Port_AddressB); // process.env.WALLET_ADDRESS_B
-		BigTx_To_WalletB.input.Value.connectPort(Port_SendBigValue); // 999 WND
+		BigTx_To_WalletB.input.Value.connectPort(Port_SendBigValue); // 10 WND
 		expect(BigTx_To_WalletB.ref.Output.Txn).toBeDefined();
 
 		// Make sure the node is accessible from the interface
@@ -304,7 +304,7 @@ describe("Transfer balance", () => {
 
 		let BatchTx = MyInstance.createNode('Polkadot.js/Transaction/Batch');
 		Tx_To_WalletB.output.Txn.connectPort(BatchTx.input.Txn);    // Sufficient balance Tx   (0.01 WND)
-		BigTx_To_WalletB.output.Txn.connectPort(BatchTx.input.Txn); // Insufficient balance Tx (999 WND)
+		BigTx_To_WalletB.output.Txn.connectPort(BatchTx.input.Txn); // Insufficient balance Tx (10 WND)
 
 		// Create send transaction node
 		let SendTx = MyInstance.createNode('Polkadot.js/Transaction/Send');
