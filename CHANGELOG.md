@@ -1,3 +1,8 @@
+# 0.5.1
+
+## Bug Fix
+- Fix bundled module type and update example
+
 # 0.5.0
 
 ## Feature

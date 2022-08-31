@@ -43,6 +43,148 @@ You can also manually import a JSON for [Blackprint Editor](https://blackprint.g
 
 This repository also have [example Dockerfiles](https://github.com/Blackprint/nodes-polkadot.js/tree/main/.github/docker) in case if you want to run the unit test, and run example project for Node.js or Deno in isolated environment.
 
+### Run in different environment
+Blackprint is designed to be able to run in multiple environment, you can also easily export your schema into JSON and run it in Node.js, Deno, or browser. Below is a quick and simple tutorial that can help you getting started:
+
+<details>
+	<summary>Click this to open the guide for Deno</summary>
+
+When using Deno, it's pretty easy to start with as you can easily import module with URL natively. Let's get straight into the code, for a quick start you can copy and paste the code below:
+```js
+import Blackprint from 'https://cdn.skypack.dev/@blackprint/engine';
+
+// Only allow load module from specific domain
+Blackprint.allowModuleOrigin('cdn.jsdelivr.net');
+
+// Fix the bundled version of Polkadot.js's library for Deno
+globalThis.location = { href: '' };
+
+// Create the instance and import the JSON
+let MyInstance = new Blackprint.Engine();
+await MyInstance.importJSON(`{ ... }`);
+
+// Don't forget to add an ID to your node so you can easily access it like below
+let { your_node_id, other_node_id } = MyInstance.ref;
+```
+
+After you replaced the JSON, you can run the app with:
+```sh
+$ deno run --allow-net ./init.mjs
+```
+
+---
+
+</details>
+
+<details>
+	<summary>Click this to open the guide for Node.js</summary>
+
+When using Node.js you will need to install the Blackprint Engine and the modules. But you can also import the module via URL and it will be downloaded when you run your app.
+```sh
+$ cd /your/project/folder
+$ npm init
+$ pnpm i @blackprint/engine
+```
+
+For a quick start, you can copy and paste the code below:
+```js
+let Blackprint = require("@blackprint/engine");
+
+// Only allow load module from specific domain (if using URL module loader)
+Blackprint.allowModuleOrigin('cdn.jsdelivr.net');
+
+// ..Import the required modules here if you're not using URL module loader..
+// require("@blackprint/nodes-polkadot.js");
+
+// Create the instance and import the JSON
+let MyInstance = new Blackprint.Engine();
+MyInstance.importJSON(`{ ... }`).then(function(){
+  // Don't forget to add an ID to your node so you can easily access it like below
+  let { your_node_id, other_node_id } = MyInstance.ref;
+});
+```
+
+After you replaced the JSON, you can run the app with:
+```sh
+$ node ./init.mjs
+
+# If you want to use HTTPS module loader you need to use this
+$ node --loader ./node_modules/@blackprint/engine/es6-https-loader.mjs ./init.mjs
+```
+
+That's it, don't forget to add an ID to your node so you can easily access it from `MyInstance.ref`.
+
+---
+
+</details>
+
+<details>
+	<summary>Click this to open the guide for Browser</summary>
+
+For browser, you will need to import the Blackprint Engine and the Vue framework. Below is the HTML example if you want to use CDN to load the library:
+```html
+<head>
+  <!-- Blackprint Engine -->
+  <script src="https://cdn.jsdelivr.net/npm/@blackprint/engine"></script>
+  
+  <!-- Vue 3 -->
+  <script src="https://unpkg.com/vue@next"></script>
+</head>
+```
+
+If you prefer to use bundler like Webpack or Vite, you may need to install the module with a package manager first:
+```sh
+$ pnpm install @blackprint/engine vue@next
+```
+
+After that you can write your Vue template and bind the engine instance with your Vue app:
+```html
+<body>
+  <!-- Your Vue template -->
+  <div id="v-model-basic">
+    Port value: {{ your_node_id.Output.MyPort }}
+
+    <input @input="your_node_id.Input.MyPortIn = $event.target.value">
+  </div>
+
+  <script>
+    // Only allow module import from cdn.jsdelivr.net  
+    Blackprint.allowModuleOrigin('cdn.jsdelivr.net');
+
+    // Create new engine instance
+    var instance = new Blackprint.Engine();
+
+    // You can copy paste this to Blackprint Editor
+    instance.importJSON(`{ ... }`).then(function(){
+      // Create Vue app and bind the Blackprint port references with the app
+      Vue.createApp({
+        data() {
+          // Obtain Interface by ID and get the port references
+          let { your_node_id, other_node_id } = instance.ref;
+
+          // Vue 3 is using Proxy for their reactivity
+          // You may need to use event listener and update Vue element's value manually like:
+          your_node_id.IOutput.MyPort.on('value', ({ port })=> this.myProp = port.value);
+
+          // Put the ports reference to this component scope
+          return { your_node_id, other_node_id };
+        }
+      }).mount('#v-model-basic');
+    });
+  </script>
+</body>
+```
+
+That's it, don't forget to add an ID to your node so you can easily access it from `instance.ref`.
+
+Some example:
+1. [Blackprint + Vue 3](https://jsbin.com/ricoyej/edit?html,output)
+2. [Blackprint + React](https://jsbin.com/lexidop/edit?js,output)
+
+---
+
+</details>
+
 ## Development
 > If you want to help contributing with this Blackprint module, you can follow instruction below. But if you just want to use this module for your project, you can open [this example list](https://blackprint.github.io/#page/sketch/1#;openExample:github.com/Blackprint/nodes-polkadot.js) on Blackprint Editor or just import the module for your app with Node.js or Deno project.
 
