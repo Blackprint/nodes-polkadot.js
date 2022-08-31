@@ -49,7 +49,7 @@ if(Blackprint.Environment.loadFromURL === false) {
 		if(window.Blackprint.Environment.isBrowser)
 			await import(path+'/node_modules/@polkadot/extension-dapp/bundle-polkadot-extension-dapp.js');
 
-		({ polkadotApi, polkadotKeyring, polkadotTypes, polkadotUtilCrypto, polkadotUtil } = window);
+		({ polkadotApi, polkadotKeyring, polkadotTypes, polkadotUtilCrypto, polkadotUtil, polkadotExtensionDapp } = window);
 	}
 }
 else{
