@@ -72,6 +72,8 @@ After you replaced the JSON, you can run the app with:
 $ deno run --allow-net ./init.mjs
 ```
 
+https://user-images.githubusercontent.com/11073373/187770396-4048ee38-80b4-4dc6-b77e-4de530d4e01b.mp4
+
 ---
 
 </details>
@@ -83,25 +85,30 @@ When using Node.js you will need to install the Blackprint Engine and the module
 ```sh
 $ cd /your/project/folder
 $ npm init
-$ pnpm i @blackprint/engine
+$ pnpm i @blackprint/engine @blackprint/nodes-polkadot.js
 ```
 
 For a quick start, you can copy and paste the code below:
 ```js
-let Blackprint = require("@blackprint/engine");
+import Blackprint from "@blackprint/engine";
+
+// For this module on Node.js, you must import/install this module manually as it has dependencies
+import "@blackprint/nodes-polkadot.js/dist/nodes-polkadotjs.mjs";
+
+let json = { ... };
+
+// Remove Polkadot module URL as it already been loaded manually
+json._.moduleJS = json._.moduleJS.filter(url => !url.includes('@blackprint/nodes-polkadot.js'));
 
 // Only allow load module from specific domain (if using URL module loader)
 Blackprint.allowModuleOrigin('cdn.jsdelivr.net');
 
-// ..Import the required modules here if you're not using URL module loader..
-// require("@blackprint/nodes-polkadot.js");
-
 // Create the instance and import the JSON
 let MyInstance = new Blackprint.Engine();
-MyInstance.importJSON(`{ ... }`).then(function(){
-  // Don't forget to add an ID to your node so you can easily access it like below
-  let { your_node_id, other_node_id } = MyInstance.ref;
-});
+await MyInstance.importJSON(json);
+
+// Don't forget to add an ID to your node so you can easily access it like below
+let { your_node_id, other_node_id } = MyInstance.ref;
 ```
 
 After you replaced the JSON, you can run the app with:
@@ -112,7 +119,7 @@ $ node ./init.mjs
 $ node --loader ./node_modules/@blackprint/engine/es6-https-loader.mjs ./init.mjs
 ```
 
-That's it, don't forget to add an ID to your node so you can easily access it from `MyInstance.ref`.
+https://user-images.githubusercontent.com/11073373/187770503-c1a3fe92-c005-4d8d-96e4-8cb67e49c536.mp4
 
 ---
 
