@@ -4,14 +4,8 @@
 import Blackprint from 'https://cdn.skypack.dev/@blackprint/engine@0.7.x';
 import "https://cdn.jsdelivr.net/npm/@blackprint/nodes-polkadot.js@0.5.x/dist/nodes-polkadotjs.mjs";
 
-// Fix bundled version of Polkadot.js's library
-globalThis.__filename = '';
-globalThis.require = function(module){
-	module = module.toLowerCase();
-
-	if(module === 'url') return { URL: class{} };
-	throw "Unhandled module: " + module;
-};
+// Fix the bundled version of Polkadot.js's library for Deno
+globalThis.location = { href: '' };
 
 // Wait until the module context was registered
 await Blackprint.getContext('Polkadot.js');
