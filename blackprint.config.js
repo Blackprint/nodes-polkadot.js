@@ -26,7 +26,7 @@ module.exports = {
 	// and browser compatible node on ".sf" file extension
 	js:{
 		file:'@cwd/dist/nodes-polkadotjs.mjs', // @cwd = directory where you start the Node.js
-		wrapped: 'async-mjs', // Wrap the entire .js to .mjs
+		wrapped: 'mjs', // Wrap the entire .js to .mjs
 
 		combine:[ // Relative to this config's directory
 			'src/_init.js', // Rule order/index may have different priority

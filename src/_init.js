@@ -13,8 +13,7 @@ var Blackprint = window.Blackprint.loadScope({
 });
 
 // Prepare variable
-var polkadotApi, polkadotKeyring, polkadotTypes, polkadotUtilCrypto, polkadotUtil;
-var polkadotExtensionDapp;
+var polkadotApi, polkadotKeyring, polkadotTypes, polkadotUtilCrypto, polkadotUtil, polkadotExtensionDapp;
 
 // Import for different environment
 let crypto = window.crypto;
@@ -65,20 +64,19 @@ else{
 		"https://cdn.jsdelivr.net/npm/@polkadot/api@^9/bundle-polkadot-api.min.js",
 	];
 
-	if(window.Blackprint.Environment.isDeno) { // Untested
+	if(window.Blackprint.Environment.isBrowser){
+		_remoteModule.push("https://cdn.jsdelivr.net/npm/@polkadot/extension-dapp@^0.44.3/bundle-polkadot-extension-dapp.min.js");
+	}
+
+	if(window.sf?.loader != null)
+		await sf.loader.js(_remoteModule, {ordered: true});
+	else {
 		for (var i = 0; i < _remoteModule.length; i++)
 			await import(_remoteModule[i]);
 	}
-	else { // For Browser environment
-		_remoteModule.push("https://cdn.jsdelivr.net/npm/@polkadot/extension-dapp@^0.44.3/bundle-polkadot-extension-dapp.js");
-		await sf.loader.js(_remoteModule, {ordered: true});
-	}
 
-	({ polkadotApi, polkadotKeyring, polkadotTypes, polkadotUtilCrypto, polkadotUtil } = window);
+	({ polkadotApi, polkadotKeyring, polkadotTypes, polkadotUtilCrypto, polkadotUtil, polkadotExtensionDapp } = window);
 }
-
-if(window.polkadotExtensionDapp != null)
-	polkadotExtensionDapp = window.polkadotExtensionDapp;
 
 // Global shared context
 var Context = Blackprint.createContext('Polkadot.js');
