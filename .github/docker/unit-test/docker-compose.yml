@@ -1,5 +1,8 @@
 ## Run this command to setup and run the container (force recreate to clear old logs)
 #> docker-compose up --force-recreate
+
+## Run this to rebuild the container and fresh clone the repository
+#> docker-compose build --no-cache
 version: '3.7'
 
 services:
