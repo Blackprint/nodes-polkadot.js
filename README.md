@@ -8,7 +8,7 @@ This module gives you an ability to use [Polkadot.js's APIs](https://polkadot.js
 <details>
 	<summary>Quick walkthrough on how to load module and open some example</summary>
 
-> If the video looks blurry, please right click and open it on the new tab
+> If the video looks blurry, please play it in fullscreen
 
 https://user-images.githubusercontent.com/11073373/153986424-9e75c62e-42a8-49eb-b9af-144801067e00.mp4
 
@@ -31,6 +31,17 @@ Below is the summary and some information of the video:
     - Then, please copy your wallet address for testing into the input box
     - After you connect the signer, it will ask your extension to sign the message: `testing`
     - By the way if you see an error message on my DevTools, it's because I canceled the extension to sign the message
+
+</details>
+
+<details>
+	<summary>What you can do with Blackprint?</summary>
+
+Blackprint is designed to be flexible, it's not limited to browser only or for web development only. For an example you can also build a Telegram bot with Blackprint for sending balances between account:
+
+> If the video looks blurry, please play it in fullscreen
+
+https://user-images.githubusercontent.com/11073373/187060396-f7d66d23-f69d-4237-9393-9c7e26874ef2.mp4
 
 </details>
 
