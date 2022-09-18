@@ -11,7 +11,7 @@
   "module": "./dist/nodes-polkadot.mjs",
   "scripts": {
     "start": "blackprint serve",
-    "test": "node --experimental-vm-modules --no-warnings node_modules/jest/bin/jest.js --runInBand --forceExit --verbose ./tests/",
+    "test": "node --experimental-vm-modules --no-warnings node_modules/jest/bin/jest.js --runInBand --forceExit --verbose ./tests/ && sed -i 's/dist\\\\\\//' coverage/lcov.info",
     "build-prod": "blackprint build production"
   },
   "dependencies": {

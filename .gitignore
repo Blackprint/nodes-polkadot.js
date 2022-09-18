@@ -3,3 +3,6 @@ node_modules
 dist
 Empty.js
 Empty.sf
+utils/*.gen.*
+generated/
+coverage
