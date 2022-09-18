@@ -118,8 +118,8 @@ function functionParser(str, options){
 
 		// Separate name, parameter, and types
 		// ex: hasSessionKeys(sessionKeys:Bytes):bool
-		;([temp, returnType] = temp.split('):'));
-		;([funcName, args] = temp.split('('));
+		([temp, returnType] = temp.split('):'));
+		([funcName, args] = temp.split('('));
 
 		if(args === void 0) console.error(`Incorrect format "${temp}", `);
 
@@ -173,17 +173,6 @@ function functionParser(str, options){
 		for(let key in argsObj)
 			argsObj[key] = argsObj[key].replace(/(Vec|HashMap)<(.*?)>$/m, fillLooseType);
 
-		function fillLooseType(full, wrapper, type){
-			if(SubstrateTypeData[type] != null) return type;
-
-			if(wrapper === 'HashMap')
-				SubstrateTypeData[type] = Object;
-			// else if(wrapper === 'Vec')
-			// 	SubstrateTypeData[type] = Array;
-
-			return type;
-		}
-
 		// Put the extraction in the 'list'
 		list[i] = {
 			name: funcName.slice(0, 1).toUpperCase() + funcName.slice(1),
@@ -195,12 +184,23 @@ function functionParser(str, options){
 
 	return list;
 }
+		
+function fillLooseType(full, wrapper, type){
+	if(SubstrateTypeData[type] != null) return type;
+
+	if(wrapper === 'HashMap')
+		SubstrateTypeData[type] = Object;
+	// else if(wrapper === 'Vec')
+	// 	SubstrateTypeData[type] = Array;
+
+	return type;
+}
 
 /**
  * Generate Blackprint nodes for Substrate RPC
  * @param Array list [description]
  */
-function Substrate_BlackprintNodeGenerator(options, list){
+function Substrate_BlackprintNodeGenerator(options, list){ // eslint-disable-line
 	if(SubstrateMetadata === false) return;
 
 	let { namespace, description, apiPath, isConst, isExtrinsics } = options;

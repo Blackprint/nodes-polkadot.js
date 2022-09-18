@@ -5,7 +5,7 @@
  */
 
 let _extensionEnabled;
-let extensionEnabled = new Promise(resolve=> _extensionEnabled = resolve);
+Context._extensionEnabled = new Promise(resolve=> _extensionEnabled = resolve);
 
 
 // For storing node data
@@ -94,7 +94,7 @@ Context.IFace.ConnectionExtension = class ExtensionIFace extends Blackprint.Inte
 
 	// This will be called if `Connect` port has been triggered
 	async connectExtension(){
-		let {Input, Output, IInput, IOutput} = this.ref; // Shortcut
+		let { Input, Output } = this.ref; // Shortcut
 		let toast = this._toast;
 
 		if(!Input.ExtensionId){
@@ -134,7 +134,7 @@ Context.IFace.ConnectionExtension = class ExtensionIFace extends Blackprint.Inte
 		toast.success("Access Granted");
 
 		_extensionEnabled();
-		extensionEnabled = true;
+		Context._extensionEnabled = true;
 
 		this._unsubscribe = await polkadotExtensionDapp.web3AccountsSubscribe(accounts => {
 			Output.Accounts = accounts;

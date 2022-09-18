@@ -60,9 +60,9 @@ class KeyringNode extends Blackprint.Node {
 			return toast.clear();
 
 		if(keyType !== 'ed25519'
-		   && keyType !== 'sr25519'
-		   && keyType !== 'ethereum'
-		   && keyType !== 'ecdsa'){
+			&& keyType !== 'sr25519'
+			&& keyType !== 'ethereum'
+			&& keyType !== 'ecdsa'){
 			return toast.warn("Invalid KeyType, it must be ed25519, sr25519, ethereum, or ecdsa");
 		}
 

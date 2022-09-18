@@ -22,7 +22,7 @@ describe("Transfer balance", () => {
 		expect(MyInstance.iface.WS_RPC).toBeDefined();
 
 		// This output port will have value after connected to the network and ready to be used
-		WS_RPC.output.API.once('value', v=> done());
+		WS_RPC.output.API.once('value', () => done());
 
 		// Changing the RPC URL will trigger reconnection
 		WS_RPC.data.rpcURL = 'wss://westend-rpc.polkadot.io/';
@@ -118,7 +118,7 @@ describe("Transfer balance", () => {
 			}, 2000);
 
 			// Wait until finalized
-			SendTx.output.Success.on('call', ev => {
+			SendTx.output.Success.on('call', () => {
 				if(ChangedBalanceA == null)
 					return done(new Error("Wallet A is expected to have balance changes due to transaction fee, but it seems he was unchanged from: " + BalanceA));
 
@@ -134,7 +134,7 @@ describe("Transfer balance", () => {
 			});
 
 			// Throw when error
-			SendTx.output.Failed.on('call', ev => {
+			SendTx.output.Failed.on('call', () => {
 				MyInstance.deleteNode(SendTx);
 				MyInstance.deleteNode(Balance_WalletA);
 				MyInstance.deleteNode(Balance_WalletB);
@@ -212,7 +212,7 @@ describe("Transfer balance", () => {
 			}, 2000);
 
 			// Wait until finalized
-			SendTx.output.Success.on('call', ev => {
+			SendTx.output.Success.on('call', () => {
 				if(ChangedBalanceA == null)
 					return done(new Error("Wallet A is expected to have balance changes due to transaction fee, but it seems he was unchanged from: " + BalanceA));
 
@@ -229,7 +229,7 @@ describe("Transfer balance", () => {
 			});
 
 			// Throw when error
-			SendTx.output.Failed.on('call', ev => {
+			SendTx.output.Failed.on('call', () => {
 				MyInstance.deleteNode(SendTx);
 				MyInstance.deleteNode(BatchTx);
 				MyInstance.deleteNode(Balance_WalletA);
@@ -284,7 +284,7 @@ describe("Transfer balance", () => {
 		}, 2000);
 
 		// We expect the transaction will failed
-		SendTx.output.Failed.on('call', ev => {
+		SendTx.output.Failed.on('call', () => {
 			expect(SendTx.ref.Output.Status).toBeDefined();
 			expect(SendTx.ref.Output.TxHash).toBeDefined();
 
@@ -294,7 +294,7 @@ describe("Transfer balance", () => {
 		});
 
 		// Fail if not failed
-		SendTx.output.Success.on('call', ev => {
+		SendTx.output.Success.on('call', () => {
 			done(new Error("The test must be failed because insufficient wallet balance, but it was success"));
 		});
 	});
@@ -320,7 +320,7 @@ describe("Transfer balance", () => {
 		}, 2000);
 
 		// We expect the transaction will failed
-		SendTx.output.Failed.on('call', ev => {
+		SendTx.output.Failed.on('call', () => {
 			// Status and TxHash will always defined even it was failed
 			expect(SendTx.ref.Output.Status).toBeDefined();
 			expect(SendTx.ref.Output.TxHash).toBeDefined();
@@ -332,7 +332,7 @@ describe("Transfer balance", () => {
 		});
 
 		// Error if not failed
-		SendTx.output.Success.on('call', ev => {
+		SendTx.output.Success.on('call', () => {
 			// Delete node
 			MyInstance.deleteNode(SendTx);
 			MyInstance.deleteNode(BatchTx);

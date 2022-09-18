@@ -53,7 +53,7 @@ class SignNode extends Blackprint.Node {
 
 	// This will be called by the engine if the input port have a new value
 	update(){
-		let { Input, Output } = this.ref; // Shortcut
+		let { Input } = this.ref; // Shortcut
 
 		if(!Input.Signer)
 			return this._fail("Signer is required");

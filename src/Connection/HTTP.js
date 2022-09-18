@@ -103,7 +103,7 @@ Context.IFace.ConnectionHTTP = class HTTPIFace extends Blackprint.Interface {
 	}
 
 	async changeRPC(){
-		let { Input, Output } = this.ref; // Shortcut
+		let { Output } = this.ref; // Shortcut
 		this._toast.clear();
 
 		// This can be filled from sketch's UI, or with code by accessing the IFace

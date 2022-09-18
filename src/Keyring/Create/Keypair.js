@@ -1,5 +1,5 @@
 /**
- * import { Context, Signer, internalKeyring } from "../_init.js";
+ * import { Context, Signer } from "../_init.js";
  * import { NodeToast } from "../utils/NodeToast.js";
  * { polkadotApi, polkadotUtilCrypto } = window
  */
@@ -17,7 +17,7 @@ class KeypairNode extends Blackprint.Node {
 		 * Keypair to store the keyring
 		 * You can leave this unconnected to use internal keyring
 		 */
-		Keyring: Blackprint.Port.Default(polkadotApi.Keyring, internalKeyring),
+		Keyring: Blackprint.Port.Default(polkadotApi.Keyring, Context._internalKeyring),
 		/** Hex string, or 32 bytes Uint8Array */
 		Seed: Blackprint.Port.Union([String, Uint8Array]), 
 		/** 12 or 24 words */
@@ -52,7 +52,7 @@ class KeypairNode extends Blackprint.Node {
 		let { Input, Output, IInput } = this.ref; // Shortcut
 		let toast = this._toast;
 
-		if(Input.Keyring === internalKeyring)
+		if(Input.Keyring === Context._internalKeyring)
 			this.iface.description = "Using internal keyring: "+Input.Keyring.type;
 		else this.iface.description = "Using connected keyring: "+Input.Keyring.type;
 
@@ -69,7 +69,7 @@ class KeypairNode extends Blackprint.Node {
 		let { Keyring, Seed, Mnemonic } = Input;
 
 		// We only need one seed/mnemonic, let's disconnect the other connection
-		if(!!Mnemonic && !!Seed){
+		if(Mnemonic && !!Seed){
 			// this.update() will be called again after the cable was disconnected
 
 			if(this._mnemonic === false && IInput.Seed.cables.length !== 0)
@@ -79,7 +79,7 @@ class KeypairNode extends Blackprint.Node {
 			return;
 		}
 
-		if(!!Mnemonic) {
+		if(Mnemonic) {
 			if(!polkadotUtilCrypto.mnemonicValidate(Mnemonic))
 				return toast.warn("Invalid mnemonic, it must be 12 or 24 words");
 

@@ -18,8 +18,8 @@ var polkadotApi, polkadotKeyring, polkadotTypes, polkadotUtilCrypto, polkadotUti
 // Import for different environment
 let crypto = window.crypto;
 if(Blackprint.Environment.loadFromURL === false) {
-	if(window.Blackprint.Environment.isNode){
-		crypto = (await import('node:crypto')).webcrypto;
+	if(Blackprint.Environment.isNode){
+		crypto = (await import('node:crypto')).webcrypto; // eslint-disable-line
 
 		// Bugfix for polkadot.js's dependency library
 		window.addEventListener ??= ()=>{};
@@ -46,7 +46,7 @@ if(Blackprint.Environment.loadFromURL === false) {
 		await import(path+'/node_modules/@polkadot/types/bundle-polkadot-types.js');
 		await import(path+'/node_modules/@polkadot/api/bundle-polkadot-api.js');
 
-		if(window.Blackprint.Environment.isBrowser)
+		if(Blackprint.Environment.isBrowser)
 			await import(path+'/node_modules/@polkadot/extension-dapp/bundle-polkadot-extension-dapp.js');
 
 		({ polkadotApi, polkadotKeyring, polkadotTypes, polkadotUtilCrypto, polkadotUtil, polkadotExtensionDapp } = window);
@@ -75,7 +75,7 @@ else{
 			await import(_remoteModule[i]);
 	}
 
-	({ polkadotApi, polkadotKeyring, polkadotTypes, polkadotUtilCrypto, polkadotUtil, polkadotExtensionDapp } = window);
+	({ polkadotApi, polkadotKeyring, polkadotTypes, polkadotUtilCrypto, polkadotUtil, polkadotExtensionDapp } = window); // eslint-disable-line
 }
 
 // Global shared context
@@ -86,7 +86,7 @@ var Context = Blackprint.createContext('Polkadot.js');
 Context.EventSlot = {slot: 'my-private-event-slot'};
 
 // internal Keyring that will be used by some node if not connected to any keyring
-var internalKeyring = new polkadotApi.Keyring({
+Context._internalKeyring = new polkadotApi.Keyring({ // eslint-disable-line
 	type: 'ed25519',
 	ss58Format: 0,
 });

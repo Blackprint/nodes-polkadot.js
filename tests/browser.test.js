@@ -29,7 +29,7 @@ test('Blackprint.Sketch does exist on window', async () => {
 	});
 
 	// Remove log when the cable was replaced
-	MyInstance.on('cable.replaced', ev => {});
+	MyInstance.on('cable.replaced', () => {});
 });
 
 // This may took longer to finish because will also load polkadot.js's module

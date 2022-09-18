@@ -10,11 +10,10 @@ class CrypterNode extends Blackprint.Node {
 		super(instance);
 
 		let iface = this.setInterface(); // use empty interface
-
-		this._toast = new NodeToast(this.iface);
+		this._toast = new NodeToast(iface);
 
 		// Manually call 'update' when any cable from input port was disconnected
-		this.iface.on('cable.disconnect', Context.EventSlot, ({ port })=> {
+		iface.on('cable.disconnect', Context.EventSlot, ({ port })=> {
 			if(port.source === 'input') this.update();
 		});
 	}
@@ -26,7 +25,7 @@ class CrypterNode extends Blackprint.Node {
 
 	// This will be called by the engine if the input port have a new value
 	update(){
-		let { Input, Output } = this.ref; // Shortcut
+		let { Input } = this.ref; // Shortcut
 		let toast = this._toast;
 
 		if(!Input.Keypair)

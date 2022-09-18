@@ -47,9 +47,9 @@ class SignerNode extends Blackprint.Node {
 			return toast.warn("Address is required");
 
 		// Wait for permission
-		if(extensionEnabled !== true){
+		if(Context._extensionEnabled !== true){
 			toast.warn("No access to browser extension");
-			await extensionEnabled;
+			await Context._extensionEnabled;
 		}
 
 		// Clear any toast if exist

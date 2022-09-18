@@ -102,7 +102,7 @@ Context.IFace.ConnectionWebSocket = class WebSocketIFace extends Blackprint.Inte
 	}
 
 	async changeRPC(){
-		let { Input, Output } = this.ref; // Shortcut
+		let { Output } = this.ref; // Shortcut
 		this._toast.clear();
 
 		// If already connected to other network, let's disconnect it first

@@ -30,7 +30,7 @@ injectExtension(async (originName) => {
 		// https://github.com/polkadot-js/api/blob/2f28ea0ea8f3571631882077926edfbc9c45248d/packages/types/src/types/extrinsic.ts#L135
 		signer: {
 			async signPayload(){ throw new Error("signer.signPayload is not implemented") },
-			async signRaw({ type, data, address }){
+			async signRaw({ data, address }){
 				let pair = keypair[address];
 				if(pair == null)
 					throw new Error(`Can't find keypair with address: ${address}`);

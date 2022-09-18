@@ -17,7 +17,7 @@ describe("Event Node - Listen for new heads/blocks", () => {
 		expect(MyInstance.iface.Event_Node).toBeDefined();
 
 		// Deconstruct it and save to the outer scope of this test function
-		;({ WS_Node, Event_Node } = MyInstance.iface);
+		({ WS_Node, Event_Node } = MyInstance.iface);
 	});
 
 	test("Connect to Westend", (done) => {

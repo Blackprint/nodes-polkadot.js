@@ -3,7 +3,7 @@
  */
 
 // Bootstrap for add toast on node decoration
-let NodeToast = Context.NodeToast = class NodeToast {
+let NodeToast = Context.NodeToast = class NodeToast { // eslint-disable-line
 	constructor(iface){
 		this.iface = iface;
 	}
