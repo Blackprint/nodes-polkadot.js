@@ -349,7 +349,7 @@ function Substrate_BlackprintNodeGenerator(options, list){ // eslint-disable-lin
 					this._toast.clear();
 
 					if(Input.API != null){
-						if(Input.API[apiPath][temp.rpc_path][apiName] == null){
+						if(Input.API[apiPath][temp.rpc_path]?.[apiName] == null){
 							this._toast.error("This network doesn't support this feature");
 							return;
 						}
@@ -372,6 +372,8 @@ function Substrate_BlackprintNodeGenerator(options, list){ // eslint-disable-lin
 
 					// Get reference, ex: rpc_path = author
 					let obj = Input.API[apiPath][temp.rpc_path];
+
+					if(obj == null) return toast.error("This network doesn't support this feature");
 
 					// Prepare arguments before calling the Polkadot.js's RPC function
 					let args = [];
