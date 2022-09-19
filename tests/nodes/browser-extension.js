@@ -11,27 +11,42 @@ describe("Nodes for Polkadot.js's browser extension", () => {
 		expect(polkadotExtensionDapp.isWeb3Injected).toBe(true);
 		
 		// Create node for accessing the extension
-		let extension = MyInstance.createNode('Polkadot.js/Connection/Extension', {data: {dAppName: 'BP-Polkadot.js'}});
+		let connExtension = MyInstance.createNode('Polkadot.js/Connection/Extension', {data: {dAppName: 'BP-Polkadot.js'}});
 
+		// Manual call before connecting to any input to improve coverage
+		connExtension.ref.Input.Connect();
+
+		// Connect to browser wallet that aren't exist
 		let extensionId = new Blackprint.OutputPort(String);
+		extensionId.value = 'dummy-not-found';
+
+		// Connect to browser wallet with id: dummy-test
+		connExtension.input.ExtensionId.connectPort(extensionId);
+		connExtension.ref.Input.Connect();
+		expect(connExtension.ref.Output.IsAllowed).not.toBe(true);
+
+		// Change to polkadot
 		extensionId.value = 'polkadot-js';
 
 		// Connect to browser wallet with id: polkadot-js
-		extension.input.ExtensionId.connectPort(extensionId);
-		extension.ref.Input.Connect();
+		connExtension.input.ExtensionId.connectPort(extensionId);
+		connExtension.ref.Input.Connect();
 
 		// Check if the access was allowed
 		// Note: This will always be allowed when testing on Node.js
-		extension.output.IsAllowed.on('value', ev => {
+		connExtension.output.IsAllowed.on('value', ev => {
 			expect(ev.port.value).toBe(true);
 
 			// We already prepare 2 account in "../utils/inject-browser-extension.js"
-			expect(extension.ref.Output.Accounts.length).toBe(2);
+			expect(connExtension.ref.Output.Accounts.length).toBe(2);
+
+			MyInstance.deleteNode(connExtension);
+			connExtension.destroy();
 			done();
 		});
 	});
 
-	let portAddressB, textData, dataSigner;
+	let portAddressB, textData, dataSigner, extSigner;
 	test("Sign a data with browser extension", (done) => {
 		// Prepare wallet address
 		portAddressB = new Blackprint.OutputPort(String);
@@ -42,14 +57,14 @@ describe("Nodes for Polkadot.js's browser extension", () => {
 		textData.value = "hello world";
 
 		// Get the signer reference from the extension
-		let signer = MyInstance.createNode('Polkadot.js/Extension/Get/Signer');
-		signer.input.Address.connectPort(portAddressB);
+		extSigner = MyInstance.createNode('Polkadot.js/Extension/Get/Signer');
+		extSigner.input.Address.connectPort(portAddressB);
 
 		// Wait until the node get Signer input from the extension
-		signer.output.Signer.once('value', async () => {
+		extSigner.output.Signer.once('value', async () => {
 			// Sign the data
 			dataSigner = MyInstance.createNode("Polkadot.js/Data/Sign");
-			dataSigner.input.Signer.connectPort(signer.output.Signer);
+			dataSigner.input.Signer.connectPort(extSigner.output.Signer);
 			dataSigner.input.Data.connectPort(textData);
 
 			// Trigger the node to sign the data
@@ -59,6 +74,7 @@ describe("Nodes for Polkadot.js's browser extension", () => {
 			// The data signer will now have the signature of the data (stored in 'Bytes' port)
 			// Port 'Output.Bytes' type: Uint8Array
 			expect(dataSigner.ref.Output.Bytes).not.toBe(null);
+
 			done();
 		});
 	});
@@ -71,6 +87,9 @@ describe("Nodes for Polkadot.js's browser extension", () => {
 		dataVerify.input.Signature.connectPort(dataSigner.output.Bytes);
 
 		expect(dataVerify.ref.Output.IsValid).toBe(true); // true == signature is valid
+
+		MyInstance.deleteNode(extSigner);
+		MyInstance.deleteNode(dataVerify);
 	});
 
 	test("Signature verification fail if the address was different", () => {
@@ -85,5 +104,10 @@ describe("Nodes for Polkadot.js's browser extension", () => {
 		dataVerify.input.Signature.connectPort(dataSigner.output.Bytes);
 
 		expect(dataVerify.ref.Output.IsValid).toBe(false); // false == signature is invalid
+		MyInstance.deleteNode(dataVerify);
+	});
+
+	afterAll(() => {
+		MyInstance.deleteNode(dataSigner);
 	});
 });

@@ -127,4 +127,15 @@ describe("Sign and verify data", () => {
 		expect(Data_Verify_A.ref.Output.IsValid).toBe(false);
 		expect(Data_Verify_B.ref.Output.IsValid).toBe(false);
 	});
+
+	// Clean up the nodes
+	afterAll(() => {
+		let { Data_Signer_A, Data_Signer_B, Data_Verify_A, Data_Verify_B } = MyInstance.iface;
+
+		MyInstance.deleteNode(Data_Signer_A);
+		MyInstance.deleteNode(Data_Signer_B);
+
+		MyInstance.deleteNode(Data_Verify_A);
+		MyInstance.deleteNode(Data_Verify_B);
+	});
 });

@@ -58,9 +58,6 @@ require('./nodes/import-mnemonic.js');
 require('./nodes/sign-verify.js');
 require('./nodes/encrypt-decrypt.js');
 require('./nodes/browser-extension.js');
-
-// Because we're testing for Browser and Node.js
-// We will run the transfer balance's unit test on Node.js only
-
-// In case you're not sure if the unit test does work for browser or not, feel free to uncomment below
-// require('./nodes/transfer-balance.js'); // This also contain test for listening balance changes
+require('./nodes/transfer-balance.js'); // This also contain test for listening balance changes
+require('./nodes/experimental-nodes.js');
+require('./nodes/converter-nodes.js');

@@ -14,6 +14,8 @@ module.exports = {
         "MyInstance": "readonly",
         "describe": "readonly",
         "expect": "readonly",
+        "beforeAll": "readonly",
+        "afterAll": "readonly",
         "test": "readonly",
         "sf": "readonly",
         "jest": "readonly",

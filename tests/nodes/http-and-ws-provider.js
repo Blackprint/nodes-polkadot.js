@@ -11,7 +11,10 @@ describe("WebSocket Provider Node", () => {
 	let WS_RPC = null; // type: WebSocketIFace -> src/Connection/WebSocket.js
 
 	test("Create nodes", async () => {
-		WS_RPC = MyInstance.createNode('Polkadot.js/Connection/WebSocket', {id: 'WS_RPC'});
+		WS_RPC = MyInstance.createNode('Polkadot.js/Connection/WebSocket', {
+			id: 'WS_RPC',
+			data: {rpcURL: "wss://rpc.polkadot.io"},
+		});
 		expect(MyInstance.iface.WS_RPC).toBeDefined();
 	});
 
@@ -54,7 +57,10 @@ describe("HTTP Provider Node", () => {
 	let HTTP_RPC = null; // type: HTTPIFace -> src/Connection/HTTP.js
 
 	test("Create nodes", async () => {
-		HTTP_RPC = MyInstance.createNode('Polkadot.js/Connection/HTTP', {id: 'HTTP_RPC'});
+		HTTP_RPC = MyInstance.createNode('Polkadot.js/Connection/HTTP', {
+			id: 'HTTP_RPC',
+			data: {rpcURL: "https://rpc.polkadot.io"},
+		});
 		expect(MyInstance.iface.HTTP_RPC).toBeDefined();
 	});
 

@@ -37,6 +37,14 @@ describe("Transfer balance", () => {
 	let Port_SendBigValue = new Blackprint.OutputPort(Number);
 	Port_SendBigValue.value = 10e12; // 10 WND
 
+	afterAll(() => {
+		let { Tx_To_WalletB, Tx2_To_WalletB, BigTx_To_WalletB } = MyInstance.iface;
+		MyInstance.deleteNode(Tx_To_WalletB);
+		MyInstance.deleteNode(Tx2_To_WalletB);
+		MyInstance.deleteNode(BigTx_To_WalletB);
+		MyInstance.deleteNode(WS_RPC);
+	});
+
 	test("Prepare transaction for sending 0.01, 0.015, and 10 WND", () => {
 		// Create transfer balance node
 		let Tx_To_WalletB = MyInstance.createNode('Polkadot.js/Account/Transfer/Balance', {id: 'Tx_To_WalletB'});
@@ -81,6 +89,41 @@ describe("Transfer balance", () => {
 			MyInstance.deleteNode(PaymentInfo);
 			done();
 		});
+	});
+
+	test("Dry run the transaction", async () => {
+		// Because Westend doesn't seems to support dry run, we will use another network
+
+		// Create WebSocket node for Pangolin
+		let WS_RPC = MyInstance.createNode('Polkadot.js/Connection/WebSocket');
+		WS_RPC.data.rpcURL = 'wss://pangolin-rpc.darwinia.network';
+		// wss://rococo-csm.crustcode.com
+
+		// Wait for API initialization
+		await new Promise(resolve => WS_RPC.output.API.once('value', resolve));
+
+		// Create transfer balance node
+		let Tx = MyInstance.createNode('Polkadot.js/Account/Transfer/Balance');
+		Tx.input.API.connectPort(WS_RPC.output.API);
+		Tx.input.Address.connectPort(Port_AddressB); // process.env.WALLET_ADDRESS_B
+		Tx.input.Value.connectPort(Port_SendValue); // 0.01e12
+		expect(Tx.ref.Output.Txn).toBeDefined();
+
+		// Create transfer balance node
+		let DryRun = MyInstance.createNode('Polkadot.js/Transaction/DryRun');
+		DryRun.input.Txn.connectPort(Tx.output.Txn);
+		DryRun.input.Signer.connectPort(MyInstance.iface.Keypair_Node_A.output.Signer);
+
+		// Wait for API initialization
+		let { port } = await new Promise(resolve => DryRun.output.Status.on('value', resolve));
+
+		// At least has a respond from the network
+		expect(port.value).toBeDefined();
+
+		// Remove node
+		MyInstance.deleteNode(DryRun);
+		MyInstance.deleteNode(Tx);
+		MyInstance.deleteNode(WS_RPC);
 	});
 
 	test("Submit transaction and listen for balance changes", (done) => {

@@ -104,6 +104,11 @@ describe("Keyring - Import Mnemonic to a Keypair", () => {
 		Keyring.output.Keyring.connectPort(KeypairA.input.Keyring);
 		Keyring.output.Keyring.connectPort(KeypairB.input.Keyring);
 
+		// Change Keyring to sr25519 format
+		let keyTypePort = new Blackprint.OutputPort(String);
+		keyTypePort.value = "sr25519";
+		Keyring.input.KeyType.connectPort(keyTypePort);
+
 		// Use random Mnemonic and Seed
 		//> KeypairA.mnemonic = Mnemonic.text
 		//> KeypairB.seed = Seed.seed

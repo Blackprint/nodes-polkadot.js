@@ -23,12 +23,17 @@ describe("Encrypt and decrypt data", () => {
 
 	let Decrypt, Encrypt;
 	test("Create Encrypt and Decrypt node", async () => {
-		Decrypt = MyInstance.createNode("Polkadot.js/Data/Keyring/Decrypt", {id: 'Decrypt'});
-		Encrypt = MyInstance.createNode("Polkadot.js/Data/Keyring/Encrypt", {id: 'Encrypt'});
+		Decrypt = MyInstance.createNode("Polkadot.js/Data/Keyring/Decrypt");
+		Encrypt = MyInstance.createNode("Polkadot.js/Data/Keyring/Encrypt");
 
 		// Connect "Encrypt.Bytes" to "Decrypt.Data"
 		//> Decrypt.data = Encrypt.bytes
 		Encrypt.output.Bytes.connectPort(Decrypt.input.Data);
+	});
+
+	afterAll(()=> {
+		MyInstance.deleteNode(Decrypt);
+		MyInstance.deleteNode(Encrypt);
 	});
 
 	test("Encrypt text data from Keypair A and decrypt with Keypair B", async () => {

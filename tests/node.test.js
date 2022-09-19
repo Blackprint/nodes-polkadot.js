@@ -46,8 +46,11 @@ require('./nodes/import-mnemonic.js');
 require('./nodes/sign-verify.js');
 require('./nodes/encrypt-decrypt.js');
 // require('./nodes/browser-extension.js'); // Only for browser
+require('./nodes/experimental-nodes.js');
+require('./nodes/converter-nodes.js');
 
-// Skip this unit test on pull request because usually Renovate bot will trigger the test on dependency updates
-if(process.env.IS_PR !== 'true'){
-	require('./nodes/transfer-balance.js'); // This also contain test for listening balance changes
-}
+// Because we're testing for Browser and Node.js
+// We will run the transfer balance's unit test on Browser only
+
+// In case you're not sure if the unit test does work for browser or not, feel free to uncomment below
+// require('./nodes/transfer-balance.js'); // This also contain test for listening balance changes
