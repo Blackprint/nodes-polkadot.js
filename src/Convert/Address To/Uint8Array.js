@@ -23,7 +23,7 @@ class RandomSeedNode extends Blackprint.Node {
 		super(instance);
 
 		let iface = this.setInterface();
-		iface.title = "Address to Address";
+		iface.title = "Address to Uint8Array";
 
 		this._toast = new NodeToast(this.iface);
 

@@ -45,7 +45,6 @@ class extends Blackprint.Node {
 		let { Input, Output } = this.ref; // Shortcut
 
 		if(!Input.Address) return this._fail('Address is required');
-		if(!Input.ChainId) return this._fail('ChainId is required');
 
 		this._toast.clear();
 		Output.Address = polkadotKeyring.encodeAddress(Input.Address, Input.ChainId);

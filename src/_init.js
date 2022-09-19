@@ -17,6 +17,7 @@ var polkadotApi, polkadotKeyring, polkadotTypes, polkadotUtilCrypto, polkadotUti
 
 // Import for different environment
 let crypto = window.crypto;
+
 if(Blackprint.Environment.loadFromURL === false) {
 	if(Blackprint.Environment.isNode){
 		crypto = (await import('node:crypto')).webcrypto; // eslint-disable-line
@@ -52,7 +53,10 @@ if(Blackprint.Environment.loadFromURL === false) {
 		({ polkadotApi, polkadotKeyring, polkadotTypes, polkadotUtilCrypto, polkadotUtil, polkadotExtensionDapp } = window);
 	}
 }
-else{
+// Skip from coverage report as this only for Deno or Browser that load module from URL
+/* c8 ignore start */
+else {
+
 	/* Parallely load dependencies from CDN */
 	// Use bundled file
 	// This will be registered on global (window)
@@ -77,6 +81,7 @@ else{
 
 	({ polkadotApi, polkadotKeyring, polkadotTypes, polkadotUtilCrypto, polkadotUtil, polkadotExtensionDapp } = window); // eslint-disable-line
 }
+/* c8 ignore stop */
 
 // Global shared context
 var Context = Blackprint.createContext('Polkadot.js');
@@ -86,7 +91,7 @@ var Context = Blackprint.createContext('Polkadot.js');
 Context.EventSlot = {slot: 'my-private-event-slot'};
 
 // internal Keyring that will be used by some node if not connected to any keyring
-Context._internalKeyring = new polkadotApi.Keyring({ // eslint-disable-line
+Context._internalKeyring = new polkadotApi.Keyring({
 	type: 'ed25519',
 	ss58Format: 0,
 });
