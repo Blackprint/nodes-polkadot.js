@@ -13,9 +13,6 @@ describe("Nodes for Polkadot.js's browser extension", () => {
 		// Create node for accessing the extension
 		let connExtension = MyInstance.createNode('Polkadot.js/Connection/Extension', {data: {dAppName: 'BP-Polkadot.js'}});
 
-		// Manual call before connecting to any input to improve coverage
-		connExtension.ref.Input.Connect();
-
 		// Connect to browser wallet that aren't exist
 		let extensionId = new Blackprint.OutputPort(String);
 		extensionId.value = 'dummy-not-found';
