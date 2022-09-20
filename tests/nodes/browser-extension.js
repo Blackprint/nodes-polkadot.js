@@ -26,6 +26,7 @@ describe("Nodes for Polkadot.js's browser extension", () => {
 		expect(connExtension.ref.Output.IsAllowed).not.toBe(true);
 
 		// Change to polkadot
+		connExtension.input.ExtensionId.disconnectAll();
 		extensionId.value = 'polkadot-js';
 
 		// Connect to browser wallet with id: polkadot-js
@@ -41,7 +42,6 @@ describe("Nodes for Polkadot.js's browser extension", () => {
 			expect(connExtension.ref.Output.Accounts.length).toBe(2);
 
 			MyInstance.deleteNode(connExtension);
-			connExtension.destroy();
 			done();
 		});
 	});
