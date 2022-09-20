@@ -1,3 +1,10 @@
+# 0.5.2
+
+## Bug Fix
+- Fix error on experimental nodes when the network doesn't support it
+- Allow `ChainId` with 0 as the value when converting address
+- Rename title for `Convert/Address To/Uint8Array` node
+
 # 0.5.1
 
 ## Bug Fix
