@@ -41,7 +41,6 @@ jobs:
       - name: 🛠 Compiling Blackprint Modules
         run: npx blackprint build production
 
-
         # If you see "Segmentation fault (core dumped)" when testing with Jest, please re-run the test again, it's was an old issue and still open
         # https://github.com/facebook/jest/issues/10662
       - name: 🔥 Run Tests
@@ -50,7 +49,7 @@ jobs:
           MNEMONIC_B: ${{ secrets.MNEMONIC_B }}
           WALLET_ADDRESS_A: ${{ secrets.WALLET_ADDRESS_A }}
           WALLET_ADDRESS_B: ${{ secrets.WALLET_ADDRESS_B }}
-          IS_PR: ${{ github.event_name == 'pull_request' }}
+          IS_PR: ${{ github.event_name == 'pull_request' }} # Skip transaction test
         run: npm test
 
       - name: 🚀 Deploy
