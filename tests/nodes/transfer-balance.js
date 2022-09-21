@@ -16,13 +16,17 @@ describe("Transfer balance", () => {
 	Port_AddressA.value = process.env.WALLET_ADDRESS_A; // 1KczAVb5pokkvsKoX8eEwxVnmwq8wNo9jgYDm4sHR9Z9nNQ
 	Port_AddressB.value = process.env.WALLET_ADDRESS_B; // 1a1Uk5MqRZnKAgu3E3EZCU33Pg59gFgVC5SavkYKWs3au7k
 
+	let nonce;
 	test("Prepare connection to Westend network", (done) => {
 		// Create WebSocket node
 		WS_RPC = MyInstance.createNode('Polkadot.js/Connection/WebSocket', {id: 'WS_RPC'});
 		expect(MyInstance.iface.WS_RPC).toBeDefined();
 
 		// This output port will have value after connected to the network and ready to be used
-		WS_RPC.output.API.once('value', () => done());
+		WS_RPC.output.API.once('value', async (ev) => {
+			nonce = (await ev.port.value.rpc.system.accountNextIndex(Port_AddressA.value)).toBigInt();
+			done();
+		});
 
 		// Changing the RPC URL will trigger reconnection
 		WS_RPC.data.rpcURL = 'wss://westend-rpc.polkadot.io/';
@@ -91,7 +95,7 @@ describe("Transfer balance", () => {
 		});
 	});
 
-	test("Dry run the transaction", async () => {
+	test("Dry run a transaction", async () => {
 		// Because Westend doesn't seems to support dry run, we will use another network
 
 		// Create WebSocket node for Pangolin
@@ -132,12 +136,13 @@ describe("Transfer balance", () => {
 
 		// Create send transaction node
 		let SendTx = MyInstance.createNode('Polkadot.js/Transaction/Send');
+		SendTx.input.Nonce.default = nonce++;
 		SendTx.input.Txn.connectPort(Tx_To_WalletB.output.Txn);
 		SendTx.input.Signer.connectPort(Keypair_Node_A.output.Signer);
 
 		let BalanceA, BalanceB;
 		let ChangedBalanceA, ChangedBalanceB;
-		
+
 		// Create balance listener node
 		let Balance_WalletA = MyInstance.createNode('Polkadot.js/Events/Account/Balance');
 		let Balance_WalletB = MyInstance.createNode('Polkadot.js/Events/Account/Balance');
@@ -173,7 +178,8 @@ describe("Transfer balance", () => {
 				MyInstance.deleteNode(SendTx);
 				MyInstance.deleteNode(Balance_WalletA);
 				MyInstance.deleteNode(Balance_WalletB);
-				return done();
+
+				done();
 			});
 
 			// Throw when error
@@ -226,6 +232,7 @@ describe("Transfer balance", () => {
 
 		// Create send transaction node
 		let SendTx = MyInstance.createNode('Polkadot.js/Transaction/Send');
+		SendTx.input.Nonce.default = nonce++;
 		SendTx.input.Txn.connectPort(BatchTx.output.Txn);
 		SendTx.input.Signer.connectPort(Keypair_Node_A.output.Signer);
 
@@ -315,6 +322,7 @@ describe("Transfer balance", () => {
 
 		// Create send transaction node
 		let SendTx = MyInstance.createNode('Polkadot.js/Transaction/Send');
+		SendTx.input.Nonce.default = nonce++;
 		SendTx.input.Txn.connectPort(BigTx_To_WalletB.output.Txn);
 		SendTx.input.Signer.connectPort(Keypair_Node_A.output.Signer);
 
@@ -351,6 +359,7 @@ describe("Transfer balance", () => {
 
 		// Create send transaction node
 		let SendTx = MyInstance.createNode('Polkadot.js/Transaction/Send');
+		SendTx.input.Nonce.default = nonce++;
 		SendTx.input.Txn.connectPort(BatchTx.output.Txn);
 		SendTx.input.Signer.connectPort(Keypair_Node_A.output.Signer);
 

@@ -158,7 +158,7 @@ class TransferSendNode extends Blackprint.Node {
 				toast.error("The network doesn't support this feature");
 			else toast.error(e.message);
 
-			throw e;
+			Output.Failed();
 		}
 	}
 });
