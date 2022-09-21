@@ -11,9 +11,9 @@ globalThis.crypto = require('crypto').webcrypto; // required by @polkadot/util-c
 // Required by @polkadot/util for doing RPC with HTTP
 globalThis.fetch = require("node-fetch");
 
-// Test timeout = 40 sec
+// Test timeout = 180 sec = 3 min (ToDo: change this to 40sec after Westend block finalization back to normal)
 // This usually needed for waiting for new heads/blocks and waiting transaction to finish
-jest.setTimeout(40e3);
+jest.setTimeout(180e3);
 
 // Surpress some warning from @polkadot/util
 let warn = console.warn;
