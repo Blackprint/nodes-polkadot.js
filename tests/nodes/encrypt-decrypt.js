@@ -67,7 +67,13 @@ describe("Encrypt and decrypt data", () => {
 		expect(Encrypt.ref.Output.Bytes).not.toBe(null);
 
 		// "Encrypt" node already connected with "Decrypt" node
-		// so the "Decrypt" node should have new value right now
+		// so the "Decrypt" node should have new value
+
+		// Wait for the node to be executed
+		if(Decrypt.ref.Output.Bytes == null)
+			await Decrypt.ref.IOutput.Bytes.waitOnce('value');
+
+		expect(Decrypt.ref.Output.Bytes).not.toBe(null);
 
 		// Let's check if the value is similar
 		//> u8aToString( Encrypt.bytes ) === 'hello world'
@@ -106,7 +112,11 @@ describe("Encrypt and decrypt data", () => {
 		expect(Encrypt.ref.Output.Bytes).not.toBe(null);
 
 		// "Encrypt" node already connected with "Decrypt" node
-		// so the "Decrypt" node should have new value right now
+		// so the "Decrypt" node should have new value
+
+		// Wait for the node to be executed
+		if(Decrypt.ref.Output.Bytes == null)
+			await Decrypt.ref.IOutput.Bytes.waitOnce('value');
 
 		// Let's check if the value is similar
 		//> Decrypt.bytes.toString() === "104,101,108,108,111,32,119,111,114,108,100"
