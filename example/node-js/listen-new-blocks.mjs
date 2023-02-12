@@ -19,7 +19,7 @@ await Blackprint.getContext('Polkadot.js');
 
 // Create the instance and import the JSON
 let MyInstance = new Blackprint.Engine();
-await MyInstance.importJSON(`{"Polkadot.js/Connection/WebSocket":[{"i":0,"x":0,"y":0,"z":0,"id":"websocketNode","data":{"rpcURL":""},"output":{"API":[{"i":1,"name":"API"}]}}],"Polkadot.js/Events/Blocks":[{"i":1,"x":364,"y":19,"z":1,"id":"blocksNode"}]}`);
+await MyInstance.importJSON(`{"instance":{"Polkadot.js/Connection/WebSocket":[{"i":0,"x":0,"y":0,"z":0,"id":"websocketNode","data":{"rpcURL":""},"output":{"API":[{"i":1,"name":"API"}]}}],"Polkadot.js/Events/Blocks":[{"i":1,"x":364,"y":19,"z":1,"id":"blocksNode"}]}}`);
 
 // Obtain our node reference
 let { websocketNode, blocksNode } = MyInstance.iface;
