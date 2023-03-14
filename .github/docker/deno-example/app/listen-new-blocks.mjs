@@ -1,7 +1,7 @@
 // Run this from your terminal:
 // deno run --allow-net listen-new-blocks.mjs
 
-import Blackprint from 'https://cdn.skypack.dev/@blackprint/engine@0.7.x';
+import Blackprint from 'https://cdn.skypack.dev/@blackprint/engine@0.8.x';
 
 // Fix the bundled version of Polkadot.js's library for Deno
 globalThis.location = { href: '' };

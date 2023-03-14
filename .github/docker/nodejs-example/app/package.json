@@ -5,7 +5,7 @@
 	  "start": "node ./listen-new-blocks.mjs"
 	},
 	"dependencies": {
-	  "@blackprint/engine": "0.7.x",
-	  "@blackprint/nodes-polkadot.js": "0.5.x"
+	  "@blackprint/engine": "0.8.x",
+	  "@blackprint/nodes-polkadot.js": "0.6.x"
 	}
 }

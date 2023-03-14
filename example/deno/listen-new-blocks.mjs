@@ -6,7 +6,7 @@ import Blackprint from 'https://cdn.skypack.dev/@blackprint/engine@0.7.x';
 // Fix the bundled version of Polkadot.js's library for Deno
 globalThis.location = { href: '' };
 
-await import("https://cdn.jsdelivr.net/npm/@blackprint/nodes-polkadot.js@0.5.x/dist/nodes-polkadotjs.mjs");
+await import("https://cdn.jsdelivr.net/npm/@blackprint/nodes-polkadot.js@0.6.x/dist/nodes-polkadotjs.mjs");
 
 // Wait until the module context was registered
 await Blackprint.getContext('Polkadot.js');
