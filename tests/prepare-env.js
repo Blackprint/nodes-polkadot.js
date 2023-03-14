@@ -29,24 +29,18 @@ console.warn = function(msgA, msgB, msgC){
 }
 
 module.exports = function(env){
-	// Load the frontend framework first if the environment is browser
-	if(env === 'browser'){
-		// For Browser Environment
-		window.sf = require("scarletsframe/dist/scarletsframe.min.js");
-
-		// Disable loader for browser, because we're testing with Node.js
-		sf.loader.turnedOff = true;
-		sf.loader.task = false;
-		delete sf.loader;
-	}
-
 	// Load Blackprint Engine before the Sketch
 	require("@blackprint/engine");
 
 	// Load Blackprint Sketch
 	if(env === 'browser'){
-		require("@blackprint/sketch/dist/blackprint.min.js");
-		require("@blackprint/sketch/dist/blackprint.sf.js");
+		// This will also load ScarletsFrame framework
+		require("@blackprint/sketch");
+
+		// Disable loader for browser, because we're testing with Node.js
+		sf.loader.turnedOff = true;
+		sf.loader.task = false;
+		delete sf.loader;
 	}
 
 	// Force Blackprint module to load from node_modules
