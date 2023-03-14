@@ -266,16 +266,9 @@ Blackprint.loadModuleFromURL([
 
 ### Load unpublished module from GitHub
 You can use this link to load unpublished nodes that still under development on GitHub.<br>
-https://cdn.jsdelivr.net/gh/Blackprint/nodes-polkadot.js@dist/nodes-polkadotjs.mjs?1
+https://cdn.jsdelivr.net/gh/Blackprint/nodes-polkadot.js@dist/nodes-polkadotjs.mjs
 
-> Please append `/url-here?random-number` if your browser still using the cached files
-
-<!--
-> You will need to purge cache from jsdelivr
-> https://purge.jsdelivr.net/gh/Blackprint/nodes-polkadot.js@dist/nodes-polkadotjs.mjs
-
-https://github.com/jsdelivr/jsdelivr#caching
--->
+Replace `dist` with your latest commit hash (from `dist` branch) to avoid cache from CDN.
 
 ### Distributable files
 
