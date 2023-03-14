@@ -257,7 +257,7 @@ Please specify the version to avoid breaking changes.
 
 ```js
 Blackprint.loadModuleFromURL([
-  'https://cdn.jsdelivr.net/npm/@blackprint/nodes-polkadot.js@0.5.x/dist/nodes-polkadotjs.mjs'
+  'https://cdn.jsdelivr.net/npm/@blackprint/nodes-polkadot.js@0.6.x/dist/nodes-polkadotjs.mjs'
 ], {
   // Turn this on if you want to load ".sf.js" and ".sf.css" for browser
   loadBrowserInterface: true // set to "false" for Node.js/Deno

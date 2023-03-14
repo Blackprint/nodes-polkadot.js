@@ -1,3 +1,8 @@
+# 0.6.0
+
+## Changes
+- The major version of `@polkadot` dependencies was updated from `v9 and v10` to `v10 and v11`
+
 # 0.5.2
 
 ## Bug Fix
