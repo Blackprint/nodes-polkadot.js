@@ -61,15 +61,15 @@ else {
 	// Use bundled file
 	// This will be registered on global (window)
 	let _remoteModule = [
-		"https://cdn.jsdelivr.net/npm/@polkadot/util@^11/bundle-polkadot-util.min.js",
-		"https://cdn.jsdelivr.net/npm/@polkadot/util-crypto@^11/bundle-polkadot-util-crypto.min.js",
-		"https://cdn.jsdelivr.net/npm/@polkadot/keyring@^11/bundle-polkadot-keyring.min.js",
+		"https://cdn.jsdelivr.net/npm/@polkadot/util@^12/bundle-polkadot-util.min.js",
+		"https://cdn.jsdelivr.net/npm/@polkadot/util-crypto@^12/bundle-polkadot-util-crypto.min.js",
+		"https://cdn.jsdelivr.net/npm/@polkadot/keyring@^12/bundle-polkadot-keyring.min.js",
 		"https://cdn.jsdelivr.net/npm/@polkadot/types@^10/bundle-polkadot-types.min.js",
 		"https://cdn.jsdelivr.net/npm/@polkadot/api@^10/bundle-polkadot-api.min.js",
 	];
 
 	if(window.Blackprint.Environment.isBrowser){
-		_remoteModule.push("https://cdn.jsdelivr.net/npm/@polkadot/extension-dapp@^0.45.2/bundle-polkadot-extension-dapp.min.js");
+		_remoteModule.push("https://cdn.jsdelivr.net/npm/@polkadot/extension-dapp@^0.46/bundle-polkadot-extension-dapp.min.js");
 	}
 
 	if(window.sf?.loader != null)

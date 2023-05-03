@@ -56,7 +56,6 @@ require('./nodes/http-and-ws-provider.js');
 require('./nodes/event-new-heads.js');
 require('./nodes/import-mnemonic.js');
 require('./nodes/sign-verify.js');
-require('./nodes/encrypt-decrypt.js');
 require('./nodes/browser-extension.js');
 
 if(process.env.IS_PR !== "true")

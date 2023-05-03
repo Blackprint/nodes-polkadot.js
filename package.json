@@ -1,7 +1,7 @@
 {
   "name": "@blackprint/nodes-polkadot.js",
   "description": "Blackprint nodes Polkadot's RPC client",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -16,20 +16,20 @@
     "build-prod": "blackprint build production"
   },
   "dependencies": {
-    "@polkadot/api": "^10.1.2",
-    "@polkadot/keyring": "^11.0.2",
-    "@polkadot/types": "^10.1.2",
-    "@polkadot/util": "^11.0.2",
-    "@polkadot/util-crypto": "^11.0.2"
+    "@polkadot/api": "^10.5.1",
+    "@polkadot/keyring": "^12.1.2",
+    "@polkadot/types": "^10.5.1",
+    "@polkadot/util": "^12.1.2",
+    "@polkadot/util-crypto": "^12.1.2"
   },
   "devDependencies": {
     "@blackprint/cli-tools": "0.3.29",
     "@blackprint/engine": "0.8.13",
     "@blackprint/sketch": "0.8.13",
-    "@polkadot/extension-dapp": "^0.45.2",
-    "@polkadot/extension-inject": "^0.45.2",
+    "@polkadot/extension-dapp": "^0.46.2",
+    "@polkadot/extension-inject": "^0.46.2",
     "dotenv": "^16.0.3",
-    "eslint": "^8.36.0",
+    "eslint": "^8.39.0",
     "jest": "^29.5.0",
     "jest-environment-jsdom": "^29.5.0",
     "jest-environment-node": "^29.5.0",
