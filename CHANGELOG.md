@@ -1,7 +1,7 @@
 # 0.7.0
 
 ## Changes
-- The major version of `@polkadot` dependencies was updated from `v10 and v11` to `v11 and v12`
+- The major version of `@polkadot/keyring`, `@polkadot/util`, `@polkadot/util-crypto` dependencies was updated v11 to v12
 - Encryption and decryption node was removed following changes from `@polkadot/keyring`'s breaking changes
   - Removed node: `Polkadot.js/Data/Keyring/Encrypt`
   - Removed node: `Polkadot.js/Data/Keyring/Decrypt`

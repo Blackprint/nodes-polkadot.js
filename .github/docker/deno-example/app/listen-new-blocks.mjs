@@ -6,14 +6,14 @@ import Blackprint from 'https://cdn.skypack.dev/@blackprint/engine@0.8.x';
 // Fix the bundled version of Polkadot.js's library for Deno
 globalThis.location = { href: '' };
 
-await import("https://cdn.jsdelivr.net/npm/@blackprint/nodes-polkadot.js@0.5.x/dist/nodes-polkadotjs.mjs");
+await import("https://cdn.jsdelivr.net/npm/@blackprint/nodes-polkadot.js@0.7.x/dist/nodes-polkadotjs.mjs");
 
 // Wait until the module context was registered
 await Blackprint.getContext('Polkadot.js');
 
 // Create the instance and import the JSON
 let MyInstance = new Blackprint.Engine();
-await MyInstance.importJSON(`{"Polkadot.js/Connection/WebSocket":[{"i":0,"x":0,"y":0,"z":0,"id":"websocketNode","data":{"rpcURL":""},"output":{"API":[{"i":1,"name":"API"}]}}],"Polkadot.js/Events/Blocks":[{"i":1,"x":364,"y":19,"z":1,"id":"blocksNode"}]}`);
+await MyInstance.importJSON(`{"instance":{"Polkadot.js/Connection/WebSocket":[{"i":0,"x":0,"y":0,"z":0,"id":"websocketNode","data":{"rpcURL":""},"output":{"API":[{"i":1,"name":"API"}]}}],"Polkadot.js/Events/Blocks":[{"i":1,"x":364,"y":19,"z":1,"id":"blocksNode"}]}}`);
 
 // Obtain our node reference
 let { websocketNode, blocksNode } = MyInstance.iface;

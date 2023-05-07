@@ -6,6 +6,6 @@
 	},
 	"dependencies": {
 	  "@blackprint/engine": "0.8.x",
-	  "@blackprint/nodes-polkadot.js": "0.6.x"
+	  "@blackprint/nodes-polkadot.js": "0.7.x"
 	}
 }
