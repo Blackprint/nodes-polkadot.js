@@ -1,4 +1,4 @@
-FROM node:16-buster-slim
+FROM node:18-buster-slim
 
 # Prefer node package manager that more efficient
 RUN npm i -g pnpm

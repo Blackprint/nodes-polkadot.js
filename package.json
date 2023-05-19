@@ -24,8 +24,8 @@
   },
   "devDependencies": {
     "@blackprint/cli-tools": "0.3.29",
-    "@blackprint/engine": "0.8.13",
-    "@blackprint/sketch": "0.8.13",
+    "@blackprint/engine": "0.8.15",
+    "@blackprint/sketch": "0.8.15",
     "@polkadot/extension-dapp": "^0.46.2",
     "@polkadot/extension-inject": "^0.46.2",
     "dotenv": "^16.0.3",
