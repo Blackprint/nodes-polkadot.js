@@ -28,9 +28,9 @@ class TransferSendNode extends Blackprint.Node {
 	// Output port
 	static output = {
 		/** Callback when the transaction was finalized and success */
-		Success: Function,
+		Success: Blackprint.Types.Trigger,
 		/** Callback when the transaction was finalized and failed */
-		Failed: Function,
+		Failed: Blackprint.Types.Trigger,
 		/** Raw status from Polkadot.js */
 		Status: Object,
 		/** This will have value after Ready status (before Broadcast) */

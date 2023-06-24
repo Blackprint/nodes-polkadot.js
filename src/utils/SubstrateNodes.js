@@ -268,7 +268,7 @@ function Substrate_BlackprintNodeGenerator(options, list){ // eslint-disable-lin
 			else func.returnType = void 0; // Didn't return data
 
 			if(isExtrinsics)
-				func.returnType = {Finished: Function};
+				func.returnType = {Finished: Blackprint.Types.Trigger};
 
 			// Type mapping (Rust Types => JavaScript Types)
 			let args = func.args;

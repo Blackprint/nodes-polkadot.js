@@ -51,9 +51,9 @@ class WebSocketNode extends Blackprint.Node {
 		/** API object from Polkadot.js's */
 		API: polkadotApi.ApiPromise,
 		/** This will be called when we successfully connected to the RPC*/
-		Connected: Function,
+		Connected: Blackprint.Types.Trigger,
 		/** This will be called when we disconnected with the RPC*/
-		Disconnected: Function,
+		Disconnected: Blackprint.Types.Trigger,
 	};
 
 	constructor(instance){
