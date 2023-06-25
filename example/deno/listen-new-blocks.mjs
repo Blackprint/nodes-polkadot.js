@@ -1,12 +1,12 @@
 // Run this from your terminal:
 // deno run --allow-net listen-new-blocks.mjs
 
-import Blackprint from 'https://cdn.skypack.dev/@blackprint/engine@0.8.x';
+import Blackprint from 'https://cdn.skypack.dev/@blackprint/engine@0.9.x';
 
 // Fix the bundled version of Polkadot.js's library for Deno
 globalThis.location = { href: '' };
 
-await import("https://cdn.jsdelivr.net/npm/@blackprint/nodes-polkadot.js@0.7.x/dist/nodes-polkadotjs.mjs");
+await import("https://cdn.jsdelivr.net/npm/@blackprint/nodes-polkadot.js@0.8.x/dist/nodes-polkadotjs.mjs");
 
 // Wait until the module context was registered
 await Blackprint.getContext('Polkadot.js');

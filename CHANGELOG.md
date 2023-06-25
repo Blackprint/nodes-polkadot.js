@@ -1,3 +1,8 @@
+# 0.8.0
+
+## Changes
+- Blackprint Engine v0.9 is required
+
 # 0.7.0
 
 ## Changes

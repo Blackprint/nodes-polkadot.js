@@ -30,11 +30,11 @@ devDependencies:
     specifier: 0.3.29
     version: 0.3.29
   '@blackprint/engine':
-    specifier: 0.8.15
-    version: 0.8.15
+    specifier: 0.9.0
+    version: 0.9.0
   '@blackprint/sketch':
-    specifier: 0.8.15
-    version: 0.8.15
+    specifier: 0.9.0
+    version: 0.9.0
   '@polkadot/extension-dapp':
     specifier: ^0.46.2
     version: 0.46.2(@polkadot/api@10.5.1)(@polkadot/util-crypto@12.1.2)(@polkadot/util@12.1.2)
@@ -1284,12 +1284,12 @@ packages:
       - utf-8-validate
     dev: true
 
-  /@blackprint/engine@0.8.15:
-    resolution: {integrity: sha512-vp2ErzHqFEcJpfiyjkqPM8zamz1cLW+qXyiChgsXMi/OSMheYaH3lQ8hmnK9HeDCAaMzE2kQu7dMXpIAX7oqpw==}
+  /@blackprint/engine@0.9.0:
+    resolution: {integrity: sha512-LdJgzcLL19hgSHkFwTsrKe4oP8QKkH1Sm8jxF0BeMe2zTl0WpiFyhRlYIDaQLvZSGQ/H0VzKlEe+Z6wWMHoYYg==}
     dev: true
 
-  /@blackprint/sketch@0.8.15:
-    resolution: {integrity: sha512-YOmClYUp7xWLOiboEuSKEZF3vgVh4BImB0hk7HWoamKScAaq7KU/vh/KexGpcA4uYaOHE8qQEVCLQUlLeplzJg==}
+  /@blackprint/sketch@0.9.0:
+    resolution: {integrity: sha512-tM8v4kuFl2x4y4FriDHijsXGtKFHsQgY+iDbZCei45Vo14nbGMGjQUastMh8T1YpJuR+ro3kfZmxdVLZcmhjbQ==}
     dependencies:
       scarletsframe: 0.35.26
     dev: true
