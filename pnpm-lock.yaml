@@ -1,5 +1,9 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 overrides:
   glob-parent@<5.1.2: '>=5.1.2'
   minimist@<1.2.6: '>=1.2.6'
@@ -30,8 +34,8 @@ devDependencies:
     specifier: 0.3.29
     version: 0.3.29
   '@blackprint/engine':
-    specifier: 0.9.0
-    version: 0.9.0
+    specifier: 0.9.2
+    version: 0.9.2
   '@blackprint/sketch':
     specifier: 0.9.0
     version: 0.9.0
@@ -1284,8 +1288,8 @@ packages:
       - utf-8-validate
     dev: true
 
-  /@blackprint/engine@0.9.0:
-    resolution: {integrity: sha512-LdJgzcLL19hgSHkFwTsrKe4oP8QKkH1Sm8jxF0BeMe2zTl0WpiFyhRlYIDaQLvZSGQ/H0VzKlEe+Z6wWMHoYYg==}
+  /@blackprint/engine@0.9.2:
+    resolution: {integrity: sha512-4tCghUzN8nISnYDs2zJ8/AsxMnLujc+JlJX4IVKU5uIcBrfIOHOurDEB1Ed8oHbPA3XaPxqbv1QytJAj/X4XkA==}
     dev: true
 
   /@blackprint/sketch@0.9.0:
@@ -2525,6 +2529,7 @@ packages:
 
   /@substrate/connect-extension-protocol@1.0.1:
     resolution: {integrity: sha512-161JhCC1csjH3GE5mPLEd7HbWtwNSPJBg3p1Ksz9SFlTzj/bgEwudiRN2y5i0MoLGCIJRYKyKGMxVnd29PzNjg==}
+    requiresBuild: true
     optional: true
 
   /@substrate/connect@0.7.24:
@@ -7427,6 +7432,7 @@ packages:
 
   /pako@2.1.0:
     resolution: {integrity: sha512-w+eufiZ1WuJYgPXbV/PO3NCMEc3xqylkKHzp8bxp1uW4qaSNQUkwmLLEc3kKsfz8lpV1F8Ht3U1Cm+9Srog2ug==}
+    requiresBuild: true
     optional: true
 
   /param-case@2.1.1:
@@ -8325,6 +8331,7 @@ packages:
 
   /smoldot@1.0.2:
     resolution: {integrity: sha512-IHhMzvXwyl6I5GA4JvfzM2OOp9wBO06AmjqT4nCoNms5PiLe74f/A+jIZIJKyY6eBhMpmECizyfeTneHO2wMFQ==}
+    requiresBuild: true
     dependencies:
       pako: 2.1.0
       ws: 8.13.0
